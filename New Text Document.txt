@@ -1,0 +1,28 @@
+npm i -g create-react-app
+npm install bootstrap
+npm i --save @fortawesome/fontawesome-svg-core  @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
+npm install react-bootstrap
+
+npm install --save axios
+npm install --save jwt-decode
+npm install --save redux react-redux redux-thunk
+
+npm install --save prop-types
+
+back end
+ C:\d\Sri property\sriproperty\source\sriproperty-backend\functions> 
+npm install --save busboy
+
+
+npm install --save uuid
+
+npm install --save react-fontawesome
+
+npm install react-image --save
+
+npm install --save react-image-file-resizer
+
+npm i react-image-gallery --save
+
+

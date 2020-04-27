@@ -1,0 +1,46 @@
+Category  Values :- Land , Houses, Apartments, New Developments (not working), Commercial Property
+
+District : 
+Location :- City Name according to city
+Photos : up to 5 
+
+Property type: Building, Factory / Workshop, Hotel, Office, Restaurant, Shop, Warehouse / Storage, Other (only for commercial property)
+
+Beds : 1,2,3,4,5,6,7,8,9,10,10+ (only for houses,apartments)
+Baths : 1,2,3,4,5,6,7,8,9,10,10+ (only for houses,apartments)
+
+Land Type : Agriculture , Commercial, Residential , Other check box (only for lands)
+
+Land Size : number, text box 
+Land Size Unit : perches , acres
+
+size (sqft) : number  (only for houses, apartments) (mandatory for houses, apartments,commercial property)
+
+
+Address: text box , optional
+Title : text 50 character
+Description: large text 5000 characters
+
+price : number
+
+price unit : total price, per perch, per acre (only for lands)
+price negotiable : boolean check box
+
+Contact details 
+Name 
+phone number 
+phone number verified 
+email 
+
+createdAt
+ModifiedAt
+ApprovedBy
+ApprovedAt
+Urgent : boolean
+BoostAd : boolean
+AdStatus: new, approved, inactive
+Payment status: pending, done 
+
+
+
+

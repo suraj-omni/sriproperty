@@ -1,0 +1,141 @@
+adverttype : rent, sale
+category:  Land , Houses, Apartments, Rooms & Annexes , Holiday & Short Rentals, Commercial Property
+disctrict : 
+city:
+propertytype :
+
+Building, Factory / Workshop, Hotel, Office, Restaurant, Shop, Warehouse / Storage, Other 
+
+Apartment / Holiday Bunglow / Seasonal room, other
+
+beds : 1,2,3,4,5,6,7,8,9,10,10+
+baths : 1,2,3,4,5,6,7,8,9,10,10+
+landdtype : Agriculture , Commercial, Residential , Other
+landsize: 
+lanssizeunit: perches, acres
+size: number 
+address: text(50)
+title: tect(50)
+description: text(5000)
+rentaloprice : number
+rentalopriceunit : rent / per year , rent / per month , rent / per night, total price, per perch, per acre
+rentalopricenegotiable : boolean
+
+name: text
+phonenumber1 : text
+phonenumber1verified : boolean
+phonenumber2 : text
+phonenumber2verified : boolean
+phonenumber3 : text
+phonenumber3verified : boolean
+phonenumber4 : text
+phonenumber4verified : boolean
+phonenumber5 : text
+phonenumber5verified : boolean
+createdBy : text
+createdAt : timestamp
+modifiedAt : timestamp
+approvedBy : text
+urgentbadge : boolean
+boostadvert : boolean
+boostuntil : timestamp
+advertStatus : text 
+paymentStatus : text
+------------------------
+adverttype
+disctrict
+city
+category
+landdtype1
+landdtype2
+landdtype3
+landdtype4
+lanssizeunit
+landdtype1
+rentaloprice
+beds
+baths
+image1Url
+image2Url
+image3Url
+image4Url
+image5Url
+propertytype
+landdtype1
+landdtype2
+landdtype3
+landdtype4
+rentalopriceunit
+rentalopricenegotiable
+title
+description
+name
+address
+phonenumber1
+phonenumber1verified
+phonenumber2
+phonenumber2verified
+phonenumber3
+phonenumber3verified
+phonenumber4
+phonenumber4verified
+phonenumber5
+phonenumber5verified
+advertStatus
+landsize
+urgentbadge
+boostadvert
+boostuntil
+paymentStatus
+createdBy
+createdAt
+modifiedAt
+approvedBy
+
+------------------------
+address
+advertStatus
+adverttype
+approvedBy
+baths
+beds
+boostadvert
+boostuntil
+category
+
+city
+createdAt
+createdBy
+description
+disctrict
+image1Url
+image2Url
+image3Url
+image4Url
+image5Url
+landdtype1
+landdtype2
+landdtype3
+landdtype4
+landsize
+lanssizeunit
+modifiedAt
+name
+paymentStatus
+phonenumber1
+phonenumber1verified
+phonenumber2
+phonenumber2verified
+phonenumber3
+phonenumber3verified
+phonenumber4
+phonenumber4verified
+phonenumber5
+phonenumber5verified
+propertytype
+rentaloprice
+rentalopricenegotiable
+rentalopriceunit
+title
+urgentbadge
+

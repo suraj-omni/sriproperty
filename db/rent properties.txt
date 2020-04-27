@@ -1,0 +1,47 @@
+Category  Values :- Land , Houses, Apartments, Rooms & Annexes , Holiday & Short Rentals, Commercial Property
+District : 
+Location :- City Name according to city
+Photos : up to 5 
+
+Property type: Building, Factory / Workshop, Hotel, Office, Restaurant, Shop, Warehouse / Storage, Other (only for commercial property)
+
+Property type: Apartment / Holiday Bunglow / Seasonal room, other (only for Holiday & Short Rentals)
+
+Beds : 1,2,3,4,5,6,7,8,9,10,10+ (only for houses,apartments, Holiday & Short Rentals)
+Baths : 1,2,3,4,5,6,7,8,9,10,10+ (only for houses,apartments,Holiday & Short Rentals)
+
+Land Type : Agriculture , Commercial, Residential , Other check box (only for lands)
+
+Land Size : number, text box (lands , houses only)
+Land Size Unit : perches , acres (lands , houses olny )
+
+size (sqft) : number  (only for houses, apartments) (mandatory for houses, apartments,commercial property)
+
+
+Address: text box , (optional)
+Title : text 50 character
+Description: large text 5000 characters
+
+rent : number (rent / per year) (for lands)
+rent : number (rent / per month) (for houses, apartments)
+rent : number (rent / per night) (for Holiday & Short Rentals)
+price negotiable : boolean check box
+
+Contact details 
+Name 
+phone number 
+phone number verified 
+email 
+
+createdAt
+ModifiedAt
+ApprovedBy
+ApprovedAt
+Urgent : boolean
+BoostAd : boolean
+AdStatus: new, approved, inactive
+Payment status: pending, done 
+
+
+
+
