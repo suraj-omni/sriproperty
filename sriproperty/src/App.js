@@ -8,6 +8,7 @@ import updateprofile from "./components/updateprofile";
 import AddAdvertSelectAdType from "./components/AddAdvertSelectAdType";
 import AddAdvertSelectAdCategory from "./components/AddAdvertSelectAdCategory";
 import AddAdvertDetails from "./components/AddAdvertDetails";
+import EditAdvertDetails from "./components/EditAdvertDetails";
 import AddAdvertImageUpload from "./components/AddAdvertImageUpload";
 import MyAds from "./components/MyAds";
 import AdView from "./components/AdView";
@@ -69,6 +70,10 @@ function App() {
             ></Route>
             <Route path="/postad/details" component={AddAdvertDetails}></Route>
             <Route path="/postad" component={AddAdvertSelectAdType}></Route>
+            <Route
+              path="/editad/details/:id"
+              component={EditAdvertDetails}
+            ></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
         </div>

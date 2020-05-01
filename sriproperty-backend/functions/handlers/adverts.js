@@ -137,10 +137,12 @@ exports.getAdvertbyUserId = (req, res) => {
 
 // add advert
 
-exports.addAvert = (request, response) => {
+exports.addAdvert = (request, response) => {
   console.log("addAvert", JSON.stringify(request.body));
   //console.log(request.user);
-  let noimage = "no-image-icon.png";
+
+  const noImageUrl =
+    "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/blank-profile-picture.jpg?alt=media&token=08cd9281-36dc-41b1-9ed3-d01f7b13fde5";
   const advert = {
     address: request.body.address ? request.body.address : "",
     advertStatus: request.body.advertStatus,
@@ -167,7 +169,7 @@ exports.addAvert = (request, response) => {
     //landdtype4: request.body.landdtype4,
     landsize: request.body.landsize ? request.body.landsize : 0,
     landsizeunit: request.body.landsizeunit ? request.body.landsizeunit : "",
-    name: request.user.name,
+
     paymentStatus: "not paid", //request.body.paymentStatus,
     phonenumber1: request.user.phonenumber, // request.body.phonenumber1,
     phonenumber1verified: false, //request.body.phonenumber1verified,
@@ -191,6 +193,9 @@ exports.addAvert = (request, response) => {
     title: request.body.title,
     urgentbadge: false, //request.body.urgentbadge,
     userid: request.user.uid,
+    name: request.user.name,
+    email: request.user.email ? request.user.email : "",
+    userImageUrl: request.user.imageUrl ? request.user.imageUrl : noImageUrl,
     createdAt: new Date().toISOString(),
     modifiedAt: new Date().toISOString(),
   };
@@ -204,6 +209,73 @@ exports.addAvert = (request, response) => {
       advert["advertid"] = doc.id;
       //console.log({ advert });
       return response.json({ advert });
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.editAdvert = (request, response) => {
+  console.log("Edit Advert", JSON.stringify(request.body));
+  //console.log(request.user);
+  let advertid = request.body.advertid;
+  const advert = {
+    address: request.body.address ? request.body.address : "",
+    advertStatus: request.body.advertStatus,
+    adverttype: request.body.adverttype,
+    approvedBy: request.body.approvedBy ? request.body.approvedBy : "",
+    baths: request.body.baths ? request.body.baths : 0,
+    beds: request.body.beds ? request.body.beds : 0,
+    boostadvert: request.body.boostadvert ? request.body.boostadvert : false,
+    boostuntil: request.body.boostuntil ? request.body.boostuntil : "",
+    category: request.body.category,
+    city: request.body.city,
+    description: request.body.description,
+    district: request.body.district,
+    landtypes: request.body.landtypes ? request.body.landtypes : "",
+    landsize: request.body.landsize ? request.body.landsize : 0,
+    landsizeunit: request.body.landsizeunit ? request.body.landsizeunit : "",
+    name: request.user.name,
+    paymentStatus: "not paid", //request.body.paymentStatus,
+    phonenumber1: request.user.phonenumber, // request.body.phonenumber1,
+    phonenumber1verified: request.body.phonenumber1verified
+      ? request.body.phonenumber1verified
+      : false,
+    phonenumber2: "", //request.body.phonenumber2,
+    phonenumber2verified: false, //request.body.phonenumber2verified,
+    phonenumber3: "", // request.body.phonenumber3,
+    phonenumber3verified: false, // request.body.phonenumber3verified,
+    phonenumber4: "", //request.body.phonenumber4,
+    phonenumber4verified: false, // request.body.phonenumber4verified,
+    phonenumber5: "", //request.body.phonenumber5,
+    phonenumber5verified: false, // request.body.phonenumber5verified,
+    propertytype: request.body.propertytype ? request.body.propertytype : "",
+    rentaloprice: request.body.rentaloprice,
+    rentalopricenegotiable: request.body.rentalopricenegotiable
+      ? request.body.rentalopricenegotiable
+      : false,
+    rentalopriceunit: request.body.rentalopriceunit
+      ? request.body.rentalopriceunit
+      : "",
+    size: request.body.size ? request.body.size : 0,
+    title: request.body.title,
+    urgentbadge: false, //request.body.urgentbadge,
+    userid: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = advertid;
+        return response.json({ advert });
+      }
     })
     .catch((err) => {
       response.status(500).json({ error: "something went wrong." });
@@ -360,53 +432,3 @@ exports.deleteAdImage = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
-
-/* exports.fillAdvertObject = (data) => {
-  console.log("fillAdvertObject", data);
-
-  const advert = {
-    advertid: data.id,
-    address: data.address,
-    advertStatus: data.advertStatus,
-    adverttype: data.adverttype,
-    approvedBy: data.approvedBy ? data.approvedBy : "",
-    baths: data.baths ? data.baths : 0,
-    beds: data.beds ? data.beds : 0,
-    boostadvert: data.boostadvert,
-    boostuntil: data.boostuntil,
-    category: data.category,
-    city: data.city,
-    createdBy: data.createdBy,
-    description: data.description,
-    district: data.disctrict,
-    image1Url: data.image1Url,
-    image2Url: data.image2Url,
-    image3Url: data.image3Url,
-    image4Url: data.image4Url,
-    image5Url: data.image5Url,
-    landtypes: data.landtypes,
-    landsize: data.landsize,
-    landsizeunit: data.landsizeunit,
-    name: data.name,
-    paymentStatus: data.paymentStatus,
-    phonenumber1: data.phonenumber1,
-    phonenumber1verified: data.phonenumber1verified,
-    phonenumber2: data.phonenumber2,
-    phonenumber2verified: data.phonenumber2verified,
-    phonenumber3: data.phonenumber3,
-    phonenumber3verified: data.phonenumber3verified,
-    phonenumber4: data.phonenumber4,
-    phonenumber4verified: data.phonenumber4verified,
-    phonenumber5: data.phonenumber5,
-    phonenumber5verified: data.phonenumber5verified,
-    propertytype: data.propertytype,
-    rentaloprice: data.rentaloprice,
-    rentalopricenegotiable: data.rentalopricenegotiable,
-    rentalopriceunit: data.rentalopriceunit,
-    title: data.title,
-    urgentbadge: data.urgentbadge,
-    createdAt: data.createdAt,
-    modifiedAt: data.modifiedAt,
-  };
-  return advert;
-}; */

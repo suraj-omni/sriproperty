@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSquareAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import AdImage from "./AdImage";
 import { currencyFormat, altPhoneNumber, getimageUrllist } from "../util/util";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Button from "react-bootstrap/Button";
@@ -32,7 +31,6 @@ class AdViewMain extends Component {
 
   render() {
     const { loading } = this.props;
-    const { email, imageUrl, phonenumber } = this.props.credentials;
     const defpadding = this.state.defpadding;
     const {
       title,
@@ -51,10 +49,12 @@ class AdViewMain extends Component {
       description,
       landsize,
       landsizeunit,
-      phonenumber1,
       propertytype,
       size,
       landtypes,
+      userImageUrl,
+      email,
+      phonenumber1,
     } = this.props.advert;
     const images = getimageUrllist(this.props.advert);
     const negotiable = rentalopricenegotiable ? "Negotiable" : "";
@@ -210,7 +210,9 @@ class AdViewMain extends Component {
                   <h6>Property Description</h6>
                 </Col>
               </Row>
-              <Row className={`${defpadding} ad-view-desc-font border-bottom`}>
+              <Row
+                className={`${defpadding} text-left ad-view-desc-font border-bottom`}
+              >
                 <Col>{description}</Col>
               </Row>
               <Row className={`${defpadding}`}>
@@ -224,7 +226,7 @@ class AdViewMain extends Component {
                     <div className="row no-gutters">
                       <div className="col-md-4 p-1 my-auto">
                         <img
-                          src={imageUrl}
+                          src={userImageUrl}
                           className="card-img ad-view-advertiser-image"
                           alt={name}
                         />
@@ -254,14 +256,14 @@ class AdViewMain extends Component {
                               </span>
                               {this.state.showphone && (
                                 <React.Fragment>
-                                  <span>Phone Number :- {phonenumber}</span>
+                                  <span>Phone Number :- {phonenumber1}</span>
                                 </React.Fragment>
                               )}
                               {!this.state.showphone && (
                                 <React.Fragment>
                                   <span>
                                     Phone Number :-{" "}
-                                    {altPhoneNumber(phonenumber)}{" "}
+                                    {altPhoneNumber(phonenumber1)}{" "}
                                   </span>
                                 </React.Fragment>
                               )}

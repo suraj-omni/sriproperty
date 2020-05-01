@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { setCategory, getAdvertbyId } from "../redux/actions/adActions";
+import { setCategory, setAdvert } from "../redux/actions/adActions";
 import { Link } from "react-router-dom";
 class AddAdvertSelectAdCategory extends Component {
   constructor(props) {
@@ -22,22 +22,33 @@ class AddAdvertSelectAdCategory extends Component {
   }
 
   componentDidMount = () => {
-    const { advert } = JSON.parse(localStorage.advert);
-    this.setState({ advert });
+    const advert = this.props.ad.advert;
+    //console.log(JSON.stringify(advert));
+    this.cleanAdvertObj(advert);
+
     //console.log("component Did mount category:", JSON.stringify(advert));
+  };
+
+  cleanAdvertObj = (advert) => {
+    for (let [key, value] of Object.entries(advert)) {
+      if (key !== "adverttype" && key != "category") {
+        // console.log(`${key}: ${value}`);
+        delete advert[`${key}`];
+      }
+    }
+    this.props.setAdvert(advert);
   };
 
   handleLinkClick = (event) => {
     event.preventDefault();
-    let advert = { ...this.state.advert };
-    //console.log("cat page before update", JSON.stringify(advert));
+    let advert = this.props.ad.advert;
     advert["category"] = event.target.value;
-    //console.log("cat page after update", JSON.stringify(advert));
-    this.props.setCategory({ advert }, this.props.history);
+    console.log("cat page after update", JSON.stringify(advert));
+    this.props.setCategory(advert, this.props.history);
   };
 
   render() {
-    const { adverttype } = this.state.advert;
+    const { adverttype } = this.props.ad.advert;
     const isRent = adverttype === "rent" ? true : false;
     return (
       <React.Fragment>
@@ -148,6 +159,7 @@ class AddAdvertSelectAdCategory extends Component {
 
 AddAdvertSelectAdCategory.propTypes = {
   setCategory: PropTypes.func.isRequired,
+  setAdvert: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   ad: PropTypes.object.isRequired,
@@ -161,6 +173,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   setCategory,
+  setAdvert,
 };
 
 export default connect(

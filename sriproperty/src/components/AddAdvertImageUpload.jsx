@@ -37,30 +37,17 @@ class AddAdvertImageUpload extends Component {
   }
 
   componentDidMount = () => {
-    let advert = JSON.parse(localStorage.advert);
-
-    console.log("componentDidMount", JSON.stringify(advert));
-
+    /* let advert = this.props.ad.advert;
+    console.log("componentDidMount", this.props.ad.advert);
     if (advert.advertid) {
-      /* console.log(
-        "componentDidMount advert from local db",
-        JSON.stringify(advert)
-      ); */
       if (!this.props.advert.advertid) {
-        //alert("b");
         this.props.getAdvertbyId(advert);
-        /* console.log(
-          "componentDidMount advert from after getting from db local db",
-          JSON.parse(localStorage.advert)
-        ); */
+
       }
     } else {
       alert("Error");
-      /* this.props.getAdvertbyId(advert);
-      advert = JSON.parse(localStorage.advert);
-      this.setState({ advert }); */
-    }
-    //console.log("componentDidMount", JSON.stringify({ advert }));
+
+    } */
   };
 
   handleClose = () => {

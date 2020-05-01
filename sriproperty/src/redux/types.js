@@ -11,8 +11,8 @@ export const INITIATE_AD = "INITIATE_AD";
 export const SET_TYPE = "SET_TYPE";
 export const SET_CATEGORY = "SET_CATEGORY";
 export const LOADING_AD = "LOADING_AD";
-export const SAVE_NEWAD = "SAVE_NEWAD";
-export const SET_AD_FROM_INTERNAL_DB = "SET_AD_FROM_INTERNAL_DB";
+export const SAVE_AD = "SAVE_AD";
+export const SET_AD = "SET_AD";
 export const SET_ADS_BY_USER = "SET_ADS_BY_USER";
 // UI reducer types
 export const SET_MSG = "SET_MSG";

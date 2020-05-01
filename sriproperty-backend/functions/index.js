@@ -1,7 +1,8 @@
 const functions = require("firebase-functions");
 const {
   getAllAdverts,
-  addAvert,
+  addAdvert,
+  editAdvert,
   getAdvertbyId,
   uploadAdvertImage,
   deleteAdImage,
@@ -25,11 +26,14 @@ app.get("/adverts", FBAuth, getAllAdverts);
 //Get adverts by user id
 app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);
 
-//Get all adverts
+//Get advert by advert id
 app.post("/advertbyid", FBAuth, getAdvertbyId);
 
 //Add Adverts
-app.post("/advert", FBAuth, addAvert);
+app.post("/advert", FBAuth, addAdvert);
+
+//Edit Advert
+app.post("/advertedit", FBAuth, editAdvert);
 
 //upload image
 app.post("/advert/image", FBAuth, uploadAdvertImage);

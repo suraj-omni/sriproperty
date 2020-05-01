@@ -6,8 +6,8 @@ import {
   SET_CATEGORY,
   LOADING_UI,
   FINISHED_LOADING_UI,
-  SAVE_NEWAD,
-  SET_AD_FROM_INTERNAL_DB,
+  SAVE_AD,
+  SET_AD,
   INPROGRESS1,
   INPROGRESS2,
   INPROGRESS3,
@@ -44,7 +44,7 @@ export const schemaland = Joi.object().keys({
   rentalopricenegotiable: Joi.boolean().label("Negotiable"),
   district: Joi.string().required().label("District"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
@@ -70,7 +70,7 @@ export const schemaland = Joi.object().keys({
   landtypes: Joi.string().required().label("Land Types"),
   landsize: Joi.number()
     .positive()
-    .min(4)
+    .min(0.1)
     .max(100000)
     .required()
     .label("Land Size"),
@@ -93,7 +93,7 @@ export const schemahouse = Joi.object().keys({
   district: Joi.string().required().label("District"),
   landsizeunit: Joi.string().required().label("Land size unit"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
@@ -120,7 +120,7 @@ export const schemahouse = Joi.object().keys({
   size: Joi.string().required().label("Size"),
   landsize: Joi.number()
     .positive()
-    .min(4)
+    .min(0.1)
     .max(100000)
     .required()
     .label("Land Size"),
@@ -142,7 +142,7 @@ export const schemaApartment = Joi.object().keys({
   rentalopricenegotiable: Joi.boolean().label("Negotiable"),
   district: Joi.string().required().label("District"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
@@ -185,7 +185,7 @@ export const schemaCommercialProperty = Joi.object().keys({
   rentalopricenegotiable: Joi.boolean().label("Negotiable"),
   district: Joi.string().required().label("District"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
@@ -227,7 +227,7 @@ export const schema = Joi.object().keys({
   rentalopricenegotiable: Joi.boolean().label("Negotiable"),
   district: Joi.string().required().label("District"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
@@ -270,7 +270,7 @@ export const schemaall = {
   rentalopricenegotiable: Joi.boolean().label("Negotiable"),
   district: Joi.string().required().label("District"),
   city: Joi.string().required().label("City"),
-  address: Joi.string().optional().label("Address"),
+  address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
     .regex(/^([a-zA-Z0-9 \._-]+)$/)
     .min(10)
@@ -300,7 +300,7 @@ export const schemaall = {
   propertytype: Joi.string().required().label("Property Type"),
   landsize: Joi.number()
     .positive()
-    .min(4)
+    .min(0.1)
     .max(100000)
     .required()
     .label("Land Size"),
@@ -316,7 +316,7 @@ export const schemaall = {
 };
 
 export const validate = (advert) => {
-  const opt = { abortEarly: false };
+  const opt = { abortEarly: false, stripUnknown: true };
   let error;
   let errors = {};
 
@@ -379,26 +379,21 @@ export const InitiateAd = (advert, history) => (dispatch) => {
   dispatch({ type: NEW_AD });
   dispatch({ type: INITIATE_AD });
   dispatch({ type: SET_TYPE, payload: advert });
-  addAdverttoLocalDB(advert);
-  //console.log("InitiateAd", JSON.stringify(advert));
   history.push("/postad/category");
 };
 
 export const setCategory = (advert, history) => (dispatch) => {
   console.log("setCategory", JSON.stringify(advert));
   dispatch({ type: SET_CATEGORY, payload: advert });
-  addAdverttoLocalDB(advert);
   //console.log("setCategory", JSON.stringify(advert));
   history.push("/postad/details");
 };
 
 export const setAdvert = (advert) => (dispatch) => {
-  console.log("setAdvert", JSON.stringify(advert));
-  dispatch({ type: SET_AD_FROM_INTERNAL_DB, payload: advert });
-};
-
-const addAdverttoLocalDB = (advert) => {
-  localStorage.setItem("advert", JSON.stringify(advert));
+  //console.log("setAdvert", JSON.stringify(advert));
+  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_AD, payload: advert });
+  dispatch({ type: FINISHED_LOADING_UI });
 };
 
 export const IsvalidAdvert = (newAdvert) => (dispatch) => {
@@ -419,9 +414,8 @@ export const addAdvert = (newAdvert, history) => (dispatch) => {
       let { advert } = { ...res.data };
 
       console.log("addAdvert after save newAdvert", advert);
-      addAdverttoLocalDB(advert);
-      dispatch({ type: SAVE_NEWAD, payload: advert });
-
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
       history.push("/postad/uploadimage");
     })
     .catch((err) => {
@@ -433,6 +427,28 @@ export const addAdvert = (newAdvert, history) => (dispatch) => {
     });
 };
 
+// Edit Advert
+export const editAdvert = (advert, history, redirectto) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  console.log("editAdvert before save advert", JSON.stringify(advert));
+  axios
+    .post("/advertedit", advert)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("editAdvert after save advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+      history.push(`${redirectto}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
 // Get Advert by Advert Id
 export const getAdvertbyId = (advert) => (dispatch) => {
   dispatch({ type: LOADING_UI });
@@ -440,9 +456,9 @@ export const getAdvertbyId = (advert) => (dispatch) => {
     .post("/advertbyid", advert)
     .then((res) => {
       let { advert } = { ...res.data };
-      addAdverttoLocalDB(advert);
-      console.log("getAdvertbyId", JSON.stringify(advert));
-      dispatch({ type: SET_AD_FROM_INTERNAL_DB, payload: advert });
+      //addAdverttoLocalDB(advert);
+      //console.log("getAdvertbyId", JSON.stringify(advert));
+      dispatch({ type: SET_AD, payload: advert });
       dispatch({ type: FINISHED_LOADING_UI });
       return advert;
     })
@@ -503,8 +519,7 @@ export const uploadAdImage = (formData, imageno) => (dispatch) => {
     .post("/advert/image", formData, config)
     .then((res) => {
       let { advert } = { ...res.data };
-      addAdverttoLocalDB(advert);
-      dispatch({ type: SET_AD_FROM_INTERNAL_DB, payload: advert });
+      dispatch({ type: SET_AD, payload: advert });
 
       switch (imageno) {
         case 1:
@@ -558,8 +573,7 @@ export const deleteAdImage = (deleteadvert) => (dispatch) => {
     .then((res) => {
       let { advert } = { ...res.data };
       console.log("deleteAdImage", JSON.stringify(advert));
-      addAdverttoLocalDB(advert);
-      dispatch({ type: SET_AD_FROM_INTERNAL_DB, payload: advert });
+      dispatch({ type: SET_AD, payload: advert });
 
       switch (deleteadvert.advertimageno) {
         case 1:

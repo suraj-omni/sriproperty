@@ -52,13 +52,13 @@ export class MyAdsTable extends Component {
                   <Link to={`/ad/${advert.advertId}`}>{advert.title}</Link>
                 </td>
                 <td className="text-center">
-                  <Link to={`/ad/${advert.advertId}`}>
+                  <Link to={`/editad/details/${advert.advertId}`}>
                     {" "}
                     <FontAwesomeIcon
                       style={{ color: "#1c110a" }}
                       icon={faEdit}
                       size="1x"
-                      title="click here to View the ad."
+                      title="click here to Edit the ad."
                     />
                   </Link>
                 </td>

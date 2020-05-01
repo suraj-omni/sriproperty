@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { InitiateAd } from "../redux/actions/adActions";
+import { InitiateAd, setAdvert } from "../redux/actions/adActions";
 
 class AddAdvertSelectAdType extends Component {
   constructor(props) {
@@ -21,6 +21,22 @@ class AddAdvertSelectAdType extends Component {
     };
   }
 
+  componentDidMount = () => {
+    const advert = this.props.ad.advert;
+
+    //console.log(JSON.stringify(advert));
+    this.cleanAdvertObj(advert);
+
+    //console.log("component Did mount category:", JSON.stringify(advert));
+  };
+
+  cleanAdvertObj = (advert) => {
+    for (let [key, value] of Object.entries(advert)) {
+      delete advert[`${key}`];
+    }
+    this.props.setAdvert(advert);
+  };
+
   handleRentClick = (event) => {
     event.preventDefault();
     this.setState({ errors: {} });
@@ -29,7 +45,7 @@ class AddAdvertSelectAdType extends Component {
 
     this.setState({ advert });
 
-    this.props.InitiateAd({ advert }, this.props.history);
+    this.props.InitiateAd(advert, this.props.history);
   };
 
   handleSellClick = (event) => {
@@ -40,7 +56,7 @@ class AddAdvertSelectAdType extends Component {
 
     this.setState({ advert });
 
-    this.props.InitiateAd({ advert }, this.props.history);
+    this.props.InitiateAd(advert, this.props.history);
   };
 
   render() {
@@ -161,6 +177,7 @@ class AddAdvertSelectAdType extends Component {
 AddAdvertSelectAdType.propTypes = {
   InitiateAd: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
+  setAdvert: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
   ad: PropTypes.object.isRequired,
   advert: PropTypes.object.isRequired,
@@ -174,6 +191,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   InitiateAd,
+  setAdvert,
 };
 
 export default connect(

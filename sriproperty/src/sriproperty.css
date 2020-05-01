@@ -471,6 +471,7 @@ ul li {
   color: #d81159 !important;
   font-size: 0.8rem !important;
   font-family: "Open Sans", sans-serif;
+  white-space: pre-wrap;
 }
 
 .ad-view-advertiser-image {

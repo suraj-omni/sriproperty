@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
+import { loadState, saveState } from "./localStorage";
 
 import userreducer from "./reducers/userreducer";
 import uireducer from "./reducers/uireducer";
@@ -8,6 +9,7 @@ import datareducer from "./reducers/datareducer";
 
 const initialState = {};
 const middleware = [thunk];
+//const persistedState = loadState();
 
 const reducers = combineReducers({
   user: userreducer,
@@ -20,10 +22,14 @@ const store = createStore(
   reducers,
   initialState,
   compose(
-    applyMiddleware(...middleware)
-    /* ,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() */
+    applyMiddleware(...middleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+store.subscribe(() => {
+  saveState({ advert: store.getState().ad.advert });
+  //console.log("state change", store.getState().ad.advert);
+});
 
 export default store;

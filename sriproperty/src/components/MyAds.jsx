@@ -1,7 +1,7 @@
 import React, { Component, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getAdvertsbyUserId } from "../redux/actions/adActions";
+import { getAdvertsbyUserId, setAdvert } from "../redux/actions/adActions";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -22,6 +22,8 @@ export class MyAds extends Component {
     };
   }
   componentDidMount = () => {
+    const advert = {};
+    this.props.setAdvert(advert);
     this.props.getAdvertsbyUserId();
   };
 
@@ -78,6 +80,7 @@ export class MyAds extends Component {
 
 MyAds.propTypes = {
   getAdvertsbyUserId: PropTypes.func.isRequired,
+  setAdvert: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   adverts: PropTypes.object.isRequired,
@@ -93,6 +96,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   getAdvertsbyUserId,
+  setAdvert,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(MyAds);
