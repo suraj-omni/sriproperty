@@ -30,10 +30,10 @@ class AddAdvertDetails extends AdvertDetailsMaster {
     if (this.props.ad.advert.adverttype) {
       const advert = { ...this.props.ad.advert };
 
-      console.log(
+      /* console.log(
         "initpage getting from ad.advert.advert type",
         JSON.stringify(advert)
-      );
+      ); */
       await this.props.setAdvert(advert);
     } else {
       const advert = JSON.parse(localStorage.advert);
@@ -48,7 +48,7 @@ class AddAdvertDetails extends AdvertDetailsMaster {
   initializePage = async () => {
     let pricelabel = "Price";
     const advert = { ...this.props.advert };
-    console.log("initializePage start advert", JSON.stringify(advert));
+    //console.log("initializePage start advert", JSON.stringify(advert));
 
     const { category, adverttype } = advert;
 
@@ -77,10 +77,10 @@ class AddAdvertDetails extends AdvertDetailsMaster {
     this.selectednegotiablecheckbox = new Set();
     await this.props.clearErrosPageLoad();
 
-    console.log(
+    /* console.log(
       "advert details master  componentDidMount",
-      JSON.stringify(advert)
-    );
+      JSON.stringify(advert) 
+    );*/
   };
 
   render() {

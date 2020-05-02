@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, Suspense } from "react";
+import React, { Suspense, lazy } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
@@ -14,19 +14,8 @@ import {
   setAdvert,
   editAdvert,
 } from "../redux/actions/adActions";
-import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import FormGroup from "react-bootstrap/FormGroup";
-import Alert from "react-bootstrap/Alert";
-import Toast from "react-bootstrap/Toast";
 import AdvertDetailsMaster from "./AdvertDetailsMaster";
-import { mapToObject } from "joi-browser";
-
-const config = require("../util/config");
+//const AdvertDetailsMaster = lazy(() => import("./AdvertDetailsMaster"));
 
 class EditAdvertDetails extends AdvertDetailsMaster {
   constructor(props) {
@@ -60,8 +49,7 @@ class EditAdvertDetails extends AdvertDetailsMaster {
   };
 
   render() {
-    const { loading } = this.props.UI;
-    if (loading)
+    if (this.props.UI.loading) {
       return (
         <React.Fragment>
           <div className="mx-auto">
@@ -71,8 +59,20 @@ class EditAdvertDetails extends AdvertDetailsMaster {
           </div>
         </React.Fragment>
       );
-    if (!loading) {
-      return (
+    }
+
+    return (
+      <Suspense
+        fallback={
+          <React.Fragment>
+            <div className="mx-auto">
+              {" "}
+              <div className="mx-auto loader"></div>{" "}
+              <div className="mx-auto loadder-text">Loading Data...</div>
+            </div>
+          </React.Fragment>
+        }
+      >
         <React.Fragment>
           <Container>
             <Table>
@@ -120,8 +120,8 @@ class EditAdvertDetails extends AdvertDetailsMaster {
             </Table>
           </Container>
         </React.Fragment>
-      );
-    }
+      </Suspense>
+    );
   }
 }
 

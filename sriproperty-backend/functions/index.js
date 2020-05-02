@@ -3,11 +3,13 @@ const {
   getAllAdverts,
   addAdvert,
   editAdvert,
+  deleteAdvert,
   getAdvertbyId,
   uploadAdvertImage,
   deleteAdImage,
   getAdvertbyUserId,
 } = require("./handlers/adverts");
+
 const {
   signup,
   login,
@@ -34,6 +36,8 @@ app.post("/advert", FBAuth, addAdvert);
 
 //Edit Advert
 app.post("/advertedit", FBAuth, editAdvert);
+
+app.delete("/advert/:advertid", FBAuth, deleteAdvert);
 
 //upload image
 app.post("/advert/image", FBAuth, uploadAdvertImage);

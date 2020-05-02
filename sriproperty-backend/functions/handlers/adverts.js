@@ -303,6 +303,51 @@ exports.getAdvertbyId = (request, response) => {
     });
 };
 
+exports.deleteAdvert = (request, response) => {
+  let advertid = request.params.advertid;
+  const document = db.doc(`/adverts/${advertid}`);
+  const bucket = admin.storage().bucket();
+
+  console.log("advertid", advertid);
+
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return response
+          .status(404)
+          .json({ error: "No Such Advert to Delete !!!" });
+      } else if (doc.data().userid != request.user.uid) {
+        return response.status(403).json({ error: "Unauthorized Action !!!" });
+      } else {
+        for (i = 1; i < 6; i++) {
+          //delete each image here.
+          const imageUrl = doc.data()[`image${i}Url`];
+          console.log("imageUrl", imageUrl);
+          if (imageUrl !== "") {
+            const imagename = imageUrl.slice(76, -10);
+            console.log("imagename", imagename);
+            bucket
+              .file(imagename)
+              .delete()
+              .then(() => {
+                console.log(imagename + " deleted");
+              });
+          }
+        }
+
+        return document.delete();
+      }
+    })
+    .then(() => {
+      return response.status(200).json({ message: `Successfully Deleted !!!` });
+    })
+    .catch((err) => {
+      console.log("error deleting", err);
+      return response.status(500).json({ error: err.code });
+    });
+};
+
 //uploaad image
 exports.uploadAdvertImage = (request, response) => {
   const BusBoy = require("busboy");

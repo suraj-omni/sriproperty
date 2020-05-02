@@ -32,6 +32,7 @@ import {
   SET_ADS_BY_USER,
   DISABLE_BTN,
   ENABLE_BTN,
+  SET_ADVERTS_COUNT,
 } from "../types";
 
 import axios from "axios";
@@ -396,6 +397,18 @@ export const setAdvert = (advert) => (dispatch) => {
   dispatch({ type: FINISHED_LOADING_UI });
 };
 
+export const resetAdverts = (adverts) => (dispatch) => {
+  let advertscount = adverts && adverts.length ? adverts.length : 0;
+  console.log("resetAdverts :-", advertscount);
+  dispatch({ type: LOADING_UI });
+  dispatch({
+    type: SET_ADS_BY_USER,
+    payload: adverts,
+    advertscount: advertscount,
+  });
+  dispatch({ type: FINISHED_LOADING_UI });
+};
+
 export const IsvalidAdvert = (newAdvert) => (dispatch) => {
   const errors = validate(newAdvert);
   if (errors) {
@@ -456,8 +469,6 @@ export const getAdvertbyId = (advert) => (dispatch) => {
     .post("/advertbyid", advert)
     .then((res) => {
       let { advert } = { ...res.data };
-      //addAdverttoLocalDB(advert);
-      //console.log("getAdvertbyId", JSON.stringify(advert));
       dispatch({ type: SET_AD, payload: advert });
       dispatch({ type: FINISHED_LOADING_UI });
       return advert;
@@ -471,6 +482,23 @@ export const getAdvertbyId = (advert) => (dispatch) => {
     });
 };
 
+// Delte Advert
+export const deleteAdvert = (advertid) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .delete(`/advert/${advertid}`)
+    .then((res) => {
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log("deleteAdvert", err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
+
 // Get Adverts by user Id
 export const getAdvertsbyUserId = () => (dispatch) => {
   dispatch({ type: LOADING_UI });
@@ -479,9 +507,15 @@ export const getAdvertsbyUserId = () => (dispatch) => {
     .get("/advertsbyUserid")
     .then((res) => {
       let adverts = [...res.data];
-      dispatch({ type: SET_ADS_BY_USER, payload: adverts });
+      let advertscount = adverts && adverts.length ? adverts.length : 0;
+      dispatch({
+        type: SET_ADS_BY_USER,
+        payload: adverts,
+        advertscount: advertscount,
+      });
       //console.log("getAdvertsbyUserId", adverts);
       dispatch({ type: FINISHED_LOADING_UI });
+      console.log("advert countdf dfd:-", advertscount);
       return adverts;
     })
     .catch((err) => {

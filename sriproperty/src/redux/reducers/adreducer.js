@@ -6,6 +6,7 @@ import {
   SAVE_AD,
   SET_AD,
   SET_ADS_BY_USER,
+  SET_ADVERTS_COUNT,
 } from "../types";
 
 import { loadState } from "../localStorage";
@@ -16,6 +17,7 @@ const initialState = {
   adcategoryset: false,
   advert: {},
   adverts: [],
+  advertscount: 0,
   loadingadvert: false,
 };
 
@@ -48,6 +50,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         adverts: action.payload,
+        advertscount: action.advertscount,
+      };
+    case SET_ADVERTS_COUNT:
+      return {
+        ...state,
+        advertscount: action.advertscount,
       };
     case SET_AD:
       return {

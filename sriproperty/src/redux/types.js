@@ -14,6 +14,7 @@ export const LOADING_AD = "LOADING_AD";
 export const SAVE_AD = "SAVE_AD";
 export const SET_AD = "SET_AD";
 export const SET_ADS_BY_USER = "SET_ADS_BY_USER";
+export const SET_ADVERTS_COUNT = "SET_ADVERTS_COUNT";
 // UI reducer types
 export const SET_MSG = "SET_MSG";
 export const SET_ERRORS = "SET_ERRORS";

@@ -10,15 +10,16 @@ export class MyAdsTable extends Component {
     console.log(advertid);
   };
 
-  handleDelete = (advertid) => {
-    console.log(advertid);
+  handleDelete = (advertid, index) => {
+    const response = window.confirm("Do you really want to Delete the Advert?");
+    if (response === true) {
+      this.props.handleDelete(advertid, index);
+    }
   };
 
   render() {
-    const adverts = [...this.props.adverts];
-    let count = 0;
-    count = adverts.length ? adverts.length : 0;
-
+    const [adverts] = [...this.props.adverts];
+    const count = this.props.count;
     if (this.props.loading)
       return (
         <React.Fragment>
@@ -44,7 +45,7 @@ export class MyAdsTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {adverts.map((advert) => (
+            {adverts.map((advert, index) => (
               <tr>
                 <td className="text-left">{advert.adverttype}</td>
                 <td className="text-left">{advert.category}</td>
@@ -65,7 +66,7 @@ export class MyAdsTable extends Component {
                 <td className="text-center">
                   <Button
                     className="btn-grid"
-                    onClick={() => this.handleDelete(advert.advertId)}
+                    onClick={() => this.handleDelete(advert.advertId, index)}
                   >
                     <FontAwesomeIcon
                       style={{ color: "#D81159" }}

@@ -62,7 +62,7 @@ class AdvertDetailsMaster extends Component {
 
   handleSave = () => {
     const submitbutton = document.getElementById("btnsubmit");
-    console.log(submitbutton);
+    //console.log(submitbutton);
     submitbutton.click();
   };
 
@@ -566,9 +566,9 @@ class AdvertDetailsMaster extends Component {
     if (arrlandtypes && arrlandtypes.length > 0) {
       arrlandtypes.map((landtype) => {
         const cb = document.getElementById(landtype);
-        console.log("cb", cb);
+        //console.log("cb", cb);
         if (cb) {
-          console.log(cb);
+          //console.log(cb);
           cb.checked = true;
         }
       });
@@ -1351,7 +1351,7 @@ class AdvertDetailsMaster extends Component {
     );
   };
 
-  render() {
+  /*   render() {
     const { errors, loading } = this.props.UI;
     const { adverttype, category } = this.props.advert;
     const isLand = category === "Land" ? true : false;
@@ -1381,8 +1381,8 @@ class AdvertDetailsMaster extends Component {
       ? "Confirmed"
       : "Not confirmed";
 
-    return <React.Fragment></React.Fragment>;
-  }
+    return <></>;
+  } */
 }
 
 export default AdvertDetailsMaster;

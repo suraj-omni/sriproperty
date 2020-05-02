@@ -1,7 +1,12 @@
 import React, { Component, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getAdvertsbyUserId, setAdvert } from "../redux/actions/adActions";
+import {
+  getAdvertsbyUserId,
+  setAdvert,
+  deleteAdvert,
+  resetAdverts,
+} from "../redux/actions/adActions";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,15 +21,29 @@ export class MyAds extends Component {
     super(props);
     this.state = {
       colpadding: "p-2",
-      adverts: [],
       errors: {},
       tabkey: "myads",
+      count: 0,
     };
   }
-  componentDidMount = () => {
+
+  componentWillMount = () => {
     const advert = {};
     this.props.setAdvert(advert);
     this.props.getAdvertsbyUserId();
+  };
+  componentDidMount = () => {
+    /*     const [adverts] = [this.props.adverts];
+    const count = adverts.length ? adverts.length : 0;
+    console.log("count", count);
+    this.setState({ count }); */
+  };
+
+  handleDelete = (advertid, index) => {
+    let adverts = this.props.adverts;
+    this.props.deleteAdvert(advertid);
+    adverts.splice(index, 1);
+    this.props.resetAdverts(adverts);
   };
 
   setTabkey = (tabkey) => {
@@ -34,7 +53,8 @@ export class MyAds extends Component {
   };
 
   render() {
-    const adverts = [...this.props.adverts];
+    const adverts = [this.props.adverts];
+    const count = this.props.ad.advertscount;
     const { loading } = this.props.UI;
     return (
       <React.Fragment>
@@ -64,6 +84,8 @@ export class MyAds extends Component {
                           props={this.props}
                           adverts={adverts}
                           loading={loading}
+                          handleDelete={this.handleDelete}
+                          count={count}
                         />
                       </Suspense>
                     </Col>
@@ -81,6 +103,8 @@ export class MyAds extends Component {
 MyAds.propTypes = {
   getAdvertsbyUserId: PropTypes.func.isRequired,
   setAdvert: PropTypes.func.isRequired,
+  resetAdverts: PropTypes.func.isRequired,
+  deleteAdvert: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   adverts: PropTypes.object.isRequired,
@@ -97,6 +121,8 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   getAdvertsbyUserId,
   setAdvert,
+  deleteAdvert,
+  resetAdverts,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(MyAds);
