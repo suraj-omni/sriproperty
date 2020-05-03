@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import { addAdvert } from "../redux/actions/adActions";
 export class MyAdsTable extends Component {
   handleEdit = (event, advertid) => {
     console.log(advertid);
@@ -41,18 +44,37 @@ export class MyAdsTable extends Component {
               <th>Type</th>
               <th>Category</th>
               <th>Title</th>
+              <th>Online</th>
               <th colSpan="2">Action</th>
             </tr>
           </thead>
           <tbody>
             {adverts.map((advert, index) => (
               <tr>
-                <td className="text-left">{advert.adverttype}</td>
-                <td className="text-left">{advert.category}</td>
-                <td className="text-left">
+                <td className="text-left align-middle">{advert.adverttype}</td>
+                <td className="text-left align-middle">{advert.category}</td>
+                <td className="text-left align-middle">
                   <Link to={`/ad/${advert.advertId}`}>{advert.title}</Link>
                 </td>
-                <td className="text-center">
+                <td className="text-center align-middle">
+                  {advert.online && (
+                    <FontAwesomeIcon
+                      style={{ color: "#99c24d" }}
+                      icon={faToggleOn}
+                      size="1.8x"
+                      title="Ad is Online"
+                    />
+                  )}
+                  {!advert.online && (
+                    <FontAwesomeIcon
+                      style={{ color: "#CE6C47" }}
+                      icon={faToggleOff}
+                      size="1.8x"
+                      title="Ad is Offline"
+                    />
+                  )}
+                </td>
+                <td className="text-center align-middle">
                   <Link to={`/editad/details/${advert.advertId}`}>
                     {" "}
                     <FontAwesomeIcon
@@ -63,7 +85,7 @@ export class MyAdsTable extends Component {
                     />
                   </Link>
                 </td>
-                <td className="text-center">
+                <td className="text-center align-middle">
                   <Button
                     className="btn-grid"
                     onClick={() => this.handleDelete(advert.advertId, index)}

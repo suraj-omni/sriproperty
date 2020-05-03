@@ -32,7 +32,7 @@ import {
   SET_ADS_BY_USER,
   DISABLE_BTN,
   ENABLE_BTN,
-  SET_ADVERTS_COUNT,
+  GET_ALL_ADVERTS,
 } from "../types";
 
 import axios from "axios";
@@ -443,7 +443,7 @@ export const addAdvert = (newAdvert, history) => (dispatch) => {
 // Edit Advert
 export const editAdvert = (advert, history, redirectto) => (dispatch) => {
   dispatch({ type: LOADING_UI });
-  console.log("editAdvert before save advert", JSON.stringify(advert));
+  //console.log("editAdvert before save advert", JSON.stringify(advert));
   axios
     .post("/advertedit", advert)
     .then((res) => {
@@ -510,6 +510,35 @@ export const getAdvertsbyUserId = () => (dispatch) => {
       let advertscount = adverts && adverts.length ? adverts.length : 0;
       dispatch({
         type: SET_ADS_BY_USER,
+        payload: adverts,
+        advertscount: advertscount,
+      });
+      //console.log("getAdvertsbyUserId", adverts);
+      dispatch({ type: FINISHED_LOADING_UI });
+      console.log("advert countdf dfd:-", advertscount);
+      return adverts;
+    })
+    .catch((err) => {
+      console.log("getAdvertsbyUserId", err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+//Get All adverts
+
+export const getAllAdverts = () => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+
+  axios
+    .get("/adverts")
+    .then((res) => {
+      let adverts = [...res.data];
+      let advertscount = adverts && adverts.length ? adverts.length : 0;
+      dispatch({
+        type: GET_ALL_ADVERTS,
         payload: adverts,
         advertscount: advertscount,
       });

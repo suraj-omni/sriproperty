@@ -25,7 +25,7 @@ import { logOutUser, getUserData } from "./redux/actions/userActions";
 const MainMenu = lazy(() => import("./components/mainmenu"));
 
 const token = localStorage.FBIDToken;
-console.log(localStorage.FBIDToken);
+//console.log(localStorage.FBIDToken);
 
 if (token) {
   const decodedToken = jwtDecode(token);

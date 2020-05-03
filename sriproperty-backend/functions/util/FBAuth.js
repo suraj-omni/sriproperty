@@ -32,6 +32,8 @@ module.exports = (req, res, next) => {
       //console.log("user data", data);
       req.user.name = data.docs[0].data().name;
       req.user.phonenumber = data.docs[0].data().phonenumber;
+      req.user.isAdmin = data.docs[0].data().isAdmin;
+      req.user.monthly_free_ads = data.docs[0].data().monthly_free_ads;
       //console.log("data.docs[0].data()", data.docs[0].data());
       return next();
     })

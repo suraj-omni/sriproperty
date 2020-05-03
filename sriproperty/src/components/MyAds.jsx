@@ -6,6 +6,7 @@ import {
   setAdvert,
   deleteAdvert,
   resetAdverts,
+  getAllAdverts,
 } from "../redux/actions/adActions";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
@@ -23,21 +24,19 @@ export class MyAds extends Component {
       colpadding: "p-2",
       errors: {},
       tabkey: "myads",
-      count: 0,
     };
   }
 
   componentWillMount = () => {
     const advert = {};
     this.props.setAdvert(advert);
-    this.props.getAdvertsbyUserId();
+    if (this.props.credentials.isAdmin) {
+      this.props.getAllAdverts();
+    } else {
+      this.props.getAdvertsbyUserId();
+    }
   };
-  componentDidMount = () => {
-    /*     const [adverts] = [this.props.adverts];
-    const count = adverts.length ? adverts.length : 0;
-    console.log("count", count);
-    this.setState({ count }); */
-  };
+  componentDidMount = () => {};
 
   handleDelete = (advertid, index) => {
     let adverts = this.props.adverts;
@@ -55,6 +54,7 @@ export class MyAds extends Component {
   render() {
     const adverts = [this.props.adverts];
     const count = this.props.ad.advertscount;
+
     const { loading } = this.props.UI;
     return (
       <React.Fragment>
@@ -71,7 +71,7 @@ export class MyAds extends Component {
               <TabContainer>
                 <Table>
                   <Row className="align-center m-3">
-                    <Col className="h4">My Ads</Col>
+                    <Col className="h4">My Ads </Col>
                   </Row>
                   <Row className="align-center m-3">
                     <Col>
@@ -102,6 +102,7 @@ export class MyAds extends Component {
 
 MyAds.propTypes = {
   getAdvertsbyUserId: PropTypes.func.isRequired,
+  getAllAdverts: PropTypes.func.isRequired,
   setAdvert: PropTypes.func.isRequired,
   resetAdverts: PropTypes.func.isRequired,
   deleteAdvert: PropTypes.func.isRequired,
@@ -123,6 +124,7 @@ const mapActionsToProps = {
   setAdvert,
   deleteAdvert,
   resetAdverts,
+  getAllAdverts,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(MyAds);

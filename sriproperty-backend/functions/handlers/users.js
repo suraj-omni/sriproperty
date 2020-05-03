@@ -25,7 +25,7 @@ exports.signup = (request, response) => {
 
   if (!valid) return response.status(400).json(errors);
 
-  let tokenId, userid;
+  let tokenId, userid, _monthly_free_ads;
   let noimage = "blank-profile-picture.jpg";
   db.doc(`/users/${newUser.phonenumber}`)
     .get()
@@ -45,6 +45,16 @@ exports.signup = (request, response) => {
           })
           .then((token) => {
             tokenId = token;
+            return db.doc("/config/user").get();
+          })
+          .then((doc) => {
+            if (doc.exists) {
+              const { monthly_free_ads } = { ...doc.data() };
+
+              _monthly_free_ads = monthly_free_ads;
+            }
+          })
+          .then(() => {
             const userCredentials = {
               email: newUser.email,
               createdAt: new Date().toISOString(),
@@ -53,7 +63,10 @@ exports.signup = (request, response) => {
               phonenumber: newUser.phonenumber,
               phonenumberconfirmed: newUser.phonenumberconfirmed,
               imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noimage}?alt=media`,
+              isAdmin: false,
+              monthly_free_ads: _monthly_free_ads,
             };
+            //console.log("userCredentials", JSON.stringify(userCredentials));
             return db.doc(`/users/${newUser.phonenumber}`).set(userCredentials);
           })
           .then(() => {
@@ -268,4 +281,21 @@ exports.uploadImage = (request, response) => {
   });
 
   busboy.end(request.rawBody);
+};
+
+//get authenticated user
+exports.monthlyFreeAdvertQuota = () => {
+  db.doc("/config/user")
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const { monthly_free_ads } = { ...doc.data() };
+        console.log("monthly_free_ads", monthly_free_ads);
+        return monthly_free_ads;
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      return 0;
+    });
 };

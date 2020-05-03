@@ -7,6 +7,7 @@ import {
   SET_AD,
   SET_ADS_BY_USER,
   SET_ADVERTS_COUNT,
+  GET_ALL_ADVERTS,
 } from "../types";
 
 import { loadState } from "../localStorage";
@@ -47,6 +48,12 @@ export default function (state = initialState, action) {
         ...action.payload,
       };
     case SET_ADS_BY_USER:
+      return {
+        ...state,
+        adverts: action.payload,
+        advertscount: action.advertscount,
+      };
+    case GET_ALL_ADVERTS:
       return {
         ...state,
         adverts: action.payload,

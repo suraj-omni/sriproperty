@@ -8,6 +8,7 @@ const {
   uploadAdvertImage,
   deleteAdImage,
   getAdvertbyUserId,
+  getFreeAdvertsCurrentMonthForUser,
 } = require("./handlers/adverts");
 
 const {
@@ -27,6 +28,13 @@ app.get("/adverts", FBAuth, getAllAdverts);
 
 //Get adverts by user id
 app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);
+
+//Get Free Ads current month for the user
+app.get(
+  "/getFreeAdsUserCurrentMonth",
+  FBAuth,
+  getFreeAdvertsCurrentMonthForUser
+);
 
 //Get advert by advert id
 app.post("/advertbyid", FBAuth, getAdvertbyId);

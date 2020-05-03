@@ -1,8 +1,59 @@
 const { admin, db } = require("../util/admin");
 const config = require("../util/config");
 
-//const firebase = require("firebase");
-// firebase.initializeApp(config);
+exports.fillAdvert = (data) => {
+  let adverts = [];
+  data.forEach((doc) => {
+    adverts.push({
+      advertId: doc.id,
+      address: doc.data().address,
+      advertStatus: doc.data().advertStatus,
+      adverttype: doc.data().adverttype,
+      approvedBy: doc.data().approvedBy,
+      baths: doc.data().baths,
+      beds: doc.data().beds,
+      boostadvert: doc.data().boostadvert,
+      boostuntil: doc.data().boostuntil,
+      category: doc.data().category,
+      city: doc.data().city,
+      createdBy: doc.data().createdBy,
+      description: doc.data().description,
+      district: doc.data().disctrict,
+      image1Url: doc.data().image1Url,
+      image2Url: doc.data().image2Url,
+      image3Url: doc.data().image3Url,
+      image4Url: doc.data().image4Url,
+      image5Url: doc.data().image5Url,
+      landtypes: doc.data().landtypes,
+      landsize: doc.data().landsize,
+      landsizeunit: doc.data().landsizeunit,
+      name: doc.data().name,
+      paymentStatus: doc.data().paymentStatus,
+      phonenumber1: doc.data().phonenumber1,
+      phonenumber1verified: doc.data().phonenumber1verified,
+      phonenumber2: doc.data().phonenumber2,
+      phonenumber2verified: doc.data().phonenumber2verified,
+      phonenumber3: doc.data().phonenumber3,
+      phonenumber3verified: doc.data().phonenumber3verified,
+      phonenumber4: doc.data().phonenumber4,
+      phonenumber4verified: doc.data().phonenumber4verified,
+      phonenumber5: doc.data().phonenumber5,
+      phonenumber5verified: doc.data().phonenumber5verified,
+      propertytype: doc.data().propertytype,
+      rentaloprice: doc.data().rentaloprice,
+      rentalopricenegotiable: doc.data().rentalopricenegotiable,
+      rentalopriceunit: doc.data().rentalopriceunit,
+      title: doc.data().title,
+      online: doc.data().online ? doc.data().online : false,
+      adminComments: doc.data().adminComments ? doc.data().adminComments : "",
+      urgentbadge: doc.data().urgentbadge,
+      createdAt: doc.data().createdAt,
+      modifiedAt: doc.data().modifiedAt,
+    });
+  });
+
+  return adverts;
+};
 
 //get all adverts
 
@@ -11,57 +62,7 @@ exports.getAllAdverts = (req, res) => {
     .orderBy("createdAt", "desc")
     .get()
     .then((data) => {
-      let adverts = [];
-      data.forEach((doc) => {
-        adverts.push({
-          advertId: doc.id,
-          address: doc.data().address,
-          advertStatus: doc.data().advertStatus,
-          adverttype: doc.data().adverttype,
-          approvedBy: doc.data().approvedBy,
-          baths: doc.data().baths,
-          beds: doc.data().beds,
-          boostadvert: doc.data().boostadvert,
-          boostuntil: doc.data().boostuntil,
-          category: doc.data().category,
-          city: doc.data().city,
-          createdBy: doc.data().createdBy,
-          description: doc.data().description,
-          district: doc.data().disctrict,
-          image1Url: doc.data().image1Url,
-          image2Url: doc.data().image2Url,
-          image3Url: doc.data().image3Url,
-          image4Url: doc.data().image4Url,
-          image5Url: doc.data().image5Url,
-          landtypes: doc.data().landtypes,
-          /* landdtype1: doc.data().landdtype1,
-          landdtype2: doc.data().landdtype2,
-          landdtype3: doc.data().landdtype3,
-          landdtype4: doc.data().landdtype4, */
-          landsize: doc.data().landsize,
-          landsizeunit: doc.data().landsizeunit,
-          name: doc.data().name,
-          paymentStatus: doc.data().paymentStatus,
-          phonenumber1: doc.data().phonenumber1,
-          phonenumber1verified: doc.data().phonenumber1verified,
-          phonenumber2: doc.data().phonenumber2,
-          phonenumber2verified: doc.data().phonenumber2verified,
-          phonenumber3: doc.data().phonenumber3,
-          phonenumber3verified: doc.data().phonenumber3verified,
-          phonenumber4: doc.data().phonenumber4,
-          phonenumber4verified: doc.data().phonenumber4verified,
-          phonenumber5: doc.data().phonenumber5,
-          phonenumber5verified: doc.data().phonenumber5verified,
-          propertytype: doc.data().propertytype,
-          rentaloprice: doc.data().rentaloprice,
-          rentalopricenegotiable: doc.data().rentalopricenegotiable,
-          rentalopriceunit: doc.data().rentalopriceunit,
-          title: doc.data().title,
-          urgentbadge: doc.data().urgentbadge,
-          createdAt: doc.data().createdAt,
-          modifiedAt: doc.data().modifiedAt,
-        });
-      });
+      let adverts = this.fillAdvert(data);
       return res.json(adverts);
     })
     .catch((err) => console.error(err));
@@ -69,6 +70,8 @@ exports.getAllAdverts = (req, res) => {
 
 //get adverts by user id
 exports.getAdvertbyUserId = (req, res) => {
+  console.log(JSON.stringify(req.user));
+
   const userid = req.user.uid;
   console.log("userid", userid);
   db.collection("adverts")
@@ -77,60 +80,42 @@ exports.getAdvertbyUserId = (req, res) => {
     .get()
     .then((data) => {
       console.log("data", data);
-
-      let adverts = [];
-      data.forEach((doc) => {
-        adverts.push({
-          advertId: doc.id,
-          address: doc.data().address,
-          advertStatus: doc.data().advertStatus,
-          adverttype: doc.data().adverttype,
-          approvedBy: doc.data().approvedBy,
-          baths: doc.data().baths,
-          beds: doc.data().beds,
-          boostadvert: doc.data().boostadvert,
-          boostuntil: doc.data().boostuntil,
-          category: doc.data().category,
-          city: doc.data().city,
-          createdBy: doc.data().createdBy,
-          description: doc.data().description,
-          district: doc.data().disctrict,
-          image1Url: doc.data().image1Url,
-          image2Url: doc.data().image2Url,
-          image3Url: doc.data().image3Url,
-          image4Url: doc.data().image4Url,
-          image5Url: doc.data().image5Url,
-          landtypes: doc.data().landtypes,
-          /* landdtype1: doc.data().landdtype1,
-          landdtype2: doc.data().landdtype2,
-          landdtype3: doc.data().landdtype3,
-          landdtype4: doc.data().landdtype4, */
-          landsize: doc.data().landsize,
-          landsizeunit: doc.data().landsizeunit,
-          name: doc.data().name,
-          paymentStatus: doc.data().paymentStatus,
-          phonenumber1: doc.data().phonenumber1,
-          phonenumber1verified: doc.data().phonenumber1verified,
-          phonenumber2: doc.data().phonenumber2,
-          phonenumber2verified: doc.data().phonenumber2verified,
-          phonenumber3: doc.data().phonenumber3,
-          phonenumber3verified: doc.data().phonenumber3verified,
-          phonenumber4: doc.data().phonenumber4,
-          phonenumber4verified: doc.data().phonenumber4verified,
-          phonenumber5: doc.data().phonenumber5,
-          phonenumber5verified: doc.data().phonenumber5verified,
-          propertytype: doc.data().propertytype,
-          rentaloprice: doc.data().rentaloprice,
-          rentalopricenegotiable: doc.data().rentalopricenegotiable,
-          rentalopriceunit: doc.data().rentalopriceunit,
-          title: doc.data().title,
-          urgentbadge: doc.data().urgentbadge,
-          createdAt: doc.data().createdAt,
-          modifiedAt: doc.data().modifiedAt,
-        });
-      });
+      let adverts = this.fillAdvert(data);
       console.log("userid", userid);
       return res.json(adverts);
+    })
+    .catch((err) => console.error(err));
+};
+
+//Get how mant free ads this month for the user
+exports.getFreeAdvertsCurrentMonthForUser = (req, res) => {
+  const strdate = new Date();
+  const firstDay = new Date(strdate.getFullYear(), strdate.getMonth(), 1);
+  const lastDay = new Date(
+    strdate.getFullYear(),
+    strdate.getMonth() + 1,
+    0,
+    23,
+    59
+  );
+
+  const userid = req.user.uid;
+  //console.log("userid", userid);
+  db.collection("adverts")
+    .where("userid", "==", userid)
+    .where("paymentStatus", "==", "free")
+    .where("createdAt", ">=", firstDay.toISOString())
+    .where("createdAt", "<", lastDay.toISOString())
+    .orderBy("createdAt", "asc")
+    .get()
+    .then((qsnapshot) => {
+      const this_month_free = qsnapshot.size;
+      const allowedquota = req.user.monthly_free_ads;
+      if (allowedquota > this_month_free) {
+        return "free";
+      } else {
+        return "not paid";
+      }
     })
     .catch((err) => console.error(err));
 };
@@ -140,10 +125,18 @@ exports.getAdvertbyUserId = (req, res) => {
 exports.addAdvert = (request, response) => {
   console.log("addAvert", JSON.stringify(request.body));
   //console.log(request.user);
-
+  const strdate = new Date();
+  const firstDay = new Date(strdate.getFullYear(), strdate.getMonth(), 1);
+  const lastDay = new Date(
+    strdate.getFullYear(),
+    strdate.getMonth() + 1,
+    0,
+    23,
+    59
+  );
   const noImageUrl =
     "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/blank-profile-picture.jpg?alt=media&token=08cd9281-36dc-41b1-9ed3-d01f7b13fde5";
-  const advert = {
+  let advert = {
     address: request.body.address ? request.body.address : "",
     advertStatus: request.body.advertStatus,
     adverttype: request.body.adverttype,
@@ -193,6 +186,8 @@ exports.addAdvert = (request, response) => {
     title: request.body.title,
     urgentbadge: false, //request.body.urgentbadge,
     userid: request.user.uid,
+    online: false,
+    adminComments: "",
     name: request.user.name,
     email: request.user.email ? request.user.email : "",
     userImageUrl: request.user.imageUrl ? request.user.imageUrl : noImageUrl,
@@ -203,12 +198,33 @@ exports.addAdvert = (request, response) => {
   let advertid = "";
 
   db.collection("adverts")
-    .add(advert)
-    .then((doc) => {
-      advertid = doc.id;
-      advert["advertid"] = doc.id;
-      //console.log({ advert });
-      return response.json({ advert });
+    .where("userid", "==", request.user.uid)
+    .where("paymentStatus", "==", "free")
+    .where("createdAt", ">=", firstDay.toISOString())
+    .where("createdAt", "<", lastDay.toISOString())
+    .orderBy("createdAt", "asc")
+    .get()
+    .then((qsnapshot) => {
+      const this_month_free = qsnapshot.size;
+      const allowedquota = request.user.monthly_free_ads;
+      if (allowedquota > this_month_free) {
+        advert["paymentStatus"] = "free";
+      } else {
+        advert["paymentStatus"] = "not paid";
+      }
+      console.log("advert 216", advert);
+      return advert;
+    })
+    .then((advert) => {
+      console.log("advert 220", advert);
+      db.collection("adverts")
+        .add(advert)
+        .then((doc) => {
+          advertid = doc.id;
+          advert["advertid"] = doc.id;
+          //console.log({ advert });
+          return response.json({ advert });
+        });
     })
     .catch((err) => {
       response.status(500).json({ error: "something went wrong." });
@@ -263,6 +279,7 @@ exports.editAdvert = (request, response) => {
     urgentbadge: false, //request.body.urgentbadge,
     userid: request.user.uid,
     modifiedAt: new Date().toISOString(),
+    online: false,
   };
 
   db.doc(`/adverts/${advertid}`)
