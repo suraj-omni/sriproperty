@@ -8,7 +8,6 @@ const {
   uploadAdvertImage,
   deleteAdImage,
   getAdvertbyUserId,
-  getFreeAdvertsCurrentMonthForUser,
 } = require("./handlers/adverts");
 
 const {
@@ -28,13 +27,6 @@ app.get("/adverts", FBAuth, getAllAdverts);
 
 //Get adverts by user id
 app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);
-
-//Get Free Ads current month for the user
-app.get(
-  "/getFreeAdsUserCurrentMonth",
-  FBAuth,
-  getFreeAdvertsCurrentMonthForUser
-);
 
 //Get advert by advert id
 app.post("/advertbyid", FBAuth, getAdvertbyId);
@@ -61,6 +53,8 @@ app.post("/login", login);
 
 //get authenticated user
 app.get("/user", FBAuth, getAuthenticatedUser);
+
+//app.get("/resetFreeAd", FBAuth, setFreeAdWhenDeleting);
 
 //update user
 app.post("/user", FBAuth, updateUser);

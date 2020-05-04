@@ -1,5 +1,6 @@
 const { admin, db } = require("../util/admin");
 const config = require("../util/config");
+const types = require("../util/types");
 
 exports.fillAdvert = (data) => {
   let adverts = [];
@@ -70,7 +71,7 @@ exports.getAllAdverts = (req, res) => {
 
 //get adverts by user id
 exports.getAdvertbyUserId = (req, res) => {
-  console.log(JSON.stringify(req.user));
+  //console.log(JSON.stringify(req.user));
 
   const userid = req.user.uid;
   console.log("userid", userid);
@@ -79,16 +80,16 @@ exports.getAdvertbyUserId = (req, res) => {
     .orderBy("createdAt", "desc")
     .get()
     .then((data) => {
-      console.log("data", data);
+      //console.log("data", data);
       let adverts = this.fillAdvert(data);
-      console.log("userid", userid);
+      //console.log("userid", userid);
       return res.json(adverts);
     })
     .catch((err) => console.error(err));
 };
 
 //Get how mant free ads this month for the user
-exports.getFreeAdvertsCurrentMonthForUser = (req, res) => {
+exports.setFreeAdWhenDeleting = (userid, monthly_free_ads) => {
   const strdate = new Date();
   const firstDay = new Date(strdate.getFullYear(), strdate.getMonth(), 1);
   const lastDay = new Date(
@@ -99,25 +100,85 @@ exports.getFreeAdvertsCurrentMonthForUser = (req, res) => {
     59
   );
 
-  const userid = req.user.uid;
-  //console.log("userid", userid);
+  let advertid = "";
+  console.log("userid", userid);
   db.collection("adverts")
     .where("userid", "==", userid)
-    .where("paymentStatus", "==", "free")
+    .where("paymentStatus", "==", types.PAYMENT_STATUS_FREE)
     .where("createdAt", ">=", firstDay.toISOString())
     .where("createdAt", "<", lastDay.toISOString())
     .orderBy("createdAt", "asc")
     .get()
-    .then((qsnapshot) => {
-      const this_month_free = qsnapshot.size;
-      const allowedquota = req.user.monthly_free_ads;
-      if (allowedquota > this_month_free) {
-        return "free";
+    .then((snapshot) => {
+      if (!snapshot.empty) {
+        const this_month_free = snapshot.size;
+        const allowedquota = monthly_free_ads;
+        if (allowedquota > this_month_free) {
+          //this means we can allocate a free ad.
+          console.log(
+            `allowed quota ${allowedquota} is > this month free ${this_month_free}`
+          );
+          return true;
+        } else {
+          // We will not do anything. Quota is finished.
+          console.log(
+            `allowed quota ${allowedquota} is <= this month free ${this_month_free}`
+          );
+          return false;
+        }
       } else {
-        return "not paid";
+        return true;
       }
     })
-    .catch((err) => console.error(err));
+    .then((canAllocate) => {
+      let advertsref = db.collection("adverts");
+      if (canAllocate) {
+        console.log("inside can allocate");
+        return advertsref
+          .where("userid", "==", userid)
+          .where("paymentStatus", "==", types.PAYMENT_STATUS_NOT_PAID)
+          .where("createdAt", ">=", firstDay.toISOString())
+          .where("createdAt", "<", lastDay.toISOString())
+          .where("advertStatus", "in", [
+            types.ADVERT_STATUS_NEW,
+            types.ADVERT_STATUS_EDIT,
+            types.ADVERT_STATUS_NEEDEDIT,
+          ])
+          .orderBy("createdAt", "asc")
+          .limit(1)
+          .get();
+      } else {
+        console.log("inside can not allocate");
+        return advertsref.where("userid", "==", "sddsdsdsds").get();
+      }
+    })
+    .then((snapshot) => {
+      if (!snapshot.empty) {
+        console.log("snapshot.docs[0].id", snapshot.docs[0].id);
+        return (advertid = snapshot.docs[0].id);
+      } else {
+        console.log("No matching documents.");
+        return "";
+      }
+    })
+    .then((advertid) => {
+      if (advertid !== "") {
+        console.log("Advert id going to free ", JSON.stringify(advertid));
+        return db
+          .doc(`/adverts/${advertid}`)
+          .update({ [`paymentStatus`]: types.PAYMENT_STATUS_FREE });
+      } else {
+        console.log("No advert was set as free advert.");
+      }
+    })
+    .then(() => {
+      console.log(`Successfully reset advert id ${advertid} `);
+      //return res.json({ messege: `Successfully reset advert id ${advertid} ` });
+    })
+    .catch((err) => {
+      console.error(err);
+      //return res.status(500).json({ error: err.code });
+    });
 };
 
 // add advert
@@ -138,7 +199,9 @@ exports.addAdvert = (request, response) => {
     "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/blank-profile-picture.jpg?alt=media&token=08cd9281-36dc-41b1-9ed3-d01f7b13fde5";
   let advert = {
     address: request.body.address ? request.body.address : "",
-    advertStatus: request.body.advertStatus,
+    advertStatus: request.body.advertStatus
+      ? request.body.advertStatus
+      : types.ADVERT_STATUS_NEW,
     adverttype: request.body.adverttype,
     approvedBy: "",
     baths: request.body.baths ? request.body.baths : 0,
@@ -156,14 +219,9 @@ exports.addAdvert = (request, response) => {
     image4Url: "", //request.body.image4Url,
     image5Url: "", //request.body.image5Url,
     landtypes: request.body.landtypes ? request.body.landtypes : "",
-    //landdtype1: request.body.landdtype1,
-    //landdtype2: request.body.landdtype2,
-    //landdtype3: request.body.landdtype3,
-    //landdtype4: request.body.landdtype4,
     landsize: request.body.landsize ? request.body.landsize : 0,
     landsizeunit: request.body.landsizeunit ? request.body.landsizeunit : "",
-
-    paymentStatus: "not paid", //request.body.paymentStatus,
+    paymentStatus: types.PAYMENT_STATUS_NOT_PAID, //request.body.paymentStatus,
     phonenumber1: request.user.phonenumber, // request.body.phonenumber1,
     phonenumber1verified: false, //request.body.phonenumber1verified,
     phonenumber2: "", //request.body.phonenumber2,
@@ -199,7 +257,7 @@ exports.addAdvert = (request, response) => {
 
   db.collection("adverts")
     .where("userid", "==", request.user.uid)
-    .where("paymentStatus", "==", "free")
+    .where("paymentStatus", "==", types.PAYMENT_STATUS_FREE)
     .where("createdAt", ">=", firstDay.toISOString())
     .where("createdAt", "<", lastDay.toISOString())
     .orderBy("createdAt", "asc")
@@ -208,15 +266,15 @@ exports.addAdvert = (request, response) => {
       const this_month_free = qsnapshot.size;
       const allowedquota = request.user.monthly_free_ads;
       if (allowedquota > this_month_free) {
-        advert["paymentStatus"] = "free";
+        advert["paymentStatus"] = types.PAYMENT_STATUS_FREE;
       } else {
-        advert["paymentStatus"] = "not paid";
+        advert["paymentStatus"] = types.PAYMENT_STATUS_NOT_PAID;
       }
-      console.log("advert 216", advert);
+      //console.log("advert 216", advert);
       return advert;
     })
     .then((advert) => {
-      console.log("advert 220", advert);
+      // console.log("advert 220", advert);
       db.collection("adverts")
         .add(advert)
         .then((doc) => {
@@ -238,7 +296,9 @@ exports.editAdvert = (request, response) => {
   let advertid = request.body.advertid;
   const advert = {
     address: request.body.address ? request.body.address : "",
-    advertStatus: request.body.advertStatus,
+    advertStatus: request.body.advertStatus
+      ? request.body.advertStatus
+      : types.ADVERT_STATUS_EDIT,
     adverttype: request.body.adverttype,
     approvedBy: request.body.approvedBy ? request.body.approvedBy : "",
     baths: request.body.baths ? request.body.baths : 0,
@@ -253,7 +313,9 @@ exports.editAdvert = (request, response) => {
     landsize: request.body.landsize ? request.body.landsize : 0,
     landsizeunit: request.body.landsizeunit ? request.body.landsizeunit : "",
     name: request.user.name,
-    paymentStatus: "not paid", //request.body.paymentStatus,
+    paymentStatus: request.body.paymentStatus
+      ? request.body.paymentStatus
+      : "not paid",
     phonenumber1: request.user.phonenumber, // request.body.phonenumber1,
     phonenumber1verified: request.body.phonenumber1verified
       ? request.body.phonenumber1verified
@@ -325,8 +387,8 @@ exports.deleteAdvert = (request, response) => {
   const document = db.doc(`/adverts/${advertid}`);
   const bucket = admin.storage().bucket();
 
-  console.log("advertid", advertid);
-
+  //console.log("advertid", advertid);
+  let paymentStatus = "";
   document
     .get()
     .then((doc) => {
@@ -337,13 +399,16 @@ exports.deleteAdvert = (request, response) => {
       } else if (doc.data().userid != request.user.uid) {
         return response.status(403).json({ error: "Unauthorized Action !!!" });
       } else {
+        paymentStatus = doc.data()["paymentStatus"];
+        //console.log("paymentStatus", paymentStatus);
+
         for (i = 1; i < 6; i++) {
           //delete each image here.
           const imageUrl = doc.data()[`image${i}Url`];
-          console.log("imageUrl", imageUrl);
+          //console.log("imageUrl", imageUrl);
           if (imageUrl !== "") {
             const imagename = imageUrl.slice(76, -10);
-            console.log("imagename", imagename);
+            // console.log("imagename", imagename);
             bucket
               .file(imagename)
               .delete()
@@ -357,6 +422,13 @@ exports.deleteAdvert = (request, response) => {
       }
     })
     .then(() => {
+      if (paymentStatus === types.PAYMENT_STATUS_FREE) {
+        //console.log("paymentStatus === types.PAYMENT_STATUS_FREE");
+        this.setFreeAdWhenDeleting(
+          request.user.uid,
+          request.user.monthly_free_ads
+        );
+      }
       return response.status(200).json({ message: `Successfully Deleted !!!` });
     })
     .catch((err) => {
@@ -384,7 +456,7 @@ exports.uploadAdvertImage = (request, response) => {
 
   busboy.on("field", (fieldname, val) => {
     // TODO(developer): Process submitted field values here
-    console.log(`Processed field ${fieldname}: ${val}.`);
+    //console.log(`Processed field ${fieldname}: ${val}.`);
   });
 
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
@@ -413,9 +485,9 @@ exports.uploadAdvertImage = (request, response) => {
     let advertimageno = formData.get("advertimageno");
     let advertid = formData.get("advertid");
 
-    console.log("imageFileName", imageFileName);
-    console.log("advertimageno", advertimageno);
-    console.log("advertid", advertid);
+    //console.log("imageFileName", imageFileName);
+    //console.log("advertimageno", advertimageno);
+    //console.log("advertid", advertid);
     admin
       .storage()
       .bucket()
@@ -430,9 +502,9 @@ exports.uploadAdvertImage = (request, response) => {
       })
       .then((res) => {
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-        console.log(res);
-        console.log("imageFileName", imageFileName);
-        console.log("imageUrl", imageUrl);
+        //console.log(res);
+        //console.log("imageFileName", imageFileName);
+        //console.log("imageUrl", imageUrl);
         return db
           .doc(`/adverts/${advertid}`)
           .update({ [`image${advertimageno}Url`]: imageUrl });
@@ -476,7 +548,7 @@ exports.deleteAdImage = (request, response) => {
         .doc(`/adverts/${advertid}`)
         .update({ [`image${advertimageno}Url`]: "" });
 
-      console.log(`deleted ${imagename}`);
+      //console.log(`deleted ${imagename}`);
     })
     .then(() => {
       db.doc(`/adverts/${advertid}`)

@@ -11,6 +11,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import FormGroup from "react-bootstrap/FormGroup";
 import Alert from "react-bootstrap/Alert";
 import Toast from "react-bootstrap/Toast";
+import { ADVERT_STATUS_NEW, ADVERT_STATUS_EDIT } from "../redux/types";
 
 const config = require("../util/config");
 
@@ -69,7 +70,7 @@ class AdvertDetailsMaster extends Component {
   handleEdit = (event) => {
     event.preventDefault();
     let advert = this.props.advert;
-
+    advert["advertStatus"] = ADVERT_STATUS_EDIT;
     if (this.props.advert && this.props.advert.advertid)
       if (this.props.IsvalidAdvert(advert)) {
         this.props.editAdvert(advert, this.props.history, "/myads");
@@ -84,7 +85,7 @@ class AdvertDetailsMaster extends Component {
   handleEditUpload = (event) => {
     event.preventDefault();
     let advert = this.props.advert;
-
+    advert["advertStatus"] = ADVERT_STATUS_EDIT;
     if (this.props.advert && this.props.advert.advertid)
       if (this.props.IsvalidAdvert(advert)) {
         this.props.editAdvert(
@@ -238,7 +239,7 @@ class AdvertDetailsMaster extends Component {
   handleFormSubmit = (formSubmitEvent) => {
     formSubmitEvent.preventDefault();
     let advert = this.props.advert;
-    advert["advertStatus"] = "new";
+    advert["advertStatus"] = ADVERT_STATUS_NEW;
 
     if (this.props.advert)
       if (this.props.IsvalidAdvert(advert)) {

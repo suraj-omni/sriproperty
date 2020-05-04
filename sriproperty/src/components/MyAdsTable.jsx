@@ -7,7 +7,14 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import { addAdvert } from "../redux/actions/adActions";
+import {
+  ADVERT_STATUS_NEW,
+  ADVERT_STATUS_EDIT,
+  ADVERT_STATUS_EXPIRED,
+  ADVERT_STATUS_LIVE,
+  ADVERT_STATUS_NEEDEDIT,
+  ADVERT_STATUS_INREVIEW,
+} from "../redux/types";
 export class MyAdsTable extends Component {
   handleEdit = (event, advertid) => {
     console.log(advertid);
@@ -44,6 +51,8 @@ export class MyAdsTable extends Component {
               <th>Type</th>
               <th>Category</th>
               <th>Title</th>
+              <th>Payment Status</th>
+              <th>Status</th>
               <th>Online</th>
               <th colSpan="2">Action</th>
             </tr>
@@ -55,6 +64,12 @@ export class MyAdsTable extends Component {
                 <td className="text-left align-middle">{advert.category}</td>
                 <td className="text-left align-middle">
                   <Link to={`/ad/${advert.advertId}`}>{advert.title}</Link>
+                </td>
+                <td className="text-center align-middle">
+                  {advert.paymentStatus}
+                </td>
+                <td className="text-center align-middle">
+                  {advert.advertStatus}
                 </td>
                 <td className="text-center align-middle">
                   {advert.online && (
@@ -75,28 +90,49 @@ export class MyAdsTable extends Component {
                   )}
                 </td>
                 <td className="text-center align-middle">
-                  <Link to={`/editad/details/${advert.advertId}`}>
-                    {" "}
-                    <FontAwesomeIcon
-                      style={{ color: "#1c110a" }}
-                      icon={faEdit}
-                      size="1x"
-                      title="click here to Edit the ad."
-                    />
-                  </Link>
+                  {!(
+                    advert.advertStatus === ADVERT_STATUS_INREVIEW ||
+                    advert.advertStatus === ADVERT_STATUS_EXPIRED
+                  ) && (
+                    <React.Fragment>
+                      <Link to={`/editad/details/${advert.advertId}`}>
+                        {" "}
+                        <FontAwesomeIcon
+                          style={{ color: "#1c110a" }}
+                          icon={faEdit}
+                          size="1x"
+                          title="click here to Edit the ad."
+                        />
+                      </Link>
+                    </React.Fragment>
+                  )}
                 </td>
                 <td className="text-center align-middle">
-                  <Button
-                    className="btn-grid"
-                    onClick={() => this.handleDelete(advert.advertId, index)}
-                  >
-                    <FontAwesomeIcon
-                      style={{ color: "#D81159" }}
-                      icon={faTrash}
-                      size="1x"
-                      title="click here to delete the ad."
-                    />
-                  </Button>
+                  {!(
+                    advert.advertStatus === ADVERT_STATUS_INREVIEW ||
+                    advert.advertStatus === ADVERT_STATUS_EXPIRED
+                  ) && (
+                    <React.Fragment>
+                      <Button
+                        className="btn-grid"
+                        disabled={
+                          advert.advertStatus === ADVERT_STATUS_INREVIEW
+                            ? true
+                            : false
+                        }
+                        onClick={() =>
+                          this.handleDelete(advert.advertId, index)
+                        }
+                      >
+                        <FontAwesomeIcon
+                          style={{ color: "#D81159" }}
+                          icon={faTrash}
+                          size="1x"
+                          title="click here to delete the ad."
+                        />
+                      </Button>
+                    </React.Fragment>
+                  )}
                 </td>
               </tr>
             ))}
