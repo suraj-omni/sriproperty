@@ -8,7 +8,8 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import { logOutUser } from "../redux/actions/userActions";
+import { Route, Switch, withRouter } from "react-router-dom";
 class MainMenu extends Component {
   state = {
     navlinkclass: "mx-1 nav-link",
@@ -18,8 +19,12 @@ class MainMenu extends Component {
     this.props.history.push("/postad");
   };
 
+  handleLogout = () => {
+    this.props.logOutUser(this.props.history);
+  };
+
   render() {
-    const { authenticated } = this.props;
+    const { authenticated, isAdmin, history } = this.props;
     return (
       <React.Fragment>
         <Container>
@@ -116,7 +121,7 @@ class MainMenu extends Component {
                     Cinnamon Estate
                   </NavDropdown.Item>
                 </NavDropdown>
-                {authenticated ? (
+                {authenticated & !isAdmin ? (
                   <React.Fragment>
                     <Link
                       to="/updateprofile"
@@ -132,6 +137,30 @@ class MainMenu extends Component {
                     >
                       Post Your Ad
                     </Link>
+                    <Link
+                      to="/"
+                      onClick={this.handleLogout}
+                      className={this.state.navlinkclass}
+                    >
+                      Logout
+                    </Link>
+                  </React.Fragment>
+                ) : authenticated & isAdmin ? (
+                  <React.Fragment>
+                    <div className="mx-1 nav-link dropdown nav-item">
+                      <Link to="/admin" className={this.state.navlinkclass}>
+                        Admin
+                      </Link>
+                    </div>
+                    <div className="logoutdiv my-auto">
+                      <Link
+                        to="/"
+                        onClick={this.handleLogout}
+                        className={this.state.navlinkclass}
+                      >
+                        Logout
+                      </Link>
+                    </div>
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
@@ -146,17 +175,19 @@ class MainMenu extends Component {
               </Nav>
             </Navbar.Collapse>
             <div id="mainmenupostadbtn">
-              {authenticated && (
-                <Button
-                  id="btnpostad"
-                  variant="primary"
-                  size="sm"
-                  type="submit"
-                >
-                  <Link id="postad" to="/postad" className="text-white">
-                    Post Your Ad
-                  </Link>
-                </Button>
+              {authenticated && !isAdmin && (
+                <React.Fragment>
+                  <Button
+                    id="btnpostad"
+                    variant="primary"
+                    size="sm"
+                    type="submit"
+                  >
+                    <Link id="postad" to="/postad" className="text-white">
+                      Post Your Ad
+                    </Link>
+                  </Button>
+                </React.Fragment>
               )}
             </div>
           </Navbar>
@@ -167,11 +198,21 @@ class MainMenu extends Component {
 }
 
 MainMenu.propTypes = {
+  logOutUser: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
+  isAdmin: state.user.credentials.isAdmin,
 });
 
-export default connect(mapStateToProps)(MainMenu);
+const mapActionsToProps = {
+  logOutUser,
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withRouter(MainMenu));

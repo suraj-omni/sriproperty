@@ -3,7 +3,6 @@ import SliderSearchBox from "./slidersearchbox";
 import HomeSlider from "./slider";
 
 class Home extends Component {
-
   render() {
     return (
       <React.Fragment>
@@ -11,6 +10,7 @@ class Home extends Component {
         <div id="slidersearchdiv" className="slidersearchdivlocation">
           <SliderSearchBox></SliderSearchBox>
         </div>
+        <div>Home</div>
       </React.Fragment>
     );
   }

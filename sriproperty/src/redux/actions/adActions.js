@@ -556,6 +556,32 @@ export const getAllAdverts = () => (dispatch) => {
     });
 };
 
+export const getAdminSearchAdverts = (searchParams) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post("/adminSearch", searchParams)
+    .then((res) => {
+      let adverts = [...res.data];
+      let advertscount = adverts && adverts.length ? adverts.length : 0;
+      dispatch({
+        type: GET_ALL_ADVERTS,
+        payload: adverts,
+        advertscount: advertscount,
+      });
+      console.log("getAdminSearchAdverts", adverts);
+      dispatch({ type: FINISHED_LOADING_UI });
+      console.log("getAdminSearchAdverts count:-", advertscount);
+      return adverts;
+    })
+    .catch((err) => {
+      console.log("getAdminSearchAdverts", err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
 export const uploadAdImage = (formData, imageno) => (dispatch) => {
   dispatch({ type: DISABLE_BTN });
 

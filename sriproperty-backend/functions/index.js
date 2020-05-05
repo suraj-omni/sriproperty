@@ -8,6 +8,7 @@ const {
   uploadAdvertImage,
   deleteAdImage,
   getAdvertbyUserId,
+  adminSearch,
 } = require("./handlers/adverts");
 
 const {
@@ -27,6 +28,9 @@ app.get("/adverts", FBAuth, getAllAdverts);
 
 //Get adverts by user id
 app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);
+
+//Admin page search
+app.post("/adminSearch", FBAuth, adminSearch);
 
 //Get advert by advert id
 app.post("/advertbyid", FBAuth, getAdvertbyId);

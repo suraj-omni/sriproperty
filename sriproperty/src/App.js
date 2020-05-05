@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import Register from "./components/register";
 import Home from "./components/home";
 import Login from "./components/login";
@@ -12,6 +12,7 @@ import EditAdvertDetails from "./components/EditAdvertDetails";
 import AddAdvertImageUpload from "./components/AddAdvertImageUpload";
 import MyAds from "./components/MyAds";
 import AdView from "./components/AdView";
+import AdminAdvertList from "./components/AdminAdvertList";
 import SPFooter from "./components/spfooter";
 import jwtDecode from "jwt-decode";
 import AuthRoute from "./util/authroute";
@@ -74,6 +75,7 @@ function App() {
               path="/editad/details/:id"
               component={EditAdvertDetails}
             ></Route>
+            <Route path="/admin" component={AdminAdvertList}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
         </div>
@@ -83,4 +85,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

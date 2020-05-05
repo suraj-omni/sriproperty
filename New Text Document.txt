@@ -25,4 +25,7 @@ npm install --save react-image-file-resizer
 
 npm i react-image-gallery --save
 
+npm i react-calendar --save
+npm install react-datepicker --save
+
 

@@ -69,7 +69,7 @@ class AddAdvertSelectAdCategory extends Component {
                       style={{ color: "#6DB65B" }}
                       icon={faCaretDown}
                       size="2x"
-                      title="click here to upload new profile picture."
+                      title="This is where you are in the ad post process."
                     />
                   </div>
                   <div className="px-2 flex-fill"></div>

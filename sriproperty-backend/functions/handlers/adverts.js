@@ -181,6 +181,41 @@ exports.setFreeAdWhenDeleting = (userid, monthly_free_ads) => {
     });
 };
 
+exports.adminSearch = (request, response) => {
+  const advertStatus = [...request.body.advertStatus];
+  //const paymentStatus = request.body.paymentStatus;
+
+  const fromDate = request.body.fromDate;
+  const toDate = request.body.toDate;
+  const sortBy = request.body.sortBy;
+  const sortOrder = request.body.sortOrder;
+
+  console.log("advertStatus", advertStatus);
+  console.log("fromDate", fromDate);
+  console.log("toDate", toDate);
+  console.log("sortBy", sortBy);
+  console.log("sortOrder", sortOrder);
+
+  db.collection("adverts")
+    .where("createdAt", ">=", fromDate)
+    .where("createdAt", "<", toDate)
+    .where("advertStatus", "in", advertStatus)
+    .orderBy(`${sortBy}`, `${sortOrder}`)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return response.status(200).json([]);
+      } else {
+        let adverts = this.fillAdvert(snapshot);
+        return response.status(200).json(adverts);
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
 // add advert
 
 exports.addAdvert = (request, response) => {

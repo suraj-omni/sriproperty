@@ -283,6 +283,16 @@ body {
   width: 50vw;
 }
 
+/* main menu */
+#logoutadmin {
+  height: 1.8rem;
+}
+
+.logoutdiv {
+  vertical-align: middle;
+}
+/* main menu */
+
 /* login */
 
 .loginerrorlabels {
@@ -487,6 +497,21 @@ ul li {
 
 /* end of ad view main */
 
+/* admin list  */
+
+.adminlist-search-container {
+  max-width: 800px;
+  background-color: #fff8f0 !important;
+  border: 1px solid #70a288 !important;
+}
+
+.searchcontrol-select {
+  width: 200px;
+  margin: auto;
+}
+
+/* admin list */
+
 /* footer */
 
 .footer {
@@ -514,6 +539,7 @@ ul li {
   #mainmenupostadbtn {
     display: none;
   }
+
   /* menu */
 
   /* slider */
@@ -599,7 +625,7 @@ ul li {
   /* tablets  */
 
   .App-header {
-    font-size: calc(5px + 2vmin);
+    font-size: calc(5px + 1.5vmin);
   }
 
   /* menu */
