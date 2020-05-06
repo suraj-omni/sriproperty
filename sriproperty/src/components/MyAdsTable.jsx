@@ -48,6 +48,7 @@ export class MyAdsTable extends Component {
         <Table responsive size="sm" striped bordered hover>
           <thead>
             <tr className="text-center">
+              <th>Ref #</th>
               <th>Type</th>
               <th>Category</th>
               <th>Title</th>
@@ -60,6 +61,9 @@ export class MyAdsTable extends Component {
           <tbody>
             {adverts.map((advert, index) => (
               <tr>
+                <td className="text-left align-middle">
+                  {advert.customerRefNo}
+                </td>
                 <td className="text-left align-middle">{advert.adverttype}</td>
                 <td className="text-left align-middle">{advert.category}</td>
                 <td className="text-left align-middle">

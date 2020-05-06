@@ -1,6 +1,7 @@
 const { admin, db } = require("../util/admin");
 const config = require("../util/config");
 const types = require("../util/types");
+const firebase = require("firebase");
 
 exports.fillAdvert = (data) => {
   let adverts = [];
@@ -9,8 +10,9 @@ exports.fillAdvert = (data) => {
       advertId: doc.id,
       address: doc.data().address,
       advertStatus: doc.data().advertStatus,
+      adminComments: doc.data().adminComments ? doc.data().adminComments : "",
       adverttype: doc.data().adverttype,
-      approvedBy: doc.data().approvedBy,
+      reviewedBy: doc.data().reviewedBy ? doc.data().reviewedBy : "",
       baths: doc.data().baths,
       beds: doc.data().beds,
       boostadvert: doc.data().boostadvert,
@@ -18,8 +20,10 @@ exports.fillAdvert = (data) => {
       category: doc.data().category,
       city: doc.data().city,
       createdBy: doc.data().createdBy,
+      customerRefNo: doc.data().customerRefNo,
       description: doc.data().description,
       district: doc.data().disctrict,
+      email: doc.data().email,
       image1Url: doc.data().image1Url,
       image2Url: doc.data().image2Url,
       image3Url: doc.data().image3Url,
@@ -183,8 +187,6 @@ exports.setFreeAdWhenDeleting = (userid, monthly_free_ads) => {
 
 exports.adminSearch = (request, response) => {
   const advertStatus = [...request.body.advertStatus];
-  //const paymentStatus = request.body.paymentStatus;
-
   const fromDate = request.body.fromDate;
   const toDate = request.body.toDate;
   const sortBy = request.body.sortBy;
@@ -220,7 +222,6 @@ exports.adminSearch = (request, response) => {
 
 exports.addAdvert = (request, response) => {
   console.log("addAvert", JSON.stringify(request.body));
-  //console.log(request.user);
   const strdate = new Date();
   const firstDay = new Date(strdate.getFullYear(), strdate.getMonth(), 1);
   const lastDay = new Date(
@@ -238,7 +239,7 @@ exports.addAdvert = (request, response) => {
       ? request.body.advertStatus
       : types.ADVERT_STATUS_NEW,
     adverttype: request.body.adverttype,
-    approvedBy: "",
+    reviewedBy: "",
     baths: request.body.baths ? request.body.baths : 0,
     beds: request.body.beds ? request.body.beds : 0,
     boostadvert: "",
@@ -309,15 +310,33 @@ exports.addAdvert = (request, response) => {
       return advert;
     })
     .then((advert) => {
-      // console.log("advert 220", advert);
-      db.collection("adverts")
-        .add(advert)
-        .then((doc) => {
-          advertid = doc.id;
-          advert["advertid"] = doc.id;
-          //console.log({ advert });
-          return response.json({ advert });
-        });
+      return db.doc("/config/advert").get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        const { currentadvertrefno } = { ...doc.data() };
+        advert["customerRefNo"] = currentadvertrefno + 1;
+        // console.log("currentadvertrefno", currentadvertrefno);
+        return db.collection("adverts").add(advert);
+      }
+    })
+    .then((doc) => {
+      console.log("doc.id", doc.id);
+      advert["advertid"] = doc.id;
+      return advert;
+    })
+    .then((advert) => {
+      const increment = admin.firestore.FieldValue.increment(1);
+
+      const configRef = db.collection("config").doc("advert");
+      const batch = db.batch();
+      batch.set(configRef, { currentadvertrefno: increment }, { merge: true });
+      batch.commit();
+      return advert;
+    })
+    .then((advert) => {
+      console.log(JSON.stringify(advert));
+      return response.status(200).json({ advert });
     })
     .catch((err) => {
       response.status(500).json({ error: "something went wrong." });

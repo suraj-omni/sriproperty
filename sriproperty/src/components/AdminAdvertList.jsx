@@ -3,8 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -33,6 +32,7 @@ import {
   PAYMENT_STATUS_MEMBERSHIP,
 } from "../redux/types";
 import { getAdminSearchAdverts } from "../redux/actions/adActions";
+const shortid = require("shortid");
 
 export class AdminAdvertList extends Component {
   state = {
@@ -73,11 +73,11 @@ export class AdminAdvertList extends Component {
     let advertStatus = [];
 
     this.state.selectedAdvertStatus.map((adtype) => {
-      console.log(adtype);
+      //console.log(adtype);
       advertStatus.push(adtype.value);
     });
 
-    console.log(advertStatus);
+    //console.log(advertStatus);
 
     const fromDate = new Date(this.state.fromDate).toISOString();
     const toDate = new Date(this.state.toDate).toISOString();
@@ -90,7 +90,6 @@ export class AdminAdvertList extends Component {
     };
 
     console.log(JSON.stringify(searchParams));
-
     this.props.getAdminSearchAdverts(searchParams);
   };
 
@@ -339,28 +338,39 @@ export class AdminAdvertList extends Component {
               <Table responsive size="sm" striped bordered hover>
                 <thead>
                   <tr className="text-center">
-                    <th>Type</th>
-                    <th>Category</th>
+                    <th>Customer Ref #</th>
                     <th>Title</th>
+                    <th>E mail</th>
+                    <th>Phone Number</th>
+                    <th>Modified At</th>
                     <th>Payment Status</th>
                     <th>Status</th>
                     <th>Online</th>
-                    <th colSpan="2">Action</th>
+
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {adverts.map((advert, index) => (
                     <tr>
                       <td className="text-left align-middle">
-                        {advert.adverttype}
-                      </td>
-                      <td className="text-left align-middle">
-                        {advert.category}
+                        <Link to={`/ad/${advert.advertId}`}>
+                          {advert.customerRefNo}
+                        </Link>
                       </td>
                       <td className="text-left align-middle">
                         <Link to={`/ad/${advert.advertId}`}>
                           {advert.title}
                         </Link>
+                      </td>
+                      <td className="text-center align-middle">
+                        {advert.email}
+                      </td>
+                      <td className="text-center align-middle">
+                        {advert.phonenumber1}
+                      </td>
+                      <td className="text-center align-middle">
+                        {advert.modifiedAt}
                       </td>
                       <td className="text-center align-middle">
                         {advert.paymentStatus}
@@ -388,46 +398,20 @@ export class AdminAdvertList extends Component {
                       </td>
                       <td className="text-center align-middle">
                         {!(
-                          advert.advertStatus === ADVERT_STATUS_INREVIEW ||
+                          advert.advertStatus === ADVERT_STATUS_LIVE ||
+                          advert.advertStatus === ADVERT_STATUS_NEEDEDIT ||
                           advert.advertStatus === ADVERT_STATUS_EXPIRED
                         ) && (
                           <React.Fragment>
-                            <Link to={`/editad/details/${advert.advertId}`}>
+                            <Link to={`/adreview/${advert.advertId}`}>
                               {" "}
                               <FontAwesomeIcon
                                 style={{ color: "#1c110a" }}
-                                icon={faEdit}
+                                icon={faUserCheck}
                                 size="1x"
-                                title="click here to Edit the ad."
+                                title="Review Ad"
                               />
                             </Link>
-                          </React.Fragment>
-                        )}
-                      </td>
-                      <td className="text-center align-middle">
-                        {!(
-                          advert.advertStatus === ADVERT_STATUS_INREVIEW ||
-                          advert.advertStatus === ADVERT_STATUS_EXPIRED
-                        ) && (
-                          <React.Fragment>
-                            <Button
-                              className="btn-grid"
-                              disabled={
-                                advert.advertStatus === ADVERT_STATUS_INREVIEW
-                                  ? true
-                                  : false
-                              }
-                              onClick={() =>
-                                this.handleDelete(advert.advertId, index)
-                              }
-                            >
-                              <FontAwesomeIcon
-                                style={{ color: "#D81159" }}
-                                icon={faTrash}
-                                size="1x"
-                                title="click here to delete the ad."
-                              />
-                            </Button>
                           </React.Fragment>
                         )}
                       </td>

@@ -500,7 +500,7 @@ ul li {
 /* admin list  */
 
 .adminlist-search-container {
-  max-width: 800px;
+  max-width: 1023px;
   background-color: #fff8f0 !important;
   border: 1px solid #70a288 !important;
 }

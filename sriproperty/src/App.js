@@ -12,6 +12,7 @@ import EditAdvertDetails from "./components/EditAdvertDetails";
 import AddAdvertImageUpload from "./components/AddAdvertImageUpload";
 import MyAds from "./components/MyAds";
 import AdView from "./components/AdView";
+import AdReview from "./components/AdReview";
 import AdminAdvertList from "./components/AdminAdvertList";
 import SPFooter from "./components/spfooter";
 import jwtDecode from "jwt-decode";
@@ -59,6 +60,7 @@ function App() {
             <AuthRoute path="/register" component={Register}></AuthRoute>
             <AuthRoute path="/login" component={Login}></AuthRoute>
             <Route path="/updateprofile" component={updateprofile}></Route>
+            <Route path="/adreview/:id" component={AdReview}></Route>
             <Route path="/ad/:id" component={AdView}></Route>
             <Route path="/myads" component={MyAds}></Route>
             <Route

@@ -37,28 +37,7 @@ export class MyAds extends Component {
       this.props.getAdvertsbyUserId();
     }
   };
-  componentDidMount = () => {
-    //console.log(this.generateId());
-  };
-
-  generateId = () => {
-    /* let array = new Uint32Array(2);
-    window.crypto.getRandomValues(array);
-    let str = "";
-    for (let i = 0; i < array.length; i++) {
-      str += (i < 2 || i > 5 ? "" : "-") + array[i].toString(16).slice(-4);
-    }
-    return str; */
-
-    let x =
-      Array(3)
-        .fill(0)
-        .map(() => String.fromCharCode(Math.floor(Math.random() * 26) + 97))
-        .join("") + Date.now().toString(24);
-
-    //let x = Math.random().toString(36).substr(2, 9);
-    console.log(x);
-  };
+  componentDidMount = () => {};
 
   handleDelete = (advertid, index) => {
     let adverts = this.props.adverts;
@@ -92,11 +71,6 @@ export class MyAds extends Component {
             <Tab eventKey="myads" title="My Ads">
               <TabContainer>
                 <Table>
-                  <Row>
-                    <Col>
-                      <Button onClick={() => this.generateId()}>sds</Button>
-                    </Col>
-                  </Row>
                   <Row className="align-center m-3">
                     <Col className="h4">My Ads </Col>
                   </Row>
