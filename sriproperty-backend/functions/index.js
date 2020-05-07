@@ -9,6 +9,10 @@ const {
   deleteAdImage,
   getAdvertbyUserId,
   adminSearch,
+  advertStartReview,
+  advertReviewComment,
+  addAdvertPayment,
+  getAdvertPaymentbyAdvertId,
 } = require("./handlers/adverts");
 
 const {
@@ -41,7 +45,19 @@ app.post("/advert", FBAuth, addAdvert);
 //Edit Advert
 app.post("/advertedit", FBAuth, editAdvert);
 
+//Advert Start Review
+app.put("/advert/startReview/:advertid", FBAuth, advertStartReview);
+
+//Advert Review Comment
+app.put("/advert/reviewComment/:advertid", FBAuth, advertReviewComment);
+
 app.delete("/advert/:advertid", FBAuth, deleteAdvert);
+
+//Add Advert Payment
+app.post("/advertPayment", FBAuth, addAdvertPayment);
+
+//Get Advert Payment
+app.get("/advertPayment/:advertid", FBAuth, getAdvertPaymentbyAdvertId);
 
 //upload image
 app.post("/advert/image", FBAuth, uploadAdvertImage);

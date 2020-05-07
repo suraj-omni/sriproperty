@@ -512,6 +512,25 @@ ul li {
 
 /* admin list */
 
+/* ad review */
+
+.adreviewpayment {
+  width: 14rem;
+  margin: auto;
+}
+
+#paymentdate {
+  display: block !important;
+}
+
+.react-datepicker-wrapper {
+  display: block !important;
+  padding: 0;
+  border: 0;
+}
+
+/* end of ad review */
+
 /* footer */
 
 .footer {

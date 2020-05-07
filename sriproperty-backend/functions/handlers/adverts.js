@@ -354,7 +354,7 @@ exports.editAdvert = (request, response) => {
       ? request.body.advertStatus
       : types.ADVERT_STATUS_EDIT,
     adverttype: request.body.adverttype,
-    approvedBy: request.body.approvedBy ? request.body.approvedBy : "",
+    reviewedBy: request.body.reviewedBy ? request.body.reviewedBy : "",
     baths: request.body.baths ? request.body.baths : 0,
     beds: request.body.beds ? request.body.beds : 0,
     boostadvert: request.body.boostadvert ? request.body.boostadvert : false,
@@ -369,7 +369,7 @@ exports.editAdvert = (request, response) => {
     name: request.user.name,
     paymentStatus: request.body.paymentStatus
       ? request.body.paymentStatus
-      : "not paid",
+      : types.PAYMENT_STATUS_NOT_PAID,
     phonenumber1: request.user.phonenumber, // request.body.phonenumber1,
     phonenumber1verified: request.body.phonenumber1verified
       ? request.body.phonenumber1verified
@@ -413,6 +413,131 @@ exports.editAdvert = (request, response) => {
     .catch((err) => {
       response.status(500).json({ error: "something went wrong." });
       console.error(err);
+    });
+};
+
+exports.advertReviewComment = (request, response) => {
+  let advertid = request.params.advertid;
+  const advert = {
+    advertStatus: types.ADVERT_STATUS_NEEDEDIT,
+    adminComments: request.body.adminComments,
+    reviewedBy: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = doc.id;
+        return response.status(200).json({ advert });
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.advertStartReview = (request, response) => {
+  let advertid = request.params.advertid;
+  const advert = {
+    advertStatus: types.ADVERT_STATUS_INREVIEW,
+    reviewedBy: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = doc.id;
+        return response.status(200).json({ advert });
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.addAdvertPayment = (request, response) => {
+  let advertpaymentid = request.body.advertpaymentid
+    ? request.body.advertpaymentid
+    : "";
+
+  let advertPayment = {
+    advertid: request.body.advertid,
+    paymentType: request.body.paymentType,
+    amount: request.body.amount,
+    referenceNumber: request.body.referenceNumber
+      ? request.body.referenceNumber
+      : "",
+    paymentDate: request.body.paymentDate,
+    bank: request.body.bank ? request.body.bank : "",
+    branch: request.body.branch ? request.body.branch : "",
+    notes: request.body.notes ? request.body.notes : "",
+    createdBy: request.user.uid,
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/advertpayments/${advertpaymentid}`)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        db.collection("advertpayments")
+          .add(advertPayment)
+          .then((doc) => {
+            advertPayment["advertpaymentid"] = doc.id;
+            return response.status(200).json({ advertPayment });
+          });
+      } else {
+        db.doc(`/advertpayments/${advertpaymentid}`)
+          .update(advertPayment)
+          .then(() => {
+            return response.status(200).json({ advertPayment });
+          });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      response.status(500).json({ error: "something went wrong." });
+    });
+};
+
+//get advertpayment by advert id
+exports.getAdvertPaymentbyAdvertId = (request, response) => {
+  let advertid = request.params.advertid;
+  console.log("advertid", advertid);
+  db.collection("advertpayments")
+    .where("advertid", "==", advertid)
+    .orderBy("createdAt", "desc")
+    .limit(1)
+    .get()
+    .then((data) => {
+      let advertPayment = { ...data.docs[0].data() };
+
+      /* let advertPayment = {
+        advertid: data.docs[0].data().advertid,
+        bank: data.docs[0].data().bank,
+        branch: data.docs[0].data().branch,
+        amount: data.docs[0].data().amount,
+      }; */
+      console.log("advertPayment", advertPayment);
+      return response.status(200).json(advertPayment);
+    })
+    .catch((err) => {
+      console.error(err);
+      response.status(500).json({ error: "something went wrong." });
     });
 };
 

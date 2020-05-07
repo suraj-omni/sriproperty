@@ -354,12 +354,12 @@ export class AdminAdvertList extends Component {
                   {adverts.map((advert, index) => (
                     <tr>
                       <td className="text-left align-middle">
-                        <Link to={`/ad/${advert.advertId}`}>
+                        <Link target="_blank" to={`/ad/${advert.advertId}`}>
                           {advert.customerRefNo}
                         </Link>
                       </td>
                       <td className="text-left align-middle">
-                        <Link to={`/ad/${advert.advertId}`}>
+                        <Link target="_blank" to={`/ad/${advert.advertId}`}>
                           {advert.title}
                         </Link>
                       </td>
@@ -399,8 +399,9 @@ export class AdminAdvertList extends Component {
                       <td className="text-center align-middle">
                         {!(
                           advert.advertStatus === ADVERT_STATUS_LIVE ||
-                          advert.advertStatus === ADVERT_STATUS_NEEDEDIT ||
-                          advert.advertStatus === ADVERT_STATUS_EXPIRED
+                          advert.advertStatus === ADVERT_STATUS_EXPIRED ||
+                          (advert.advertStatus === ADVERT_STATUS_NEEDEDIT &&
+                            advert.paymentStatus === PAYMENT_STATUS_FREE)
                         ) && (
                           <React.Fragment>
                             <Link to={`/adreview/${advert.advertId}`}>

@@ -8,6 +8,8 @@ import {
   SET_ADS_BY_USER,
   SET_ADVERTS_COUNT,
   GET_ALL_ADVERTS,
+  GET_ADVERTPAYMENT,
+  SAVE_ADVERTPAYMENT,
 } from "../types";
 
 import { loadState } from "../localStorage";
@@ -18,6 +20,7 @@ const initialState = {
   adcategoryset: false,
   advert: {},
   adverts: [],
+  advertpayment: {},
   advertscount: 0,
   loadingadvert: false,
 };
@@ -68,6 +71,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         advert: action.payload,
+      };
+    case SAVE_ADVERTPAYMENT:
+      return {
+        ...state,
+        advertpayment: action.payload,
+        ...action.payload,
+      };
+    case GET_ADVERTPAYMENT:
+      return {
+        ...state,
+        advertpayment: action.payload,
       };
     default:
       return { ...state, advert: loadState() };

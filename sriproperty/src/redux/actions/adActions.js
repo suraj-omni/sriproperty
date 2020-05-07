@@ -33,6 +33,8 @@ import {
   DISABLE_BTN,
   ENABLE_BTN,
   GET_ALL_ADVERTS,
+  SAVE_ADVERTPAYMENT,
+  GET_ADVERTPAYMENT,
 } from "../types";
 
 import axios from "axios";
@@ -316,6 +318,10 @@ export const schemaall = {
   rentalopriceunit: Joi.string().required().label("Price unit"),
 };
 
+export const schemaReviewComments = {
+  adminComments: Joi.string().required().min(25).max(5000).label("Comments"),
+};
+
 export const validate = (advert) => {
   const opt = { abortEarly: false, stripUnknown: true };
   let error;
@@ -372,6 +378,24 @@ export const validateAdvertProperty = (name, value, errors) => (dispatch) => {
   }
 };
 
+export const validateAdvertReviewComment = (name, value, errors) => (
+  dispatch
+) => {
+  const obj = { [name]: value };
+  const schema = { [name]: schemaReviewComments[name] };
+  const { error } = Joi.validate(obj, schema);
+
+  if (error && error.details) {
+    errors[name] = error.details[0].message;
+  } else {
+    delete errors[name];
+  }
+
+  if (errors) {
+    dispatch({ type: SET_ERRORS, payload: errors });
+  }
+};
+
 export const clearErrosPageLoad = () => (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
@@ -417,6 +441,22 @@ export const IsvalidAdvert = (newAdvert) => (dispatch) => {
   } else return true;
 };
 
+export const IsvalidAdvertReviewComment = (comment) => (dispatch) => {
+  let errors = {};
+  let str = comment.trimLeft();
+  str = str.trimRight();
+  if (str === "") {
+    errors["adminComments"] = "Comment can not be empty";
+  } else {
+    return true;
+  }
+  if (errors) {
+    console.log("errors", errors);
+    dispatch({ type: SET_ERRORS, payload: errors });
+    return false;
+  } else return true;
+};
+
 // Add New Advert
 export const addAdvert = (newAdvert, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
@@ -455,6 +495,96 @@ export const editAdvert = (advert, history, redirectto) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Start Review
+export const startReviewAdvert = (advertid) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  //console.log("editAdvert before save advert", JSON.stringify(advert));
+  axios
+    .put(`/advert/startReview/${advertid}`)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("startReviewAdvert advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Start Review
+export const commentReviewAdvert = (advert) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+
+  //console.log("editAdvert before save advert", JSON.stringify(advert)); /advert/reviewComment/
+
+  const obj = { adminComments: advert.adminComments };
+  console.log(JSON.stringify(obj));
+  axios
+    .put(`/advert/reviewComment/${advert.advertid}`, obj)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("commentReviewAdvert advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Add Advert Payment
+export const addAdvertPayment = (advertpayment) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+
+  console.log("advertPayment", JSON.stringify(advertpayment));
+  axios
+    .post(`/advertPayment`, advertpayment)
+    .then((res) => {
+      let { advertpayment } = { ...res.data };
+      console.log("advertPayment ", JSON.stringify(advertpayment));
+      dispatch({ type: SAVE_ADVERTPAYMENT, payload: advertpayment });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Get Advert Payment  by Advert Id
+export const getAdvertPaymentbyAdvertId = (advertid) => (dispatch) => {
+  console.log("advertid", advertid);
+  dispatch({ type: LOADING_UI });
+  axios
+    .get(`/advertPayment/${advertid}`)
+    .then((res) => {
+      let advertpayment = { ...res.data };
+      console.log(advertpayment, JSON.stringify(advertpayment));
+      dispatch({ type: GET_ADVERTPAYMENT, payload: advertpayment });
+      dispatch({ type: FINISHED_LOADING_UI });
+      return advertpayment;
+    })
+    .catch((err) => {
+      console.log("getAdvertPaymentbyAdvertId", JSON.stringify(err));
       /* dispatch({
         type: SET_ERRORS,
         payload: err.response.data,
