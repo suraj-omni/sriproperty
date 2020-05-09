@@ -11,7 +11,13 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import FormGroup from "react-bootstrap/FormGroup";
 import Alert from "react-bootstrap/Alert";
 import Toast from "react-bootstrap/Toast";
-import { ADVERT_STATUS_NEW, ADVERT_STATUS_EDIT } from "../redux/types";
+import {
+  ADVERT_STATUS_NEW,
+  ADVERT_STATUS_EDIT,
+  ADVERT_STATUS_NEEDEDIT,
+  ADVERT_STATUS_INREVIEW,
+} from "../redux/types";
+import { addAdvert } from "../redux/actions/adActions";
 
 const config = require("../util/config");
 
@@ -67,10 +73,11 @@ class AdvertDetailsMaster extends Component {
     submitbutton.click();
   };
 
+  // this method handle the completing of edit on edit page. user do not wish to upload any images.
   handleEdit = (event) => {
     event.preventDefault();
     let advert = this.props.advert;
-    advert["advertStatus"] = ADVERT_STATUS_EDIT;
+    advert["advertStatus"] = ADVERT_STATUS_INREVIEW;
     if (this.props.advert && this.props.advert.advertid)
       if (this.props.IsvalidAdvert(advert)) {
         this.props.editAdvert(advert, this.props.history, "/myads");
@@ -82,10 +89,10 @@ class AdvertDetailsMaster extends Component {
     console.log(this.props.UI.errors);
   };
 
+  // this method handle the in completed of edit on edit page. user  wish to upload  images in next page.
   handleEditUpload = (event) => {
     event.preventDefault();
     let advert = this.props.advert;
-    advert["advertStatus"] = ADVERT_STATUS_EDIT;
     if (this.props.advert && this.props.advert.advertid)
       if (this.props.IsvalidAdvert(advert)) {
         this.props.editAdvert(
@@ -343,6 +350,32 @@ class AdvertDetailsMaster extends Component {
             Step 4:- Upload images
           </div>
         </div>
+      </React.Fragment>
+    );
+  };
+
+  render_AdminComments_Component = () => {
+    const { adminComments, advertStatus } = this.props.advert;
+    const showComments =
+      advertStatus === ADVERT_STATUS_NEEDEDIT && adminComments !== ""
+        ? true
+        : false;
+    if (!showComments) return null;
+
+    return (
+      <React.Fragment>
+        <Row className="mx-auto my-3 d-flex bg-highlight border  advertedit_admincomments">
+          <Col className="px-2 pt-2 pb-1 flex-fill">
+            <p>
+              We would like to suggest the following changes in the advert
+              details and photos. Please do the required changes and re-submit
+              the Advert for review.
+            </p>
+          </Col>
+          <Col className="px-2 pb-2 pt-1 flex-fill advertedit_admincomments_details">
+            {adminComments}
+          </Col>
+        </Row>
       </React.Fragment>
     );
   };
@@ -1229,6 +1262,7 @@ class AdvertDetailsMaster extends Component {
     );
   };
 
+  // add page popup modal
   render_Popup_Modal = () => {
     const { loading } = this.props.UI;
     return (
@@ -1269,6 +1303,7 @@ class AdvertDetailsMaster extends Component {
     );
   };
 
+  // this model is for user who wants to complete the editing ad on edit page. user do not intend to upload images.
   render_Popup_EditFinish_Modal = () => {
     const { loading } = this.props.UI;
     return (
@@ -1312,6 +1347,7 @@ class AdvertDetailsMaster extends Component {
     );
   };
 
+  // this model shows when user wants to continue edit the advert by uploading images
   render_Popup_Edit_Modal = () => {
     const { loading } = this.props.UI;
     return (

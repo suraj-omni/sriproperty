@@ -445,9 +445,38 @@ exports.advertReviewComment = (request, response) => {
 
 exports.advertStartReview = (request, response) => {
   let advertid = request.params.advertid;
+
+  console.log(JSON.stringify(request.user));
+
   const advert = {
     advertStatus: types.ADVERT_STATUS_INREVIEW,
     reviewedBy: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = doc.id;
+        return response.status(200).json({ advert });
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.advertSubmitReview = (request, response) => {
+  let advertid = request.params.advertid;
+  console.log("i am inside function advert submit review", advertid);
+  const advert = {
+    advertStatus: types.ADVERT_STATUS_INREVIEW,
     modifiedAt: new Date().toISOString(),
   };
 

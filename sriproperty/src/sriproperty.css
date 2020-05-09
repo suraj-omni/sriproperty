@@ -320,6 +320,23 @@ body {
 
 /* post ad */
 
+.advertedit_admincomments {
+  background-color: #dc2367;
+  border-color: #d81159;
+  color: #fafaff;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+
+.advertedit_admincomments_details {
+  background-color: #dc2367;
+  border-color: #d81159;
+  color: #ffcf9c;
+  font-size: 0.9rem;
+  border-radius: 10px;
+}
+
 .picktable {
   width: 80%;
 }

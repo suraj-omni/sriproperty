@@ -10,6 +10,7 @@ const {
   getAdvertbyUserId,
   adminSearch,
   advertStartReview,
+  advertSubmitReview,
   advertReviewComment,
   addAdvertPayment,
   getAdvertPaymentbyAdvertId,
@@ -25,6 +26,7 @@ const {
   sendResetPasswordEmail,
   updateUser,
 } = require("./handlers/users");
+
 const FBAuth = require("./util/FBAuth");
 
 const app = require("express")();
@@ -49,6 +51,9 @@ app.post("/advertedit", FBAuth, editAdvert);
 
 //Advert Start Review
 app.put("/advert/startReview/:advertid", FBAuth, advertStartReview);
+
+//Advert Submit Review
+app.put("/advert/pushtoReview/:advertid", FBAuth, advertSubmitReview);
 
 //Advert Review Comment
 app.put("/advert/reviewComment/:advertid", FBAuth, advertReviewComment);

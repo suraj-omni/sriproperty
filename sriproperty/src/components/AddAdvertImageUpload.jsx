@@ -7,12 +7,17 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
+
 import {
   uploadAdImage,
   getAdvertbyId,
   deleteAdImage,
   setAdvert,
+  pushtoReviewAdvert,
 } from "../redux/actions/adActions";
+
+import { ADVERT_STATUS_NEEDEDIT, ADVERT_STATUS_INREVIEW } from "../redux/types";
+
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -54,7 +59,8 @@ class AddAdvertImageUpload extends Component {
     this.setState({ showmodal: false });
   };
 
-  handleShow = () => {
+  handleFinishPostAd = () => {
+    this.props.pushtoReviewAdvert(this.props.ad.advert.advertid);
     this.setState({ showmodal: true });
   };
 
@@ -209,6 +215,7 @@ class AddAdvertImageUpload extends Component {
 
     const {
       adverttype,
+      advertStatus,
       category,
       district,
       city,
@@ -218,10 +225,17 @@ class AddAdvertImageUpload extends Component {
       image3Url,
       image4Url,
       image5Url,
+      adminComments,
     } = this.props.ad.advert;
     const noimageUrl = this.state.noimageUrl;
 
+    const showComments =
+      advertStatus === ADVERT_STATUS_NEEDEDIT && adminComments !== ""
+        ? true
+        : false;
+
     const invalid = image1Url === "" ? true : false;
+    const disable_all = advertStatus === ADVERT_STATUS_INREVIEW ? true : false;
 
     if (loading)
       return (
@@ -278,6 +292,21 @@ class AddAdvertImageUpload extends Component {
               </Col>
             </Row>
             {/* end of progress indicator */}
+            {showComments && (
+              <Row className="mx-auto my-3 d-flex bg-highlight border  advertedit_admincomments">
+                <Col className="px-2 pt-2 pb-1 flex-fill">
+                  <p>
+                    We would like to suggest the following changes in the advert
+                    details and photos. Please do the required changes and
+                    re-submit the Advert for review.
+                  </p>
+                </Col>
+                <Col className="px-2 pb-2 pt-1 flex-fill advertedit_admincomments_details">
+                  {adminComments}
+                </Col>
+              </Row>
+            )}
+
             {/* advert info */}
             <Row className={`${this.state.colpadding}`}>
               <Col className={`${this.state.colpadding}`}>
@@ -373,7 +402,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage1"
                         onClick={this.handleUploadPicture}
-                        disabled={inprogress1}
+                        disabled={inprogress1 || disable_all}
                       >
                         Upload Image
                       </Button>
@@ -384,7 +413,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage1"
                         onClick={this.handleDeleteImage}
-                        disabled={deletingimage1}
+                        disabled={deletingimage1 || disable_all}
                       >
                         Delete Image
                       </Button>
@@ -452,7 +481,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage2"
                         onClick={this.handleUploadPicture}
-                        disabled={inprogress2}
+                        disabled={inprogress2 || disable_all}
                       >
                         Upload Image
                       </Button>
@@ -463,7 +492,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage2"
                         onClick={this.handleDeleteImage}
-                        disabled={deletingimage2}
+                        disabled={deletingimage2 || disable_all}
                       >
                         Delete Image
                       </Button>
@@ -531,7 +560,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage3"
                         onClick={this.handleUploadPicture}
-                        disabled={inprogress3}
+                        disabled={inprogress3 || disable_all}
                       >
                         Upload Image
                       </Button>
@@ -542,7 +571,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage3"
                         onClick={this.handleDeleteImage}
-                        disabled={deletingimage3}
+                        disabled={deletingimage3 || disable_all}
                       >
                         Delete Image
                       </Button>
@@ -610,7 +639,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage4"
                         onClick={this.handleUploadPicture}
-                        disabled={inprogress4}
+                        disabled={inprogress4 || disable_all}
                       >
                         Upload Image
                       </Button>
@@ -621,7 +650,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage4"
                         onClick={this.handleDeleteImage}
-                        disabled={deletingimage4}
+                        disabled={deletingimage4 || disable_all}
                       >
                         Delete Image
                       </Button>
@@ -689,7 +718,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage5"
                         onClick={this.handleUploadPicture}
-                        disabled={inprogress5}
+                        disabled={inprogress5 || disable_all}
                       >
                         Upload Image
                       </Button>
@@ -700,7 +729,7 @@ class AddAdvertImageUpload extends Component {
                         size="sm"
                         name="btnUploadImage5"
                         onClick={this.handleDeleteImage}
-                        disabled={deletingimage5}
+                        disabled={deletingimage5 || disable_all}
                       >
                         Delete Image
                       </Button>
@@ -717,8 +746,8 @@ class AddAdvertImageUpload extends Component {
                   variant="primary"
                   size="sm"
                   name="btnDone"
-                  disabled={invalid || disablebutton}
-                  onClick={this.handleShow}
+                  disabled={invalid || disablebutton || disable_all}
+                  onClick={this.handleFinishPostAd}
                 >
                   I have finished Posting Ad
                 </Button>
@@ -780,6 +809,7 @@ AddAdvertImageUpload.propTypes = {
   uploadAdImage: PropTypes.func.isRequired,
   getAdvertbyId: PropTypes.func.isRequired,
   deleteAdImage: PropTypes.func.isRequired,
+  pushtoReviewAdvert: PropTypes.func.isRequired,
   setAdvert: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
@@ -799,6 +829,7 @@ const mapActionsToProps = {
   getAdvertbyId,
   deleteAdImage,
   setAdvert,
+  pushtoReviewAdvert,
 };
 
 export default connect(

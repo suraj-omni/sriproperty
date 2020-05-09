@@ -598,6 +598,26 @@ export const startReviewAdvert = (advertid) => (dispatch) => {
     });
 };
 
+export const pushtoReviewAdvert = (advertid) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  //console.log(" before submit review advert", JSON.stringify(advert));
+  axios
+    .put(`/advert/pushtoReview/${advertid}`)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("after submit review advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
 // Advert Go Live
 export const goLiveAdvert = (advertid) => (dispatch) => {
   dispatch({ type: LOADING_UI });

@@ -14,8 +14,8 @@ import {
   setAdvert,
   editAdvert,
 } from "../redux/actions/adActions";
+
 import AdvertDetailsMaster from "./AdvertDetailsMaster";
-//const AdvertDetailsMaster = lazy(() => import("./AdvertDetailsMaster"));
 
 class EditAdvertDetails extends AdvertDetailsMaster {
   constructor(props) {
@@ -49,6 +49,7 @@ class EditAdvertDetails extends AdvertDetailsMaster {
   };
 
   render() {
+    const { adminComments } = this.props.advert;
     if (this.props.UI.loading) {
       return (
         <React.Fragment>
@@ -82,6 +83,7 @@ class EditAdvertDetails extends AdvertDetailsMaster {
                   {this.progressIndicator_Edit_Component()}
                 </Col>
               </Row>
+              {this.render_AdminComments_Component()}
               <Row>
                 <Col>
                   <Form onSubmit={this.handleFormSubmit}>
