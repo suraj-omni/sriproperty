@@ -25,11 +25,19 @@ npm install --save react-image-file-resizer
 
 npm i react-image-gallery --save
 
-npm i react-calendar --save
 npm install react-datepicker --save
 
+npm install --save moment react-moment
+
+npm i date-fns-tz
 
 ******************back end
 npm i shortid --save
+
+npm uninstall react-datepicker --save
+
+
+
+
 
 

@@ -35,6 +35,7 @@ import {
   GET_ALL_ADVERTS,
   SAVE_ADVERTPAYMENT,
   GET_ADVERTPAYMENT,
+  SET_ADVERTPAYMENT,
 } from "../types";
 
 import axios from "axios";
@@ -322,6 +323,26 @@ export const schemaReviewComments = {
   adminComments: Joi.string().required().min(25).max(5000).label("Comments"),
 };
 
+export const schemaAdvertPayment = {
+  paymentType: Joi.string().required().min(3).max(25).label("Payment Type"),
+  amount: Joi.number()
+    .positive()
+    .precision(2)
+    .min(10)
+    .max(1000000)
+    .required()
+    .label("Amount"),
+  bank: Joi.string().allow("").max(30).optional().label("Bank"),
+  branch: Joi.string().allow("").max(30).optional().label("Branch"),
+  notes: Joi.string().allow("").max(1000).optional().label("Notes"),
+  referenceNumber: Joi.string()
+    .max(25)
+    .allow("")
+    .optional()
+    .label("Reference Number"),
+  paymentDate: Joi.date().required().label("Payment Date"),
+};
+
 export const validate = (advert) => {
   const opt = { abortEarly: false, stripUnknown: true };
   let error;
@@ -363,15 +384,14 @@ export const validateAdvertProperty = (name, value, errors) => (dispatch) => {
   const obj = { [name]: value };
 
   //portion of the schema which w
-  const schema = { [name]: schemaall[name] };
+  const schema = { [name]: schemaAdvertPayment[name] };
   const { error } = Joi.validate(obj, schema);
-  //console.log("single error", JSON.stringify(error));
+
   if (error && error.details) {
     errors[name] = error.details[0].message;
   } else {
     delete errors[name];
   }
-  //console.log(JSON.stringify(errors));
 
   if (errors) {
     dispatch({ type: SET_ERRORS, payload: errors });
@@ -383,6 +403,46 @@ export const validateAdvertReviewComment = (name, value, errors) => (
 ) => {
   const obj = { [name]: value };
   const schema = { [name]: schemaReviewComments[name] };
+  const { error } = Joi.validate(obj, schema);
+
+  if (error && error.details) {
+    errors[name] = error.details[0].message;
+  } else {
+    delete errors[name];
+  }
+
+  if (errors) {
+    dispatch({ type: SET_ERRORS, payload: errors });
+  }
+};
+
+export const validateAdvertPayment = (advertpayment) => {
+  const opt = { abortEarly: false, stripUnknown: true };
+  let error;
+  let errors = {};
+
+  const { error: err1 } = Joi.validate(advertpayment, schemaAdvertPayment, opt);
+  error = { ...err1 };
+
+  console.log(error);
+  if (error && error.details) {
+    const items = error.details.map((item) => {
+      errors[item.path[0]] = item.message;
+    });
+
+    console.log(errors);
+
+    return errors;
+  } else {
+    return null;
+  }
+};
+
+export const validateAdvertPaymentProperty = (name, value, errors) => (
+  dispatch
+) => {
+  const obj = { [name]: value };
+  const schema = { [name]: schemaAdvertPayment[name] };
   const { error } = Joi.validate(obj, schema);
 
   if (error && error.details) {
@@ -421,6 +481,13 @@ export const setAdvert = (advert) => (dispatch) => {
   dispatch({ type: FINISHED_LOADING_UI });
 };
 
+export const setAdvertPayment = (advertpayment) => (dispatch) => {
+  console.log("setAdvert", JSON.stringify(advertpayment));
+  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_ADVERTPAYMENT, payload: advertpayment });
+  dispatch({ type: FINISHED_LOADING_UI });
+};
+
 export const resetAdverts = (adverts) => (dispatch) => {
   let advertscount = adverts && adverts.length ? adverts.length : 0;
   console.log("resetAdverts :-", advertscount);
@@ -452,6 +519,14 @@ export const IsvalidAdvertReviewComment = (comment) => (dispatch) => {
   }
   if (errors) {
     console.log("errors", errors);
+    dispatch({ type: SET_ERRORS, payload: errors });
+    return false;
+  } else return true;
+};
+
+export const IsvalidAdvertPayment = (advertpayment) => (dispatch) => {
+  const errors = validateAdvertPayment(advertpayment);
+  if (errors) {
     dispatch({ type: SET_ERRORS, payload: errors });
     return false;
   } else return true;
@@ -523,7 +598,49 @@ export const startReviewAdvert = (advertid) => (dispatch) => {
     });
 };
 
-// Start Review
+// Advert Go Live
+export const goLiveAdvert = (advertid) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  //console.log("goLiveAdvert before save advert", JSON.stringify(advert));
+  axios
+    .put(`/advert/goLive/${advertid}`)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("goLiveAdvert advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Advert Update Payment status
+export const updatePaymentStatusAdvert = (advert) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  //console.log("goLiveAdvert before save advert", JSON.stringify(advert));
+  axios
+    .put(`/advert/payment/${advert.advertid}`, advert)
+    .then((res) => {
+      let { advert } = { ...res.data };
+      console.log("updatePaymentStatusAdvert advert", JSON.stringify(advert));
+      dispatch({ type: SAVE_AD, payload: advert });
+      dispatch({ type: FINISHED_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+// Comment on Advert at Review
 export const commentReviewAdvert = (advert) => (dispatch) => {
   dispatch({ type: LOADING_UI });
 
@@ -556,13 +673,45 @@ export const addAdvertPayment = (advertpayment) => (dispatch) => {
   axios
     .post(`/advertPayment`, advertpayment)
     .then((res) => {
-      let { advertpayment } = { ...res.data };
-      console.log("advertPayment ", JSON.stringify(advertpayment));
+      let advertpayment = { ...res.data };
+      console.log("advertPayment after save ", JSON.stringify(advertpayment));
       dispatch({ type: SAVE_ADVERTPAYMENT, payload: advertpayment });
       dispatch({ type: FINISHED_LOADING_UI });
     })
     .catch((err) => {
       console.log(err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+export const getPreloadDataforAdvertReview = (advert) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .get(`/advertPayment/${advert.advertid}`)
+    .then((res) => {
+      if (res.data) {
+        let advertpayment = { ...res.data };
+        if (!advertpayment.messege) {
+          dispatch({ type: GET_ADVERTPAYMENT, payload: advertpayment });
+        }
+        console.log(advertpayment, JSON.stringify(advertpayment));
+      }
+    })
+    .then(() => {
+      axios.post("/advertbyid", advert).then((res) => {
+        if (res.data) {
+          let { advert } = { ...res.data };
+          dispatch({ type: SET_AD, payload: advert });
+        }
+
+        dispatch({ type: FINISHED_LOADING_UI });
+      });
+    })
+    .catch((err) => {
+      console.log("getAdvertPaymentbyAdvertId", JSON.stringify(err));
       /* dispatch({
         type: SET_ERRORS,
         payload: err.response.data,

@@ -1,16 +1,22 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import "react-datepicker/dist/react-datepicker.css";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  getAdvertbyId,
   startReviewAdvert,
   validateAdvertReviewComment,
   setAdvert,
   commentReviewAdvert,
   IsvalidAdvertReviewComment,
-  getAdvertPaymentbyAdvertId,
+  validateAdvertProperty,
+  setAdvertPayment,
+  getPreloadDataforAdvertReview,
+  IsvalidAdvertPayment,
+  addAdvertPayment,
+  goLiveAdvert,
+  updatePaymentStatusAdvert,
 } from "../redux/actions/adActions";
+
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -20,10 +26,13 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
-import { errors } from "joi-browser";
+
+import DatePicker from "react-datepicker";
+
+import moment from "moment/moment";
+
 import {
   ADVERT_STATUS_INREVIEW,
   ADVERT_STATUS_NEEDEDIT,
@@ -33,7 +42,10 @@ import {
   ADVERT_STATUS_EXPIRED,
   PAYMENT_STATUS_PAID,
   PAYMENT_STATUS_NOTPAID,
+  PAYMENT_STATUS_FREE,
+  PAYMENT_STATUS_MEMBERSHIP,
 } from "../redux/types";
+
 export class AdReview extends Component {
   constructor(props) {
     super(props);
@@ -42,28 +54,47 @@ export class AdReview extends Component {
       colClass: "p-2 flex-fill text-xs-center",
       containerClass: "mx-auto my-3 p-2 adminlist-search-container",
       paymentTypes: ["Cash", "Online", "Bank Deposit"],
-      paymentDate:
-        this.props &&
-        this.props.advertpayment &&
-        this.props.advertpayment.paymentDate
-          ? this.props.advertpayment.paymentDate
-          : new Date(),
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const advert = { advertid: this.props.match.params.id };
     if (advert.advertid) {
-      this.props.getAdvertbyId(advert);
-      this.props.getAdvertPaymentbyAdvertId(advert.advertid);
+      await this.props.getPreloadDataforAdvertReview(advert);
+      console.log(this.props.paymentDate);
     }
   };
 
-  handleChange = (event) => {
+  handleCommentChange = (event) => {
     const { name, value } = event.target;
     const errors = { ...this.props.UI.errors };
     this.props.validateAdvertReviewComment(name, value, errors);
     this.setPropertiestoAdvert(name, value);
+  };
+
+  handlePaymentDateChange = (date) => {
+    const errors = { ...this.props.UI.errors };
+    this.props.validateAdvertProperty("paymentDate", date, errors);
+
+    this.setPropertiestoAdvertPayment("paymentDate", moment(date).toDate());
+  };
+
+  handlePaymentChange = (event) => {
+    const { name, value } = event.target;
+    const errors = { ...this.props.UI.errors };
+    this.props.validateAdvertProperty(name, value, errors);
+    this.setPropertiestoAdvertPayment(name, value);
+  };
+
+  setPropertiestoAdvertPayment = (name, value) => {
+    try {
+      let advertpayment = this.props.advertpayment;
+      advertpayment[`${name}`] = `${value}`;
+      console.log("asa", JSON.stringify(advertpayment));
+      this.props.setAdvertPayment(advertpayment);
+    } catch (err) {
+      console.log("setPropertiestoAdvertPayment", err);
+    }
   };
 
   handleSaveComments = (saveCommentEvent) => {
@@ -79,6 +110,49 @@ export class AdReview extends Component {
     console.log(this.props.UI.errors);
   };
 
+  handleUpdatePaymentStatus = (updatePaymentStatusEvent) => {
+    updatePaymentStatusEvent.preventDefault();
+    let advert = this.props.advert;
+
+    if (this.props.advert && this.props.advert.advertid !== undefined) {
+      advert["paymentStatus"] = PAYMENT_STATUS_PAID;
+      this.props.updatePaymentStatusAdvert(advert);
+    }
+  };
+
+  handleAdvertGoLive = (AdvertGoLiveEvent) => {
+    AdvertGoLiveEvent.preventDefault();
+    let advert = this.props.advert;
+
+    if (advert && advert.advertid !== undefined) {
+      this.props.goLiveAdvert(advert.advertid);
+    }
+  };
+
+  handleSaveAdvertPayment = (savePaymentEvent) => {
+    savePaymentEvent.preventDefault();
+    let advertpayment = this.props.advertpayment;
+    const advert = this.props.advert;
+    advertpayment["advertid"] = advert.advertid;
+
+    console.log("advertpayment", JSON.stringify(advertpayment));
+    if (this.props.advertpayment) {
+      if (this.props.IsvalidAdvertPayment(advertpayment)) {
+        if (
+          advertpayment.advertpaymentid === undefined ||
+          advertpayment.advertpaymentid === ""
+        ) {
+          console.log(
+            "!advertpayment.advertpaymentid",
+            !advertpayment.advertpaymentid
+          );
+          advertpayment["advertpaymentid"] = "new";
+        }
+        this.props.addAdvertPayment(advertpayment);
+      }
+    }
+  };
+
   setPropertiestoAdvert = (name, value) => {
     let advert = this.props.advert;
     advert[`${name}`] = `${value}`;
@@ -88,12 +162,6 @@ export class AdReview extends Component {
   handleStartReview = () => {
     console.log("Handle Start Review", this.props.match.params.id);
     this.props.startReviewAdvert(this.props.match.params.id);
-  };
-
-  handleFromDateChange = (date) => {
-    this.setState({
-      paymentDate: date,
-    });
   };
 
   render() {
@@ -142,7 +210,43 @@ export class AdReview extends Component {
       amount,
       referenceNumber,
       bank,
+      advertpaymentid,
     } = this.props.advertpayment;
+
+    const showPublishtoSite =
+      (advertStatus === ADVERT_STATUS_INREVIEW &&
+        paymentStatus === PAYMENT_STATUS_PAID &&
+        this.props.advertpayment &&
+        this.props.advertpayment.advertpaymentid !== undefined) ||
+      (paymentStatus === PAYMENT_STATUS_FREE &&
+        advertStatus === ADVERT_STATUS_INREVIEW)
+        ? true
+        : false;
+
+    const showCompletePayment =
+      advertStatus === ADVERT_STATUS_INREVIEW &&
+      (paymentStatus === PAYMENT_STATUS_NOTPAID ||
+        paymentStatus === PAYMENT_STATUS_MEMBERSHIP) &&
+      this.props.advertpayment &&
+      this.props.advertpayment.advertpaymentid !== undefined
+        ? true
+        : false;
+
+    const paymentDate =
+      this.props.advertpayment && this.props.advertpayment.paymentDate
+        ? this.props.advertpayment.paymentDate
+        : null;
+
+    if (loading)
+      return (
+        <React.Fragment>
+          <div className="mx-auto">
+            {" "}
+            <div className="mx-auto loader"></div>{" "}
+            <div className="mx-auto loadder-text">Loading Data...</div>
+          </div>
+        </React.Fragment>
+      );
 
     return (
       <React.Fragment>
@@ -153,7 +257,41 @@ export class AdReview extends Component {
               <Col xs={12} className={`${colClass}`}>
                 <h4>{title}</h4>
               </Col>
+              {/*   <Col>
+                {` advertStatus ${advertStatus} === ADVERT_STATUS_INREVIEW ${ADVERT_STATUS_INREVIEW} ${
+                  advertStatus === ADVERT_STATUS_INREVIEW
+                } &&
+        paymentStatus ${paymentStatus} === PAYMENT_STATUS_PAID ${PAYMENT_STATUS_PAID} ${
+                  paymentStatus === PAYMENT_STATUS_PAID
+                } &&
+        this.props.advertpayment ${this.props.advertpayment} ${
+                  this.props.advertpayment
+                } && 
+        this.props.advertpayment.advertpaymentid ${
+          this.props.advertpayment.advertpaymentid !== undefined
+        } ${this.props.advertpayment.advertpaymentid}
+        ${
+          (advertStatus === ADVERT_STATUS_INREVIEW &&
+            paymentStatus === PAYMENT_STATUS_PAID &&
+            this.props.advertpayment &&
+            this.props.advertpayment.advertpaymentid) ||
+          (paymentStatus === PAYMENT_STATUS_FREE &&
+            advertStatus === ADVERT_STATUS_INREVIEW)
+        } next argivement ${
+                  paymentStatus === PAYMENT_STATUS_FREE &&
+                  advertStatus === ADVERT_STATUS_INREVIEW
+                }`}
+              </Col>
+              <Col>Hiiiiiiiiiiiiiiiiiii</Col> */}
             </Row>
+            {/* <Row>
+              <Col>
+                {advertStatus === ADVERT_STATUS_INREVIEW &&
+                  paymentStatus === PAYMENT_STATUS_PAID &&
+                  this.props.advertpayment &&
+                  this.props.advertpayment.advertpaymentid !== undefined}
+              </Col>
+            </Row> */}
             <Row className={`${rowClass}`}>
               <Col xs={12} md={2} className={`${colClass} text-md-right`}>
                 Customer Name :
@@ -226,7 +364,7 @@ export class AdReview extends Component {
                         name="adminComments"
                         value={adminComments}
                         placeholder="Comments"
-                        onChange={this.handleChange}
+                        onChange={this.handleCommentChange}
                       />
                     </InputGroup>
                     {errors && errors.adminComments && (
@@ -269,6 +407,7 @@ export class AdReview extends Component {
                       name="paymentType"
                       value={paymentType}
                       className="adreviewpayment"
+                      onChange={this.handlePaymentChange}
                     >
                       <option key="" value="">
                         -- Please Payment Type --
@@ -279,6 +418,14 @@ export class AdReview extends Component {
                         </option>
                       ))}
                     </Form.Control>
+                    {errors && errors.paymentType && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.paymentType}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                   <FormGroup as={Col} xs={12} md={4} className={`${colClass}`}>
                     <Form.Label>Amount (Rs.) :</Form.Label>
@@ -288,17 +435,37 @@ export class AdReview extends Component {
                       name="amount"
                       step="0.2"
                       value={amount}
+                      onChange={this.handlePaymentChange}
                       className="adreviewpayment"
                     />
+                    {errors && errors.amount && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.amount}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                   <FormGroup as={Col} xs={12} md={4} className={`${colClass}`}>
                     <Form.Label>Date:</Form.Label>
                     <DatePicker
-                      name="paymentDate"
-                      selected={this.state.paymentDate}
-                      onChange={this.handleFromDateChange}
-                      className="searchcontrol-select form-control react-datepicker-wrapper"
+                      selected={
+                        paymentDate ? moment(paymentDate).toDate() : null
+                      }
+                      maxDate={new Date()}
+                      onChange={this.handlePaymentDateChange}
+                      className="searchcontrol-select"
+                      popperPlacement="top-end"
                     />
+                    {errors && errors.paymentDate && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.paymentDate}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                 </Row>
                 <Row className={`${rowClass}`}>
@@ -309,8 +476,17 @@ export class AdReview extends Component {
                       placeholder="Bank"
                       name="bank"
                       value={bank}
+                      onChange={this.handlePaymentChange}
                       className="adreviewpayment"
                     />
+                    {errors && errors.bank && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.bank}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                   <FormGroup as={Col} xs={12} md={4} className={`${colClass}`}>
                     <Form.Label>Branch :</Form.Label>
@@ -319,8 +495,17 @@ export class AdReview extends Component {
                       placeholder="Branch"
                       name="branch"
                       value={branch}
+                      onChange={this.handlePaymentChange}
                       className="adreviewpayment"
                     />
+                    {errors && errors.branch && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.branch}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                   <FormGroup as={Col} xs={12} md={4} className={`${colClass}`}>
                     <Form.Label>Ref #:</Form.Label>
@@ -328,9 +513,18 @@ export class AdReview extends Component {
                       type="text"
                       placeholder="Ref #"
                       name="referenceNumber"
+                      onChange={this.handlePaymentChange}
                       value={referenceNumber}
                       className="adreviewpayment"
                     />
+                    {errors && errors.referenceNumber && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.referenceNumber}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                 </Row>
                 <Row className={`${rowClass} `}>
@@ -340,14 +534,37 @@ export class AdReview extends Component {
                       as="textarea"
                       rows="3"
                       placeholder="Notes"
+                      onChange={this.handlePaymentChange}
                       name="notes"
                       value={notes}
                     />
+                    {errors && errors.notes && (
+                      <React.Fragment>
+                        <Alert
+                          className="m-2"
+                          variant="danger"
+                        >{`${errors.notes}`}</Alert>
+                      </React.Fragment>
+                    )}
                   </FormGroup>
                 </Row>
                 <Row className={`${rowClass}`}>
-                  <Col xs={12} className={`${colClass}`}>
-                    <Button>Save Payment Details</Button>
+                  <Col xs={12} md={6} className={`${colClass}`}>
+                    <Button
+                      variant="primary"
+                      onClick={this.handleSaveAdvertPayment}
+                    >
+                      Save Payment Details
+                    </Button>
+                  </Col>
+                  <Col xs={12} md={6} className={`${colClass}`}>
+                    <Button
+                      variant="primary"
+                      onClick={this.handleUpdatePaymentStatus}
+                      disabled={!showCompletePayment}
+                    >
+                      Payment is Complete
+                    </Button>
                   </Col>
                 </Row>
               </Table>
@@ -366,7 +583,11 @@ export class AdReview extends Component {
                     Start Review
                   </Button>
                 )}
-                {!showStartReview && <Button>Publish</Button>}
+                {showPublishtoSite && (
+                  <Button variant="primary" onClick={this.handleAdvertGoLive}>
+                    Publish Advert Live
+                  </Button>
+                )}
               </Col>
             </Row>
           </Table>
@@ -378,18 +599,23 @@ export class AdReview extends Component {
 }
 
 AdReview.propTypes = {
-  getAdvertbyId: PropTypes.func.isRequired,
   startReviewAdvert: PropTypes.func.isRequired,
   validateAdvertReviewComment: PropTypes.func.isRequired,
   IsvalidAdvertReviewComment: PropTypes.func.isRequired,
-  getAdvertPaymentbyAdvertId: PropTypes.func.isRequired,
   setAdvert: PropTypes.func.isRequired,
+  setAdvertPayment: PropTypes.func.isRequired,
   commentReviewAdvert: PropTypes.func.isRequired,
+  validateAdvertProperty: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   advert: PropTypes.object.isRequired,
   ad: PropTypes.object.isRequired,
   advertpayment: PropTypes.object.isRequired,
+  getPreloadDataforAdvertReview: PropTypes.func.isRequired,
+  IsvalidAdvertPayment: PropTypes.func.isRequired,
+  addAdvertPayment: PropTypes.func.isRequired,
+  goLiveAdvert: PropTypes.func.isRequired,
+  updatePaymentStatusAdvert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -401,13 +627,18 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  getAdvertbyId,
   startReviewAdvert,
   validateAdvertReviewComment,
   setAdvert,
   commentReviewAdvert,
   IsvalidAdvertReviewComment,
-  getAdvertPaymentbyAdvertId,
+  setAdvertPayment,
+  validateAdvertProperty,
+  getPreloadDataforAdvertReview,
+  IsvalidAdvertPayment,
+  addAdvertPayment,
+  goLiveAdvert,
+  updatePaymentStatusAdvert,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(AdReview);

@@ -279,6 +279,7 @@ export class AdminAdvertList extends Component {
                               selected={this.state.fromDate}
                               onChange={this.handleFromDateChange}
                               className="searchcontrol-select"
+                              popperPlacement="top-end"
                             />
                           </Col>
                           <Col

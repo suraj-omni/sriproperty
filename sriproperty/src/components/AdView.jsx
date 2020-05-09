@@ -14,6 +14,7 @@ class AdView extends Component {
       advert: {},
     };
   }
+
   componentDidMount = () => {
     const advert = { advertid: this.props.match.params.id };
     if (advert.advertid) {

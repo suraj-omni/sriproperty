@@ -469,12 +469,66 @@ exports.advertStartReview = (request, response) => {
     });
 };
 
+exports.advertGoLive = (request, response) => {
+  let advertid = request.params.advertid;
+  const advert = {
+    advertStatus: types.ADVERT_STATUS_LIVE,
+    online: true,
+    reviewedBy: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = doc.id;
+        return response.status(200).json({ advert });
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.advertPaymentStatusUpdate = (request, response) => {
+  let advertid = request.params.advertid;
+  let paymentStatus = request.body.paymentStatus;
+  const advert = {
+    paymentStatus: paymentStatus,
+    reviewedBy: request.user.uid,
+    modifiedAt: new Date().toISOString(),
+  };
+
+  db.doc(`/adverts/${advertid}`)
+    .update(advert)
+    .then(() => {
+      return db.doc(`/adverts/${advertid}`).get();
+    })
+    .then((doc) => {
+      if (doc.exists) {
+        let advert = { ...doc.data() };
+        advert["advertid"] = doc.id;
+        return response.status(200).json({ advert });
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
 exports.addAdvertPayment = (request, response) => {
   let advertpaymentid = request.body.advertpaymentid
     ? request.body.advertpaymentid
     : "";
 
-  let advertPayment = {
+  let advertpayment = {
     advertid: request.body.advertid,
     paymentType: request.body.paymentType,
     amount: request.body.amount,
@@ -495,16 +549,19 @@ exports.addAdvertPayment = (request, response) => {
     .then((doc) => {
       if (!doc.exists) {
         db.collection("advertpayments")
-          .add(advertPayment)
+          .add(advertpayment)
           .then((doc) => {
-            advertPayment["advertpaymentid"] = doc.id;
-            return response.status(200).json({ advertPayment });
+            advertpayment["advertpaymentid"] = doc.id;
+            console.log("successfully added", JSON.stringify(advertpayment));
+            return response.status(200).json(advertpayment);
           });
       } else {
         db.doc(`/advertpayments/${advertpaymentid}`)
-          .update(advertPayment)
+          .update(advertpayment)
           .then(() => {
-            return response.status(200).json({ advertPayment });
+            advertpayment["advertpaymentid"] = advertpaymentid;
+            console.log("successfully updated", JSON.stringify(advertpayment));
+            return response.status(200).json(advertpayment);
           });
       }
     })
@@ -524,16 +581,21 @@ exports.getAdvertPaymentbyAdvertId = (request, response) => {
     .limit(1)
     .get()
     .then((data) => {
-      let advertPayment = { ...data.docs[0].data() };
+      if (!data.empty) {
+        let advertpayment = { ...data.docs[0].data() };
+        advertpayment["advertpaymentid"] = data.docs[0].id;
+        console.log("advertpayment", advertpayment);
+        return response.status(200).json(advertpayment);
+      } else {
+        return response.status(200).json({ messege: "No Data" });
+      }
 
-      /* let advertPayment = {
+      /* let advertpayment = {
         advertid: data.docs[0].data().advertid,
         bank: data.docs[0].data().bank,
         branch: data.docs[0].data().branch,
         amount: data.docs[0].data().amount,
       }; */
-      console.log("advertPayment", advertPayment);
-      return response.status(200).json(advertPayment);
     })
     .catch((err) => {
       console.error(err);

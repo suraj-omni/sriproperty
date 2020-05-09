@@ -10,6 +10,7 @@ import {
   GET_ALL_ADVERTS,
   GET_ADVERTPAYMENT,
   SAVE_ADVERTPAYMENT,
+  SET_ADVERTPAYMENT,
 } from "../types";
 
 import { loadState } from "../localStorage";
@@ -76,9 +77,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         advertpayment: action.payload,
-        ...action.payload,
       };
     case GET_ADVERTPAYMENT:
+      return {
+        ...state,
+        advertpayment: action.payload,
+      };
+    case SET_ADVERTPAYMENT:
       return {
         ...state,
         advertpayment: action.payload,

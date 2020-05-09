@@ -13,6 +13,8 @@ const {
   advertReviewComment,
   addAdvertPayment,
   getAdvertPaymentbyAdvertId,
+  advertGoLive,
+  advertPaymentStatusUpdate,
 } = require("./handlers/adverts");
 
 const {
@@ -51,6 +53,8 @@ app.put("/advert/startReview/:advertid", FBAuth, advertStartReview);
 //Advert Review Comment
 app.put("/advert/reviewComment/:advertid", FBAuth, advertReviewComment);
 
+app.put("/advert/goLive/:advertid", FBAuth, advertGoLive);
+
 app.delete("/advert/:advertid", FBAuth, deleteAdvert);
 
 //Add Advert Payment
@@ -58,6 +62,9 @@ app.post("/advertPayment", FBAuth, addAdvertPayment);
 
 //Get Advert Payment
 app.get("/advertPayment/:advertid", FBAuth, getAdvertPaymentbyAdvertId);
+
+//Advert Payment status
+app.put("/advert/payment/:advertid", FBAuth, advertPaymentStatusUpdate);
 
 //upload image
 app.post("/advert/image", FBAuth, uploadAdvertImage);

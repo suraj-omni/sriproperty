@@ -20,6 +20,7 @@ export const SET_ADVERTS_COUNT = "SET_ADVERTS_COUNT";
 //Advert payments
 export const SAVE_ADVERTPAYMENT = "SAVE_ADVERTPAYMENT";
 export const GET_ADVERTPAYMENT = "GET_ADVERTPAYMENT";
+export const SET_ADVERTPAYMENT = "SET_ADVERTPAYMENT";
 
 // UI reducer types
 export const SET_MSG = "SET_MSG";
