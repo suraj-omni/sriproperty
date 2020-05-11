@@ -32,7 +32,7 @@ const FBAuth = require("./util/FBAuth");
 const app = require("express")();
 
 //Get all adverts
-app.get("/adverts", FBAuth, getAllAdverts);
+app.get("/adverts", getAllAdverts);
 
 //Get adverts by user id
 app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);

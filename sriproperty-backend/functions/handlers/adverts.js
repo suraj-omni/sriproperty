@@ -22,7 +22,7 @@ exports.fillAdvert = (data) => {
       createdBy: doc.data().createdBy,
       customerRefNo: doc.data().customerRefNo,
       description: doc.data().description,
-      district: doc.data().disctrict,
+      district: doc.data().district,
       email: doc.data().email,
       image1Url: doc.data().image1Url,
       image2Url: doc.data().image2Url,

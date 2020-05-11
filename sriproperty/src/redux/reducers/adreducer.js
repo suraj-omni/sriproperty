@@ -21,9 +21,12 @@ const initialState = {
   adcategoryset: false,
   advert: {},
   adverts: [],
+  alladverts: [],
   advertpayment: {},
   advertscount: 0,
   loadingadvert: false,
+  after: 0,
+  more: true,
 };
 
 export default function (state = initialState, action) {
@@ -87,6 +90,21 @@ export default function (state = initialState, action) {
       return {
         ...state,
         advertpayment: action.payload,
+      };
+    case "START":
+      return {
+        ...state,
+        alladverts: action.alladverts,
+        adverts: action.adverts,
+        advertscount: action.advertscount,
+        after: action.after,
+      };
+    case "LOADED":
+      return {
+        ...state,
+        adverts: action.adverts,
+        more: action.more,
+        after: action.after,
       };
     default:
       return { ...state, advert: loadState() };

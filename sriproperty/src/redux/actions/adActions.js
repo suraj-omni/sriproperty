@@ -855,6 +855,72 @@ export const getAllAdverts = () => (dispatch) => {
     });
 };
 
+export const getAllPosts = (pagesize) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+
+  axios
+    .get("/adverts")
+    .then((res) => {
+      let allposts = [...res.data];
+      let posts = allposts.slice(0, pagesize);
+      let postcount = posts && posts.length ? posts.length : 0;
+      dispatch({
+        type: "START",
+        alladverts: allposts,
+        adverts: posts,
+        advertscount: postcount,
+        after: pagesize,
+      });
+      //console.log("getAllPosts", adverts);
+      dispatch({ type: FINISHED_LOADING_UI });
+      console.log("getAllPosts count :-", postcount);
+      return posts;
+    })
+    .catch((err) => {
+      console.log("getAdvertsbyUserId", err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
+export const getNextPosts = (after, pagesize) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  console.log("after :", after);
+  axios
+    .get("/adverts")
+    .then((res) => {
+      let _after = after + pagesize;
+      let allposts = [...res.data];
+      let posts = allposts.slice(0, _after);
+      let postcount = posts && posts.length ? posts.length : 0;
+
+      let more = true;
+      if (_after > 4950) {
+        more = false;
+      }
+
+      dispatch({
+        type: "LOADED",
+        adverts: posts,
+        after: _after,
+        more: more,
+      });
+      console.log("posts ", posts);
+      dispatch({ type: FINISHED_LOADING_UI });
+      console.log("getAllPosts count :-", postcount);
+      return posts;
+    })
+    .catch((err) => {
+      console.log("getAdvertsbyUserId", err);
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
+    });
+};
+
 export const getAdminSearchAdverts = (searchParams) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
