@@ -50,7 +50,7 @@ export const schemaland = Joi.object().keys({
   city: Joi.string().required().label("City"),
   address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
-    .regex(/^([a-zA-Z0-9 \._-]+)$/)
+    //.regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
     .min(10)
     .max(100)
@@ -99,7 +99,7 @@ export const schemahouse = Joi.object().keys({
   city: Joi.string().required().label("City"),
   address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
-    .regex(/^([a-zA-Z0-9 \._-]+)$/)
+    //.regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
     .min(10)
     .max(100)
@@ -148,7 +148,7 @@ export const schemaApartment = Joi.object().keys({
   city: Joi.string().required().label("City"),
   address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
-    .regex(/^([a-zA-Z0-9 \._-]+)$/)
+    //.regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
     .min(10)
     .max(100)
@@ -170,7 +170,7 @@ export const schemaApartment = Joi.object().keys({
     .label("Title"),
   beds: Joi.string().required().label("No of Bedrooms"),
   baths: Joi.string().required().label("No of Bathrooms"),
-  size: Joi.string().required().label("Size"),
+  size: Joi.number().required().label("Size"),
   description: Joi.string().required().min(25).max(5000).label("Description"),
   rentaloprice: Joi.number()
     .positive()
@@ -191,7 +191,7 @@ export const schemaCommercialProperty = Joi.object().keys({
   city: Joi.string().required().label("City"),
   address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
-    .regex(/^([a-zA-Z0-9 \._-]+)$/)
+    //.regex(/^([a-zA-Z0-9 \._-]+)$/)
     .required()
     .min(10)
     .max(100)
@@ -276,7 +276,7 @@ export const schemaall = {
   city: Joi.string().required().label("City"),
   address: Joi.string().allow("").optional().label("Address"),
   title: Joi.string()
-    .regex(/^([a-zA-Z0-9 \._-]+)$/)
+    //.regex(/^([a-zA-Z0-9 \._-]+)$/)
     .min(10)
     .max(100)
     .required()
@@ -384,7 +384,7 @@ export const validateAdvertProperty = (name, value, errors) => (dispatch) => {
   const obj = { [name]: value };
 
   //portion of the schema which w
-  const schema = { [name]: schemaAdvertPayment[name] };
+  const schema = { [name]: schemaall[name] };
   const { error } = Joi.validate(obj, schema);
 
   if (error && error.details) {

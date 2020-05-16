@@ -5,7 +5,11 @@ import { connect } from "react-redux";
 
 import Button from "react-bootstrap/Button";
 
-import { getAllPosts, getNextPosts } from "../redux/actions/adActions";
+import {
+  getAllPosts,
+  getNextPosts,
+  getAdvertLocationTotal,
+} from "../redux/actions/adActions";
 import Container from "react-bootstrap/Container";
 import SearchResultsGrid from "./SearchResultsGrid";
 

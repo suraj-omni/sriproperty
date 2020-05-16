@@ -1,7 +1,7 @@
 const { admin, db } = require("../util/admin");
 const config = require("../util/config");
 const types = require("../util/types");
-const firebase = require("firebase");
+const functions = require("firebase-functions");
 
 exports.fillAdvert = (data) => {
   let adverts = [];
@@ -58,6 +58,28 @@ exports.fillAdvert = (data) => {
   });
 
   return adverts;
+};
+
+// Get Location Total List
+exports.getAdvertLocationTotal = (req, res) => {
+  db.collection("locations")
+    .get()
+    .then((data) => {
+      let locationstotal = [];
+
+      data.forEach((doc) => {
+        locationstotal.push({
+          district: doc.id,
+          values: doc.data(),
+        });
+      });
+
+      return res.status(200).json(locationstotal);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "something went wrong." });
+    });
 };
 
 //get all adverts
@@ -249,11 +271,11 @@ exports.addAdvert = (request, response) => {
     createdBy: request.user.uid,
     description: request.body.description,
     district: request.body.district,
-    image1Url: "", //request.body.image1Url,
-    image2Url: "", //request.body.image2Url,
-    image3Url: "", //request.body.image3Url,
-    image4Url: "", //request.body.image4Url,
-    image5Url: "", //request.body.image5Url,
+    image1Url: request.body.image1Url ? request.body.image1Url : "",
+    image2Url: request.body.image2Url ? request.body.image2Url : "",
+    image3Url: request.body.image3Url ? request.body.image3Url : "",
+    image4Url: request.body.image4Url ? request.body.image4Url : "",
+    image5Url: request.body.image5Url ? request.body.image5Url : "",
     landtypes: request.body.landtypes ? request.body.landtypes : "",
     landsize: request.body.landsize ? request.body.landsize : 0,
     landsizeunit: request.body.landsizeunit ? request.body.landsizeunit : "",

@@ -8,7 +8,7 @@ import {
   setAdvert,
   commentReviewAdvert,
   IsvalidAdvertReviewComment,
-  validateAdvertProperty,
+  validateAdvertPaymentProperty,
   setAdvertPayment,
   getPreloadDataforAdvertReview,
   IsvalidAdvertPayment,
@@ -74,7 +74,7 @@ export class AdReview extends Component {
 
   handlePaymentDateChange = (date) => {
     const errors = { ...this.props.UI.errors };
-    this.props.validateAdvertProperty("paymentDate", date, errors);
+    this.props.validateAdvertPaymentProperty("paymentDate", date, errors);
 
     this.setPropertiestoAdvertPayment("paymentDate", moment(date).toDate());
   };
@@ -82,7 +82,7 @@ export class AdReview extends Component {
   handlePaymentChange = (event) => {
     const { name, value } = event.target;
     const errors = { ...this.props.UI.errors };
-    this.props.validateAdvertProperty(name, value, errors);
+    this.props.validateAdvertPaymentProperty(name, value, errors);
     this.setPropertiestoAdvertPayment(name, value);
   };
 
@@ -605,7 +605,7 @@ AdReview.propTypes = {
   setAdvert: PropTypes.func.isRequired,
   setAdvertPayment: PropTypes.func.isRequired,
   commentReviewAdvert: PropTypes.func.isRequired,
-  validateAdvertProperty: PropTypes.func.isRequired,
+  validateAdvertPaymentProperty: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   advert: PropTypes.object.isRequired,
@@ -633,7 +633,7 @@ const mapActionsToProps = {
   commentReviewAdvert,
   IsvalidAdvertReviewComment,
   setAdvertPayment,
-  validateAdvertProperty,
+  validateAdvertPaymentProperty,
   getPreloadDataforAdvertReview,
   IsvalidAdvertPayment,
   addAdvertPayment,

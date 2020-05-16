@@ -7,6 +7,15 @@ module.exports = {
     "Holiday and Short Rental",
     "Commercial Property",
   ],
+  categoriesoptionslist: [
+    { value: "All", label: "All Categories" },
+    { value: "Land", label: "Land" },
+    { value: "House", label: "House" },
+    { value: "Apartment", label: "Apartment" },
+    { value: "Room or Annex", label: "Room or Annex" },
+    { value: "Holiday and Short Rental", label: "Holiday and Short Rental" },
+    { value: "Commercial Property", label: "Commercial Property" },
+  ],
   districts: [
     "Ampara",
     "Anuradhapura",
@@ -202,7 +211,6 @@ module.exports = {
     "Matale",
     "Dambulla",
     "Galewela",
-    "Ukuwela",
     "Ukuwela",
     "Palapathwela",
     "Rattota",

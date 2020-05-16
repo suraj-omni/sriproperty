@@ -32,7 +32,10 @@ import {
   PAYMENT_STATUS_MEMBERSHIP,
 } from "../redux/types";
 import { getAdminSearchAdverts } from "../redux/actions/adActions";
+
 const shortid = require("shortid");
+
+const config = require("../util/config");
 
 export class AdminAdvertList extends Component {
   state = {
@@ -67,6 +70,10 @@ export class AdminAdvertList extends Component {
       23,
       59
     ),
+  };
+
+  generateJSON = () => {
+    console.log(JSON.stringify(config.anuradhapuraCities));
   };
 
   handelSearch = () => {
@@ -317,6 +324,14 @@ export class AdminAdvertList extends Component {
                               onClick={this.handelSearch}
                             >
                               Search Adverts
+                            </Button>
+                            <Button
+                              id="btngenerate"
+                              size="sm"
+                              variant="primary"
+                              onClick={this.generateJSON}
+                            >
+                              Generate
                             </Button>
                           </Col>
                         </Row>

@@ -17,6 +17,9 @@ export const SET_ADS_BY_USER = "SET_ADS_BY_USER";
 export const GET_ALL_ADVERTS = "GET_ALL_ADVERTS";
 export const SET_ADVERTS_COUNT = "SET_ADVERTS_COUNT";
 
+//search reducer types
+export const LOAD_ADVERT_LOCATION_TOTAL = "LOAD_ADVERT_LOCATION_TOTAL";
+
 //Advert payments
 export const SAVE_ADVERTPAYMENT = "SAVE_ADVERTPAYMENT";
 export const GET_ADVERTPAYMENT = "GET_ADVERTPAYMENT";

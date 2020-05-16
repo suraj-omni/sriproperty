@@ -3,69 +3,79 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Select from "react-select";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getAdvertLocationTotal } from "../redux/actions/searchActions";
+
+const config = require("../util/config");
 
 class SliderSearchBox extends Component {
   state = {
-    options: [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ],
-    selectedOption: null,
+    selecteddistrict: null,
+    selectedcategory: null,
     labelclass: "serachlabels",
   };
 
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-    //console.log(`Option selected:`, selectedOption);
+  componentDidMount = () => {
+    this.props.getAdvertLocationTotal();
   };
 
+  handleDistrictChange = (selecteddistrict) => {
+    this.setState({ selecteddistrict });
+  };
+
+  handleCategoryChange = (selectedcategory) => {
+    this.setState({ selectedcategory });
+  };
+
+  handleSearch = () => {};
+
   render() {
+    const districtslist = this.props.search.districtslist;
+    const categories = config.categoriesoptionslist;
     return (
       <React.Fragment>
         <Form id="searchform" className="">
           <Form.Row className="text-center">
             <Form.Group as={Col} sm="12" controlId="formGridEmail">
               <Form.Label className={this.state.labelclass}>
-                Category
+                District
               </Form.Label>
             </Form.Group>
             <Form.Group as={Col} sm="12" controlId="formGridEmail">
               <div>
                 <Select
                   name="locationdropdown"
-                  options={this.state.options}
-                  isMulti="true"
+                  options={districtslist}
                   isSearchable="true"
                   classNamePrefix="searchloc"
                   className="dropdownwidthsearchbox"
-                  value={this.state.selectedOption}
-                  onChange={this.handleChange}
+                  value={this.state.selecteddistrict}
+                  onChange={this.handleDistrictChange}
                 />
               </div>
             </Form.Group>
 
             <Form.Group as={Col} sm="12" controlId="formGridPassword">
               <Form.Label className={this.state.labelclass}>
-                Location
+                Category
               </Form.Label>
               <div>
                 <Select
                   name="locationdropdown"
-                  options={this.state.options}
-                  isMulti="true"
+                  options={categories}
                   isSearchable="true"
                   classNamePrefix="searchloc"
                   className="dropdownwidthsearchbox"
-                  value={this.state.selectedOption}
-                  onChange={this.handleChange}
+                  value={this.state.selectedcategory}
+                  onChange={this.handleCategoryChange}
                 />
               </div>
             </Form.Group>
           </Form.Row>
           <Form.Row>
             <Form.Group as={Col} sm="12" controlId="formGridPassword">
-              <Button variant="primary" type="submit">
+              <Button variant="primary" onClick={this.handleSearch}>
                 Search Property
               </Button>
             </Form.Group>
@@ -76,4 +86,19 @@ class SliderSearchBox extends Component {
   }
 }
 
-export default SliderSearchBox;
+SliderSearchBox.propTypes = {
+  getAdvertLocationTotal: PropTypes.func.isRequired,
+  UI: PropTypes.object.isRequired,
+  search: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  UI: state.UI,
+  search: state.search,
+});
+
+const mapActionsToProps = {
+  getAdvertLocationTotal,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(SliderSearchBox);

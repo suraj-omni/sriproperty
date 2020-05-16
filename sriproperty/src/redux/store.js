@@ -6,6 +6,7 @@ import userreducer from "./reducers/userreducer";
 import uireducer from "./reducers/uireducer";
 import adreducer from "./reducers/adreducer";
 import datareducer from "./reducers/datareducer";
+import searchreducer from "./reducers/searchreducer";
 
 const initialState = {};
 const middleware = [thunk];
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   data: datareducer,
   UI: uireducer,
   ad: adreducer,
+  search: searchreducer,
 });
 
 const store = createStore(
