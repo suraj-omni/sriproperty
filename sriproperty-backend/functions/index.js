@@ -18,6 +18,7 @@ const {
   advertGoLive,
   advertPaymentStatusUpdate,
   getAdvertLocationTotal,
+  SearchAdverts,
 } = require("./handlers/adverts");
 
 const {
@@ -44,8 +45,11 @@ app.get("/advertsbyUserid", FBAuth, getAdvertbyUserId);
 //Admin page search
 app.post("/adminSearch", FBAuth, adminSearch);
 
+//General search
+app.post("/searchadverts", SearchAdverts);
+
 //Get advert by advert id
-app.post("/advertbyid", FBAuth, getAdvertbyId);
+app.post("/advertbyid", getAdvertbyId);
 
 //Add Adverts
 app.post("/advert", FBAuth, addAdvert);

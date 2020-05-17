@@ -48,6 +48,7 @@ exports.fillAdvert = (data) => {
       rentaloprice: doc.data().rentaloprice,
       rentalopricenegotiable: doc.data().rentalopricenegotiable,
       rentalopriceunit: doc.data().rentalopriceunit,
+      size: doc.data().size ? doc.data().size : "",
       title: doc.data().title,
       online: doc.data().online ? doc.data().online : false,
       adminComments: doc.data().adminComments ? doc.data().adminComments : "",
@@ -97,8 +98,6 @@ exports.getAllAdverts = (req, res) => {
 
 //get adverts by user id
 exports.getAdvertbyUserId = (req, res) => {
-  //console.log(JSON.stringify(req.user));
-
   const userid = req.user.uid;
   console.log("userid", userid);
   db.collection("adverts")
@@ -224,6 +223,37 @@ exports.adminSearch = (request, response) => {
     .where("createdAt", ">=", fromDate)
     .where("createdAt", "<", toDate)
     .where("advertStatus", "in", advertStatus)
+    .orderBy(`${sortBy}`, `${sortOrder}`)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return response.status(200).json([]);
+      } else {
+        let adverts = this.fillAdvert(snapshot);
+        return response.status(200).json(adverts);
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+exports.SearchAdverts = (request, response) => {
+  const district = request.body.district;
+  const catrgoryarray = request.body.catrgoryarray;
+  const sortBy = request.body.sortBy;
+  const sortOrder = request.body.sortOrder;
+
+  console.log("district", district);
+  console.log("catrgoryarray", catrgoryarray);
+  console.log("sortBy", sortBy);
+  console.log("sortOrder", sortOrder);
+
+  db.collection("adverts")
+    .where("advertStatus", "==", "LIVE")
+    .where("district", "==", district)
+    .where("category", "in", catrgoryarray)
     .orderBy(`${sortBy}`, `${sortOrder}`)
     .get()
     .then((snapshot) => {

@@ -14,6 +14,7 @@ import MyAds from "./components/MyAds";
 import AdView from "./components/AdView";
 import AdReview from "./components/AdReview";
 import AdminAdvertList from "./components/AdminAdvertList";
+import SearchAdvert from "./components/SearchAdvert";
 import SPFooter from "./components/spfooter";
 import jwtDecode from "jwt-decode";
 import AuthRoute from "./util/authroute";
@@ -76,6 +77,10 @@ function App() {
             <Route
               path="/editad/details/:id"
               component={EditAdvertDetails}
+            ></Route>
+            <Route
+              path="/search/:district/:category"
+              component={SearchAdvert}
             ></Route>
             <Route path="/admin" component={AdminAdvertList}></Route>
             <Route path="/" component={Home}></Route>

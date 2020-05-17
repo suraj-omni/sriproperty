@@ -548,6 +548,53 @@ ul li {
 
 /* end of ad review */
 
+/* main search page */
+
+.advertisingrow {
+  height: 100px !important;
+}
+
+.advertisingrow-img {
+  max-height: 94px !important;
+}
+
+.searchboxrow {
+  height: 100px !important;
+}
+
+/* main serch page */
+
+/* search ad results box */
+
+.card-width {
+  width: 100% !important;
+}
+
+.card-image {
+  width: 90%;
+  height: 90%;
+  max-height: 400px;
+  max-width: 90%;
+}
+
+.ad-view-box-price-font {
+  font-size: 1rem !important;
+  color: #b9a44c !important;
+  background-color: transparent;
+}
+
+.card-desc {
+  height: 100px !important;
+}
+
+.ad-view-box-desc-font {
+  color: #d81159 !important;
+  font-size: 0.8rem !important;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* search ad results box */
+
 /* footer */
 
 .footer {
