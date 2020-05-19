@@ -7,6 +7,7 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import SearchFilterBox from "./SearchFilterBox";
 
 import {
   searchAdverts,
@@ -20,24 +21,20 @@ export class SearchAdvert extends Component {
     super(props);
   }
   state = {
-    pagesize: 10,
+    pagesize: 6,
   };
 
   componentDidMount = () => {
     const district = this.props.match.params.district;
     const category = this.props.match.params.category;
-    let catrgoryarray = [];
-    if (category === "All") {
-      catrgoryarray = config.categories;
-    } else {
-      catrgoryarray = [category];
-    }
+
     const searchParams = {
       district: district,
-      catrgoryarray: catrgoryarray,
+      catrgoryarray: category,
       sortBy: "modifiedAt",
       sortOrder: "desc",
     };
+    console.log("searchParams before func call", searchParams);
     this.props.searchAdverts(searchParams, this.state.pagesize);
   };
 
@@ -53,7 +50,6 @@ export class SearchAdvert extends Component {
   render() {
     const { showingadverts: posts, more } = this.props.search;
     const { loading } = this.props.UI;
-
     return (
       <React.Fragment>
         <Row className="advertisingrow d-flex border border-primary text-center mx-auto px-4 my-2">
@@ -65,7 +61,9 @@ export class SearchAdvert extends Component {
             />
           </marquee>
         </Row>
-        <Row className="searchboxrow d-flex border border-primary mx-auto px-4 my-2"></Row>
+        <Row className="border border-primary mx-auto px-4 my-2">
+          <SearchFilterBox props={this.props}></SearchFilterBox>
+        </Row>
         <Row className="border border-primary d-flex p-md-3 p-xs-0 mx-auto my-2">
           <Col xs={12} md={9} className="border border-primary">
             <SearchResultsGrid

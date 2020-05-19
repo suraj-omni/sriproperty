@@ -1,35 +1,4 @@
-/* export const currencyFormat = (amount) => {
-  var delimiter = ","; // replace comma if desired
-  var a = amount.split(".", 2);
-  var d = a[1];
-  var i = parseInt(a[0]);
-  if (isNaN(i)) {
-    return "";
-  }
-  var minus = "";
-  if (i < 0) {
-    minus = "-";
-  }
-  i = Math.abs(i);
-  var n = new String(i);
-  var a = [];
-  while (n.length > 3) {
-    var nn = n.substr(n.length - 3);
-    a.unshift(nn);
-    n = n.substr(0, n.length - 3);
-  }
-  if (n.length > 0) {
-    a.unshift(n);
-  }
-  n = a.join(delimiter);
-  if (d.length < 1) {
-    amount = n;
-  } else {
-    amount = n + "." + d;
-  }
-  amount = minus + amount;
-  return amount;
-}; */
+import config from "./config";
 
 export const currencyFormat = (amount) => {
   var i = parseFloat(amount);
@@ -90,4 +59,73 @@ export const getimageUrllist = (advert) => {
   }
 
   return images;
+};
+
+export function convertArraytoKeyPair(array) {
+  //console.log("convertArraytoKeyPair", array);
+  if (array === undefined || array.length === 0) {
+    return null;
+  }
+  let returnlist = [];
+  array.map((obj) => {
+    returnlist.push({ value: `${obj}`, label: `${obj}` });
+  });
+  return returnlist;
+}
+
+export const getCitiesbasedonDistrict = (selecteddistrict) => {
+  switch (selecteddistrict) {
+    case "Ampara":
+      return convertArraytoKeyPair(config.amparaCities);
+    case "Anuradhapura":
+      return convertArraytoKeyPair(config.anuradhapuraCities);
+    case "Badulla":
+      return convertArraytoKeyPair(config.badullaCities);
+    case "Batticaloa":
+      return convertArraytoKeyPair(config.batticaloaCities);
+    case "Colombo":
+      return convertArraytoKeyPair(config.colomboCities);
+    case "Galle":
+      return convertArraytoKeyPair(config.galleCities);
+    case "Gampaha":
+      return convertArraytoKeyPair(config.gampahaCities);
+    case "Hambantota":
+      return convertArraytoKeyPair(config.hambantotaCities);
+    case "Jaffna":
+      return convertArraytoKeyPair(config.jaffnaCities);
+    case "Kalutara":
+      return convertArraytoKeyPair(config.kalutaraCities);
+    case "Kandy":
+      return convertArraytoKeyPair(config.kandyCities);
+    case "Kegalle":
+      return convertArraytoKeyPair(config.kegalleCities);
+    case "Kilinochchi":
+      return convertArraytoKeyPair(config.kilinochchiCities);
+    case "Kurunegala":
+      return convertArraytoKeyPair(config.kurunegalaCities);
+    case "Mannar":
+      return convertArraytoKeyPair(config.mannarCities);
+    case "Matale":
+      return convertArraytoKeyPair(config.mataleCities);
+    case "Matara":
+      return convertArraytoKeyPair(config.mataraCities);
+    case "Monaragala":
+      return convertArraytoKeyPair(config.monaragalaCities);
+    case "Mullaitivu":
+      return convertArraytoKeyPair(config.mullativuCities);
+    case "Nuwara Eliya":
+      return convertArraytoKeyPair(config.nuwaraeliyaCities);
+    case "Polonnaruwa":
+      return convertArraytoKeyPair(config.polonnaruwaCities);
+    case "Puttalam":
+      return convertArraytoKeyPair(config.puttalamCities);
+    case "Ratnapura":
+      return convertArraytoKeyPair(config.ratnapuraCities);
+    case "Trincomalee":
+      return convertArraytoKeyPair(config.trincomaleeCities);
+    case "Vavuniya":
+      return convertArraytoKeyPair(config.vavuniyaCities);
+    default:
+      return convertArraytoKeyPair(config.vavuniyaCities);
+  }
 };

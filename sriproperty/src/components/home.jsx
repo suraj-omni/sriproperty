@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import SliderSearchBox from "./slidersearchbox";
 import HomeSlider from "./slider";
-import SearchAdvert from "./SearchAdvert";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { ClearAllSearch } from "../redux/actions/searchActions";
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -11,11 +15,20 @@ class Home extends Component {
     };
   }
 
-  handleSearch = () => {
+  componentWillMount = () => {
+    this.props.ClearAllSearch();
+  };
+
+  handleSearch = async () => {
     if (!this.state.selectedcategory || !this.state.selecteddistrict) {
       alert("Please select a Location and a Category!!!");
       return null;
     } else {
+      /*  this.props.ClearAllSearch(
+        this.props.history,
+        this.state.selecteddistrict.value,
+        this.state.selectedcategory.value
+      ); */
       this.props.history.push(
         `/search/${this.state.selecteddistrict.value}/${this.state.selectedcategory.value}`
       );
@@ -49,4 +62,17 @@ class Home extends Component {
   }
 }
 
-export default Home;
+Home.propTypes = {
+  ClearAllSearch: PropTypes.func.isRequired,
+  search: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  search: state.search,
+});
+
+const mapActionsToProps = {
+  ClearAllSearch,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Home);

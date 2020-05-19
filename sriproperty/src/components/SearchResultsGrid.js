@@ -22,7 +22,7 @@ export const SearchResultsGrid = (props) => {
           loadMore();
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "150px" }
     )
   );
   const [element, setElement] = React.useState(null);
@@ -42,16 +42,23 @@ export const SearchResultsGrid = (props) => {
     };
   }, [element]);
 
-  let advertcards = adverts.map((advert) => (
-    <Col xs={12} md={6} lg={4} className="my-2">
-      <SearchResultDisplayBox advert={advert}></SearchResultDisplayBox>
-    </Col>
-  ));
+  let advertcards = (
+    <div className="d-flex flex-row mx-auto my-2">
+      Sorry! there is nothing to show.
+    </div>
+  );
+
+  if (adverts && adverts.length > 0) {
+    advertcards = adverts.map((advert) => (
+      <Col xs={12} md={6} lg={4} className="my-2">
+        <SearchResultDisplayBox advert={advert}></SearchResultDisplayBox>
+      </Col>
+    ));
+  }
 
   return (
     <React.Fragment>
-      <Row className="mx-auto">{advertcards}</Row>
-
+      {!loading && advertcards && <Row className="mx-auto">{advertcards}</Row>}
       {loading && <li>Loading...</li>}
 
       {!loading && more && <div ref={setElement}></div>}

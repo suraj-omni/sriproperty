@@ -566,34 +566,92 @@ ul li {
 
 /* search ad results box */
 
-.card-width {
-  width: 100% !important;
-}
-
 .card-image {
   width: 90%;
+  max-width: 300px !important;
   height: 90%;
-  max-height: 400px;
-  max-width: 90%;
+  max-height: 225px;
+}
+
+.search-box-cardtitle {
+  min-height: 45px !important;
 }
 
 .ad-view-box-price-font {
-  font-size: 1rem !important;
+  font-size: 0.9rem !important;
   color: #b9a44c !important;
   background-color: transparent;
 }
 
 .card-desc {
-  height: 100px !important;
+  height: 76px !important;
 }
 
 .ad-view-box-desc-font {
-  color: #d81159 !important;
-  font-size: 0.8rem !important;
+  color: #2f4858 !important;
+  font-size: 0.7rem !important;
   font-family: "Open Sans", sans-serif;
 }
 
+.sreachresultbox_item1 {
+  background-color: transparent !important;
+  border: none;
+  pointer-events: none;
+}
+
+.card-a {
+  color: #2f4858 !important;
+}
+
+.card-searchbox {
+  width: 100% !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fafaff;
+  background-clip: border-box;
+  border: 1px solid #cbf3f0;
+  border-radius: 0.25rem;
+}
+
+.card-header-searchbox {
+  padding: 1rem 0.25rem !important;
+  margin-bottom: 0;
+  background-color: #cbf3f0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-footer-searchbox {
+  background-color: #cbf3f0 !important;
+}
+
+.searchbox-location-item {
+  border-top-width: 1px !important;
+  font-size: 0.8rem;
+}
+
+.searchbox-list-item {
+  background-color: transparent !important;
+}
+
 /* search ad results box */
+
+/* search ad filter box */
+
+.search-filter-box-wrappper-row {
+  max-width: 1000px;
+}
+
+.dropdownwidthsearchbox_searchbox {
+  width: 16rem;
+}
+.col-loc {
+  width: fit-content;
+}
+
+/* search ad filter box */
 
 /* footer */
 

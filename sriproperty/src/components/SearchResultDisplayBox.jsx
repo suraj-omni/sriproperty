@@ -36,6 +36,7 @@ const SearchResultDisplayBox = ({ advert }) => {
   var curtime = moment(new Date());
 
   const negotiable = rentalopricenegotiable ? "Negotiable" : "";
+  const adverttypealt = adverttype === "sell" ? "Sale" : "Rent";
   const isLand = category === "Land" ? true : false;
   const isHouse = category === "House" ? true : false;
   const isApartment = category === "Apartment" ? true : false;
@@ -46,44 +47,33 @@ const SearchResultDisplayBox = ({ advert }) => {
     category === "Commercial Property" ? true : false;
 
   return (
-    <Card className="card-width">
-      <Card.Body>
-        <Card.Title>
-          <Link to={`/ad/${advertId}`}>{`${title}`}</Link>
-        </Card.Title>
-        <ListGroup variant="flush">
-          <ListGroupItem>
-            <FontAwesomeIcon
-              style={{ color: "#588b8b" }}
-              icon={faMapMarkerAlt}
-              size="1.5x"
-            />{" "}
-            {`  ${district}, ${city}`}
-          </ListGroupItem>
-          <ListGroupItem>
-            <div className="m-auto ad-view-box-price-font">
-              {" "}
-              {`Rs.${rentaloprice} - ${rentalopriceunit}`}{" "}
-              <span className="ad-view-main-price_nego-font">{`${negotiable}`}</span>
-            </div>
-          </ListGroupItem>
-
-          <ListGroupItem className="ad-view-main-type-font">{`${category} for ${adverttype} by ${name} posted ${lastmodifiedAt.from(
-            curtime
-          )}`}</ListGroupItem>
-
+    <Card className="card-searchbox">
+      <Card.Header className="card-header-searchbox">
+        <Link to={`/ad/${advertId}`}>
+          <Card.Img
+            variant="top"
+            src={
+              image1Url != ""
+                ? image1Url
+                : "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media"
+            }
+            className=" mx-auto card-image img-fluid"
+          />
+        </Link>
+        <ListGroup>
           {(isRoomorAnnexe ||
             isHolidayShortRental ||
             isHouse ||
             isApartment) && (
             <React.Fragment>
-              <ListGroupItem>
-                <div className="d-flex ad-view-desc-font">
-                  <div className="flex-fill text-left mx-auto">
+              <ListGroupItem className="sreachresultbox_item1">
+                <div className="d-flex ad-view-main-type-font">
+                  <div className="flex-fill text-left mx-auto">{category}</div>
+                  <div className="flex-fill text-right">
                     <FontAwesomeIcon
                       style={{ color: "#588b8b" }}
                       icon={faBed}
-                      size="2x"
+                      size="1.5x"
                     />
                     <span>{`   ${beds}`}</span>
                   </div>
@@ -92,7 +82,7 @@ const SearchResultDisplayBox = ({ advert }) => {
                     <FontAwesomeIcon
                       style={{ color: "#588b8b" }}
                       icon={faBath}
-                      size="2x"
+                      size="1.5x"
                     />
                     <span>{`   ${baths}`}</span>
                   </div>
@@ -102,9 +92,10 @@ const SearchResultDisplayBox = ({ advert }) => {
           )}
           {isLand && (
             <React.Fragment>
-              <ListGroupItem>
+              <ListGroupItem className="sreachresultbox_item1">
                 <div className="d-flex ad-view-main-type-font">
-                  <div className="flex-fill text-left mx-auto">
+                  <div className="flex-fill text-left">{category}</div>
+                  <div className="flex-fill text-center">
                     <span>{`${landsize} ${landsizeunit}`}</span>
                   </div>
 
@@ -117,9 +108,10 @@ const SearchResultDisplayBox = ({ advert }) => {
           )}
           {isCommercialProperty && (
             <React.Fragment>
-              <ListGroupItem>
+              <ListGroupItem className="sreachresultbox_item1">
                 <div className="d-flex ad-view-main-type-font">
-                  <div className="flex-fill text-left mx-auto">
+                  <div className="flex-fill text-left">{category}</div>
+                  <div className="flex-fill text-center">
                     <span>{`${size} sq.ft`}</span>
                   </div>
 
@@ -131,25 +123,55 @@ const SearchResultDisplayBox = ({ advert }) => {
             </React.Fragment>
           )}
         </ListGroup>
-      </Card.Body>
-      <Link to={`/ad/${advertId}`}>
-        <Card.Img
-          variant="top"
-          src={
-            image1Url != ""
-              ? image1Url
-              : "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media"
-          }
-          className=" mx-auto card-image img-fluid"
-        />
-      </Link>
-
-      <Card.Body>
-        <Card.Text className="text-center ad-view-box-desc-font card-desc">
+      </Card.Header>
+      <Card.Body className="pt-2 px-0">
+        <Card.Title className="search-box-cardtitle text-center mx-auto">
+          <h6>
+            {" "}
+            <Link className="card-a" to={`/ad/${advertId}`}>{`${title}`}</Link>
+          </h6>
+        </Card.Title>
+        <ListGroup variant="flush">
+          <ListGroupItem
+            disabled
+            className="searchbox-list-item searchbox-location-item"
+          >
+            <FontAwesomeIcon
+              style={{ color: "#588b8b" }}
+              icon={faMapMarkerAlt}
+              size="1.5x"
+            />{" "}
+            {`  ${district}, ${city}`}
+          </ListGroupItem>
+          <ListGroupItem disabled className="searchbox-list-item">
+            <div className="m-auto ad-view-box-price-font">
+              {" "}
+              {`Rs. ${rentaloprice} - ${rentalopriceunit}`}{" "}
+              <span className="ad-view-main-price_nego-font">{`${negotiable}`}</span>
+            </div>
+          </ListGroupItem>
+        </ListGroup>
+        <Card.Text className="ad-view-box-desc-font p-2  card-desc">
           {`${description.substring(0, 150)}  `}
           <Link to={`/ad/${advertId}`}>(view more...)</Link>
         </Card.Text>
       </Card.Body>
+      <Card.Footer className="p-1 card-footer-searchbox">
+        <ListGroupItem
+          disabled
+          className="ad-view-main-type-font sreachresultbox_item1"
+        >
+          <div className="d-flex ad-view-main-type-font">
+            <div className="flex-fill text-left mx-auto">
+              <span>{`For ${adverttypealt} by ${name}`}</span>
+            </div>
+
+            <div className="flex-fill text-right">
+              <span>{`${lastmodifiedAt.from(curtime)}`}</span>
+            </div>
+          </div>
+        </ListGroupItem>
+      </Card.Footer>
     </Card>
   );
 };

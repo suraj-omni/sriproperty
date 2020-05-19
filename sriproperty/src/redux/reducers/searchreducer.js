@@ -1,4 +1,11 @@
-import { LOAD_ADVERT_LOCATION_TOTAL } from "../types";
+import {
+  LOAD_ADVERT_LOCATION_TOTAL,
+  SEARCH_START,
+  SEARCH_LOADED,
+  SET_SEARCH_PARAMS,
+  SET_SEARCH_NORECORDS,
+  CLEAR_SEARCH_PARAMS,
+} from "../types";
 
 const initialState = {
   allsearchedadverts: [],
@@ -7,7 +14,10 @@ const initialState = {
   advertlocationtotal: [],
   searchedadvertscount: 0,
   after: 0,
-  more: true,
+  more: false,
+  paramDistrict: "",
+  paramCity: "",
+  paramCategory: [],
 };
 
 export default function (state = initialState, action) {
@@ -18,20 +28,40 @@ export default function (state = initialState, action) {
         advertlocationtotal: action.advertlocationtotal,
         districtslist: action.districtslist,
       };
-    case "START":
+    case SEARCH_START:
       return {
         ...state,
         allsearchedadverts: action.allsearchedadverts,
         showingadverts: action.showingadverts,
         searchedadvertscount: action.searchedadvertscount,
         after: action.after,
+        paramDistrict: action.paramDistrict,
+        paramCategory: action.paramCategory,
+        more: true,
       };
-    case "LOADED":
+    case SEARCH_LOADED:
       return {
         ...state,
         showingadverts: action.showingadverts,
         more: action.more,
         after: action.after,
+      };
+    case SET_SEARCH_NORECORDS:
+      return {
+        ...state,
+        more: false,
+        paramDistrict: action.paramDistrict,
+        paramCategory: action.paramCategory,
+      };
+    case SET_SEARCH_PARAMS:
+      return {
+        ...state,
+        paramDistrict: action.paramDistrict,
+        paramCategory: action.paramCategory,
+      };
+    case CLEAR_SEARCH_PARAMS:
+      return {
+        initialState,
       };
     default:
       return { ...state };
