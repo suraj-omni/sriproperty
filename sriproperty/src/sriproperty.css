@@ -645,7 +645,7 @@ ul li {
 }
 
 .dropdownwidthsearchbox_searchbox {
-  width: 16rem;
+  width: 100%;
 }
 .col-loc {
   width: fit-content;

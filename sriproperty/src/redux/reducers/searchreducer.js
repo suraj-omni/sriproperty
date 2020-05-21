@@ -59,6 +59,12 @@ export default function (state = initialState, action) {
         paramDistrict: action.paramDistrict,
         paramCategory: action.paramCategory,
       };
+    case "SORT_SEARCHED_DATA":
+      return {
+        ...state,
+        allsearchedadverts: action.allsearchedadverts,
+        showingadverts: action.showingadverts,
+      };
     case CLEAR_SEARCH_PARAMS:
       return {
         initialState,

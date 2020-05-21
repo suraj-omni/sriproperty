@@ -309,4 +309,22 @@ module.exports = {
     "Other",
   ],
   propertytype_roomannex: ["Annex", "Apartment", "House", "Portion", "Other"],
+  search_SortyByOptions: [
+    {
+      value: "date_desc",
+      label: "Date : New Ads First",
+    },
+    {
+      value: "date_asc",
+      label: "Date: Older Ads First",
+    },
+    {
+      value: "price_desc",
+      label: "Price: Highest to Lowest",
+    },
+    {
+      value: "price_asc",
+      label: "Price: Lowest to Highest",
+    },
+  ],
 };

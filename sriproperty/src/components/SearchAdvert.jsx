@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import config from "../util/config";
+
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
@@ -12,6 +12,7 @@ import SearchFilterBox from "./SearchFilterBox";
 import {
   searchAdverts,
   loadNextSearchAdverts,
+  sortSearchedItems,
 } from "../redux/actions/searchActions";
 
 import SearchResultsGrid from "./SearchResultsGrid";
@@ -38,6 +39,64 @@ export class SearchAdvert extends Component {
     this.props.searchAdverts(searchParams, this.state.pagesize);
   };
 
+  handleSearch = (district, city, catrgoryarray, sortByval) => {
+    console.log("handleSearch sortByval", sortByval);
+    let sortBy = "modifiedAt";
+    let sortOrder = "desc";
+
+    if (sortByval === "price_desc") {
+      sortBy = "rentaloprice";
+      sortOrder = "desc";
+    } else if (sortByval === "price_asc") {
+      sortBy = "rentaloprice";
+      sortOrder = "asc";
+    } else if (sortByval === "date_asc") {
+      sortBy = "modifiedAt";
+      sortOrder = "asc";
+    } else {
+      sortBy = "modifiedAt";
+      sortOrder = "desc";
+    }
+
+    const searchParams = {
+      district: district,
+      city: city,
+      catrgoryarray: catrgoryarray,
+      sortBy: sortBy,
+      sortOrder: sortOrder,
+    };
+    console.log("handleSearch", searchParams);
+    this.props.searchAdverts(searchParams);
+  };
+
+  handleSort = (sortByval) => {
+    console.log("handleSort sortByval", sortByval);
+
+    let sortBy = "";
+    let sortOrder = "";
+
+    if (sortByval === "price_desc") {
+      sortBy = "rentaloprice";
+      sortOrder = "desc";
+    } else if (sortByval === "price_asc") {
+      sortBy = "rentaloprice";
+      sortOrder = "asc";
+    } else if (sortByval === "date_asc") {
+      sortBy = "modifiedAt";
+      sortOrder = "asc";
+    } else {
+      sortBy = "modifiedAt";
+      sortOrder = "desc";
+    }
+
+    this.props.sortSearchedItems(
+      sortOrder,
+      sortBy,
+      this.props.search.showingadverts,
+      this.props.search.allsearchedadverts
+    );
+  };
+
   loadMore = () => {
     this.props.loadNextSearchAdverts(
       this.props.search.after,
@@ -61,8 +120,12 @@ export class SearchAdvert extends Component {
             />
           </marquee>
         </Row>
-        <Row className="border border-primary mx-auto px-4 my-2">
-          <SearchFilterBox props={this.props}></SearchFilterBox>
+        <Row className="d-flex flex-md-row flex-column justify-content-center align-items-center border border-primary mx-auto">
+          <SearchFilterBox
+            props={this.props}
+            handleSearch={this.handleSearch}
+            handleSort={this.handleSort}
+          ></SearchFilterBox>
         </Row>
         <Row className="border border-primary d-flex p-md-3 p-xs-0 mx-auto my-2">
           <Col xs={12} md={9} className="border border-primary">
@@ -96,6 +159,7 @@ export class SearchAdvert extends Component {
 SearchAdvert.propTypes = {
   searchAdverts: PropTypes.func.isRequired,
   loadNextSearchAdverts: PropTypes.func.isRequired,
+  sortSearchedItems: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
   search: PropTypes.object.isRequired,
 };
@@ -108,6 +172,7 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   searchAdverts,
   loadNextSearchAdverts,
+  sortSearchedItems,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(SearchAdvert);

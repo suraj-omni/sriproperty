@@ -17,7 +17,6 @@ import {
   ADVERT_STATUS_NEEDEDIT,
   ADVERT_STATUS_INREVIEW,
 } from "../redux/types";
-import { addAdvert } from "../redux/actions/adActions";
 
 const config = require("../util/config");
 

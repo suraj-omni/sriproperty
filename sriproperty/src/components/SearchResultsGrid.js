@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -9,7 +9,9 @@ import Container from "react-bootstrap/Container";
 import SearchResultDisplayBox from "./SearchResultDisplayBox";
 
 export const SearchResultsGrid = (props) => {
-  const { showingadverts: adverts, more } = props.search;
+  const { more } = props.search;
+  const [adverts, setAdverts] = useState([]);
+
   const { loading } = props.UI;
   const { loadMore } = props;
 
@@ -41,6 +43,11 @@ export const SearchResultsGrid = (props) => {
       }
     };
   }, [element]);
+
+  useEffect(() => {
+    setAdverts(props.search.showingadverts);
+    console.log(props.search.showingadverts);
+  }, [props.search.showingadverts]);
 
   let advertcards = (
     <div className="d-flex flex-row mx-auto my-2">

@@ -62,11 +62,11 @@ export const getimageUrllist = (advert) => {
 };
 
 export function convertArraytoKeyPair(array) {
-  //console.log("convertArraytoKeyPair", array);
   if (array === undefined || array.length === 0) {
     return null;
   }
   let returnlist = [];
+
   array.map((obj) => {
     returnlist.push({ value: `${obj}`, label: `${obj}` });
   });
