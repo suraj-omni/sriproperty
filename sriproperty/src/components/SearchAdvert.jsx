@@ -13,6 +13,7 @@ import {
   searchAdverts,
   loadNextSearchAdverts,
   sortSearchedItems,
+  filterbyCity,
 } from "../redux/actions/searchActions";
 
 import SearchResultsGrid from "./SearchResultsGrid";
@@ -28,19 +29,30 @@ export class SearchAdvert extends Component {
   componentDidMount = () => {
     const district = this.props.match.params.district;
     const category = this.props.match.params.category;
+    const adtype = this.props.match.params.adtype;
 
     const searchParams = {
       district: district,
+      city: "All",
       catrgoryarray: category,
+      adType: adtype,
       sortBy: "modifiedAt",
       sortOrder: "desc",
     };
-    console.log("searchParams before func call", searchParams);
+    // console.log("searchParams before func call", searchParams);
     this.props.searchAdverts(searchParams, this.state.pagesize);
   };
 
-  handleSearch = (district, city, catrgoryarray, sortByval) => {
-    console.log("handleSearch sortByval", sortByval);
+  handleSearch = (district, city, catrgoryarray, sortByval, adType) => {
+    console.log(
+      "district, city, catrgoryarray, sortByval, adType",
+      district,
+      city,
+      catrgoryarray,
+      sortByval,
+      adType
+    );
+
     let sortBy = "modifiedAt";
     let sortOrder = "desc";
 
@@ -62,15 +74,38 @@ export class SearchAdvert extends Component {
       district: district,
       city: city,
       catrgoryarray: catrgoryarray,
+      adType: adType,
       sortBy: sortBy,
       sortOrder: sortOrder,
     };
-    console.log("handleSearch", searchParams);
-    this.props.searchAdverts(searchParams);
+
+    const {
+      paramCategory,
+      paramDistrict,
+      allsearchedadverts,
+      allshowingadverts,
+    } = this.props.search;
+
+    //check if its only a city change and just filter results
+    if (
+      paramCategory === catrgoryarray &&
+      paramDistrict === district &&
+      city !== "All" &&
+      allsearchedadverts.length > 0
+    ) {
+      this.props.filterbyCity(
+        searchParams,
+        allsearchedadverts,
+        this.state.pagesize
+      );
+    } else {
+      // call back db
+      this.props.searchAdverts(searchParams);
+    }
   };
 
   handleSort = (sortByval) => {
-    console.log("handleSort sortByval", sortByval);
+    //console.log("handleSort sortByval", sortByval);
 
     let sortBy = "";
     let sortOrder = "";
@@ -92,8 +127,8 @@ export class SearchAdvert extends Component {
     this.props.sortSearchedItems(
       sortOrder,
       sortBy,
-      this.props.search.showingadverts,
-      this.props.search.allsearchedadverts
+      this.props.search.allshowingadverts,
+      this.state.pagesize
     );
   };
 
@@ -101,7 +136,7 @@ export class SearchAdvert extends Component {
     this.props.loadNextSearchAdverts(
       this.props.search.after,
       this.state.pagesize,
-      this.props.search.allsearchedadverts,
+      this.props.search.allshowingadverts,
       this.props.search.searchedadvertscount
     );
   };
@@ -160,6 +195,7 @@ SearchAdvert.propTypes = {
   searchAdverts: PropTypes.func.isRequired,
   loadNextSearchAdverts: PropTypes.func.isRequired,
   sortSearchedItems: PropTypes.func.isRequired,
+  filterbyCity: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
   search: PropTypes.object.isRequired,
 };
@@ -173,6 +209,7 @@ const mapActionsToProps = {
   searchAdverts,
   loadNextSearchAdverts,
   sortSearchedItems,
+  filterbyCity,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(SearchAdvert);

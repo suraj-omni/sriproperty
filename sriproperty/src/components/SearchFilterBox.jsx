@@ -15,6 +15,7 @@ export const SearchFilterBox = (props) => {
   const categories = config.categoriesoptionslist;
 
   const sortByOptions = config.search_SortyByOptions;
+  const adType = config.search_adType;
 
   const [cities, setCities] = useState(null);
 
@@ -26,6 +27,11 @@ export const SearchFilterBox = (props) => {
   const [selectedcategory, setSelectedcategory] = useState({
     value: "All",
     label: "All Categories",
+  });
+
+  const [selectedadType, setSelectedadType] = useState({
+    value: "All",
+    label: "All Ad Types",
   });
 
   const [selecteddistrict, setSelecteddistrict] = useState({
@@ -168,6 +174,27 @@ export const SearchFilterBox = (props) => {
         className="mx-md-auto p-2 border border-primary"
       >
         <Select
+          name="adType"
+          options={adType}
+          isSearchable="true"
+          classNamePrefix="searchloc"
+          className="dropdownwidthsearchbox_searchbox"
+          value={selectedadType}
+          onChange={(e) => {
+            setSelectedadType({
+              value: e.value,
+              label: e.label,
+            });
+          }}
+        />
+      </Col>
+      <Col
+        xs={12}
+        md={6}
+        lg={2}
+        className="mx-md-auto p-2 border border-primary"
+      >
+        <Select
           name="locationdropdown"
           options={sortByOptions}
           isSearchable="true"
@@ -185,19 +212,19 @@ export const SearchFilterBox = (props) => {
       </Col>
       <Col
         xs={12}
-        lg={4}
+        lg={2}
         className="text-lg-left text-center border p-2 border-primary"
       >
         <Button
           variant="primary"
           size="sm"
           onClick={() => {
-            console.log("ass", selectedSortByOption.value);
             props.handleSearch(
               selecteddistrict.value,
               selectedcity.value,
               selectedcategory.value,
-              selectedSortByOption.value
+              selectedSortByOption.value,
+              selectedadType.value
             );
           }}
         >

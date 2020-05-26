@@ -79,7 +79,7 @@ function App() {
               component={EditAdvertDetails}
             ></Route>
             <Route
-              path="/search/:district/:category"
+              path="/search/:district/:category/:adtype"
               component={SearchAdvert}
             ></Route>
             <Route path="/admin" component={AdminAdvertList}></Route>

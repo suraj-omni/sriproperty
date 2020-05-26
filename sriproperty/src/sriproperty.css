@@ -651,6 +651,10 @@ ul li {
   width: fit-content;
 }
 
+.main_menu_district_modal {
+  z-index: 12000;
+}
+
 /* search ad filter box */
 
 /* footer */

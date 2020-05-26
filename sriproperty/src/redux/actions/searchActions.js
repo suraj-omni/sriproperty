@@ -9,6 +9,8 @@ import {
   CLEAR_SEARCH_PARAMS,
 } from "../types";
 
+import moment from "moment/moment";
+
 import axios from "axios";
 
 import { categories } from "../../util/config";
@@ -16,10 +18,7 @@ import { categories } from "../../util/config";
 const _ = require("lodash");
 
 export const ClearAllSearch = (history, district, category) => (dispatch) => {
-  console.log("ClearAllSearch");
-
   dispatch({ type: CLEAR_SEARCH_PARAMS });
-  //history.push(`/search/${district}/${category}`);
 };
 
 //Get Advert Location Total
@@ -50,38 +49,142 @@ export const getAdvertLocationTotal = () => (dispatch) => {
     });
 };
 
+export const filterbyCity = (searchParams, allsearchedadverts, pagesize) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_UI });
+
+  const {
+    city,
+    district,
+    sortBy,
+    sortOrder,
+    catrgoryarray,
+    adType,
+  } = searchParams;
+
+  let arr = [];
+  let showingadvers = [];
+  let more = true;
+  new Promise((resolve, reject) => {
+    /*     dispatch({
+      type: "SORT_SEARCHED_DATA",
+      allshowingadverts: [],
+      showingadverts: [],
+    }); */
+    resolve(true);
+  })
+    .then(() => {
+      new Promise((resolve) => {
+        _.each(
+          (allsearchedadverts = allsearchedadverts),
+          (item) => (item.rentaloprice = parseInt(item.rentaloprice, 10))
+        );
+
+        _.each(
+          (allsearchedadverts = allsearchedadverts),
+          (item) =>
+            (item.modifiedAt = new moment(item.modifiedAt).format("YYYYMMDD"))
+        );
+
+        //Filter by City
+        arr = _.filter(allsearchedadverts, {
+          city: `${city}`,
+        });
+
+        //Filter by Ad Type
+        console.log("searchParams.adType", adType);
+        if (adType !== "All") {
+          arr = _.filter(arr, {
+            adverttype: `${adType}`,
+          });
+        }
+
+        arr = _.orderBy(arr, [`${sortBy}`], [`${sortOrder}`]);
+
+        showingadvers = arr.slice(0, pagesize);
+
+        if (arr.length < pagesize) {
+          more = false;
+        }
+
+        resolve(true);
+      })
+        .then(() => {
+          dispatch({
+            type: "FILTER_BY_CITY",
+            allshowingadverts: arr,
+            showingadverts: showingadvers,
+            searchedadvertscount: arr.length,
+            after: pagesize,
+            more: more,
+            paramDistrict: district,
+            paramCategory: catrgoryarray,
+          });
+          dispatch({ type: FINISHED_LOADING_UI });
+        })
+        .catch((err) => {
+          console.log("error occured", err);
+        });
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
+};
+
 export const sortSearchedItems = (
   sortOrder,
   sortBy,
-  showingadverts,
-  allsearchedadverts
+  allshowingadverts,
+  pagesize
 ) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   let arr = [];
-  let nowshowing = [];
+  let showingadvers = [];
   new Promise((resolve, reject) => {
-    dispatch({
+    /*     dispatch({
       type: "SORT_SEARCHED_DATA",
-      allsearchedadverts: [],
+      allshowingadverts: [],
       showingadverts: [],
-    });
+    }); */
     resolve(true);
   }).then(() => {
     new Promise((resolve, reject) => {
-      console.log("sortBy", sortBy, "sortOrder", sortOrder);
-      resolve(_.sortBy(allsearchedadverts, sortBy, sortOrder));
-    }).then((sortedadverts) => {
-      arr = sortedadverts;
+      //console.log("sortBy", sortBy, "sortOrder", sortOrder);
+
+      let temparr = _.slice(
+        allshowingadverts,
+        [0],
+        [allshowingadverts.length]
+      ).reverse();
+
+      _.each(
+        (allshowingadverts = allshowingadverts),
+        (item) => (item.rentaloprice = parseInt(item.rentaloprice, 10))
+      );
+
+      _.each(
+        (allshowingadverts = allshowingadverts),
+        (item) =>
+          (item.modifiedAt = new moment(item.modifiedAt).format("YYYYMMDD"))
+      );
+
+      arr = _.orderBy(temparr, [`${sortBy}`], [`${sortOrder}`]);
+
+      resolve(arr);
+    }).then(() => {
       new Promise((resolve) => {
-        console.log("sortedadverts", sortedadverts);
-        resolve(sortedadverts.slice(0, 6));
+        //console.log("sortedadverts", arr);
+        showingadvers = arr.slice(0, pagesize);
+        resolve(showingadvers);
       })
-        .then((nowshowingitems) => {
-          console.log("arr", arr, nowshowingitems);
+        .then((showingadvers) => {
+          // console.log("arr", arr, showingadvers);
           dispatch({
             type: "SORT_SEARCHED_DATA",
-            allsearchedadverts: arr,
-            showingadverts: nowshowingitems,
+            allshowingadverts: arr,
+            showingadverts: showingadvers,
+            after: pagesize,
           });
           dispatch({ type: FINISHED_LOADING_UI });
         })
@@ -98,6 +201,7 @@ export const searchAdverts = (searchParams, pagesize = 6) => (dispatch) => {
   // but for reference we will keep value "All"
   console.log("before searchParams", searchParams);
   let catrgoryarray = [];
+  let allsearchedadverts = [];
   let tmp_category = searchParams.catrgoryarray;
 
   if (searchParams.catrgoryarray === "All") {
@@ -105,12 +209,6 @@ export const searchAdverts = (searchParams, pagesize = 6) => (dispatch) => {
   } else {
     searchParams.catrgoryarray = [searchParams.catrgoryarray];
   }
-
-  //console.log(searchParams.district);
-  //console.log(tmp_category);
-
-  //console.log("searchParams", searchParams);
-  //console.log("tmp_category", tmp_category);
 
   axios
     .post("/searchadverts", searchParams)
@@ -121,26 +219,66 @@ export const searchAdverts = (searchParams, pagesize = 6) => (dispatch) => {
         //There is data
         //How many records are there
         let advertscount = allsearchedadverts.length;
-        console.log("a", new Date().getMilliseconds());
+        console.log("advertscount", advertscount);
         let promise3 = new Promise((resolve) => {
-          resolve(
-            _.sortBy(
-              allsearchedadverts,
-              [searchParams.sortBy, "city"],
-              [searchParams.sortOrder, "asc"]
-            )
+          _.each(
+            (allsearchedadverts = allsearchedadverts),
+            (item) => (item.rentaloprice = parseInt(item.rentaloprice, 10))
           );
+
+          _.each(
+            (allsearchedadverts = allsearchedadverts),
+            (item) =>
+              (item.modifiedAt = new moment(item.modifiedAt).format("YYYYMMDD"))
+          );
+
+          let arr = _.orderBy(
+            allsearchedadverts,
+            [`${searchParams.sortBy}`],
+            [`${searchParams.sortOrder}`]
+          );
+
+          allsearchedadverts = _.slice(arr, [0], [arr.length]);
+
+          //Filter Cities
+          console.log("searchParams.city", searchParams.city);
+          if (searchParams.city !== "All") {
+            arr = _.filter(arr, {
+              city: `${searchParams.city}`,
+            });
+          }
+
+          //Filter Ad Type
+          console.log("searchParams.adType", searchParams.adType);
+          if (searchParams.adType !== "All") {
+            arr = _.filter(arr, {
+              adverttype: `${searchParams.adType}`,
+            });
+          }
+
+          if (arr & (arr.length === 0)) {
+            dispatch({
+              type: SET_SEARCH_NORECORDS,
+              paramCategory: tmp_category,
+              paramDistrict: searchParams.district,
+              allsearchedadverts: [],
+              showingadverts: [],
+              more: false,
+            });
+          }
+          resolve(arr);
         });
 
         promise3.then((sortedadverts) => {
           console.log("b", new Date().getMilliseconds());
           //Get only first few as set by page size to display initially.
           let showingadverts = sortedadverts.slice(0, pagesize);
-          console.log("c", new Date().getMilliseconds());
+
           //dispatch reducet method
           dispatch({
             type: SEARCH_START,
-            allsearchedadverts: sortedadverts,
+            allsearchedadverts: allsearchedadverts,
+            allshowingadverts: sortedadverts,
             showingadverts: showingadverts,
             searchedadvertscount: advertscount,
             after: pagesize,
@@ -156,6 +294,9 @@ export const searchAdverts = (searchParams, pagesize = 6) => (dispatch) => {
           type: SET_SEARCH_NORECORDS,
           paramCategory: tmp_category,
           paramDistrict: searchParams.district,
+          allsearchedadverts: [],
+          showingadverts: [],
+          more: false,
         });
       }
       dispatch({ type: FINISHED_LOADING_UI });
@@ -175,13 +316,20 @@ export const searchAdverts = (searchParams, pagesize = 6) => (dispatch) => {
 export const loadNextSearchAdverts = (
   after,
   pagesize,
-  allsearchedadverts,
+  allshowingadverts,
   searchedadvertscount
 ) => (dispatch) => {
+  console.log(
+    "after,  pagesize,  allshowingadverts,  searchedadvertscount",
+    after,
+    pagesize,
+    allshowingadverts,
+    searchedadvertscount
+  );
   dispatch({ type: LOADING_UI });
 
   let _after = after + pagesize;
-  let allposts = allsearchedadverts;
+  let allposts = allshowingadverts;
   let posts = allposts.slice(0, _after);
   let postcount = posts && posts.length ? posts.length : 0;
 

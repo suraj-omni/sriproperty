@@ -24,13 +24,9 @@ class Home extends Component {
       alert("Please select a Location and a Category!!!");
       return null;
     } else {
-      /*  this.props.ClearAllSearch(
-        this.props.history,
-        this.state.selecteddistrict.value,
-        this.state.selectedcategory.value
-      ); */
+      this.props.ClearAllSearch();
       this.props.history.push(
-        `/search/${this.state.selecteddistrict.value}/${this.state.selectedcategory.value}`
+        `/search/${this.state.selecteddistrict.value}/${this.state.selectedcategory.value}/All`
       );
     }
   };

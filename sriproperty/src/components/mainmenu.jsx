@@ -6,13 +6,24 @@ import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { logOutUser } from "../redux/actions/userActions";
+
 import { Route, Switch, withRouter } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import config from "../util/config";
+import Select from "react-select";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { ClearAllSearch } from "../redux/actions/searchActions";
+import { logOutUser } from "../redux/actions/userActions";
+
 class MainMenu extends Component {
   state = {
     navlinkclass: "mx-1 nav-link",
+    showmodal: false,
+    category: "",
+    district: "",
+    adtype: "",
   };
 
   handlePostAd = (event) => {
@@ -23,15 +34,69 @@ class MainMenu extends Component {
     this.props.logOutUser(this.props.history);
   };
 
+  handleModalClose = () => {
+    this.setState({ showmodal: false });
+  };
+
+  handleSearch = () => {
+    if (!this.state.category || !this.state.district) {
+      alert("Please select a District and a Category!!!");
+      return null;
+    } else {
+      this.setState({ showmodal: false });
+      //this.props.ClearAllSearch();
+      this.props.history.push(
+        `/search/${this.state.district}/${this.state.category}/${this.state.adtype}`
+      );
+      window.location.reload(false);
+    }
+  };
+
+  render_LocationModal = () => {
+    const districtslist = config.districtsoptionslist;
+    return (
+      <React.Fragment>
+        <Modal
+          show={this.state.showmodal}
+          onHide={this.handleModalClose}
+          centered
+          className="main_menu_district_modal"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Select the District</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Select
+              id="districtdropdown"
+              name="districtdropdown"
+              options={districtslist}
+              isSearchable="true"
+              classNamePrefix="searchloc"
+              className="dropdownwidthsearchbox_searchbox"
+              onChange={(e) => {
+                this.setState({ district: e.value });
+              }}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={this.handleSearch}>
+              View Properties
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </React.Fragment>
+    );
+  };
+
   render() {
     const { authenticated, isAdmin, history } = this.props;
     return (
       <React.Fragment>
         <Container>
           <Navbar bg="light" expand="md">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/">
               <Image
-                src="../../img/fbprofilepicture.png"
+                src="http://localhost:3000/img/fbprofilepicture.png"
                 width="100"
                 height="100"
                 roundedCircle
@@ -49,19 +114,50 @@ class MainMenu extends Component {
                   id="salesdropdown"
                   className={this.state.navlinkclass}
                 >
-                  <NavDropdown.Item href="#action/3.1">Houses</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Apartments
+                  <NavDropdown.Item
+                    href="#action/3.2"
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Land",
+                        adtype: "sell",
+                      });
+                    }}
+                  >
+                    Land
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
-                    Commercial
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "House",
+                        adtype: "sell",
+                      });
+                    }}
+                  >
+                    House
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Bungalows
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Apartment",
+                        adtype: "sell",
+                      });
+                    }}
+                  >
+                    Apartment
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">Villas</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Studio / Bedsit
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Commercial Property",
+                        adtype: "sell",
+                      });
+                    }}
+                  >
+                    Commercial Property
                   </NavDropdown.Item>
                 </NavDropdown>
                 {/* Rentals */}
@@ -70,57 +166,75 @@ class MainMenu extends Component {
                   id="basic-nav-dropdown"
                   className={this.state.navlinkclass}
                 >
-                  <NavDropdown.Item href="#action/3.1">Houses</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Apartments
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "House",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    House
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
-                    Commercial
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Apartment",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    Apartment
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Bungalows
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Room or Annex",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    Room or Annex
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">Villas</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Studio / Bedsit
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Holiday and Short Rental",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    Holiday and Short Rental
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">Rooms</NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Commercial Property",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    Commercial Property
+                  </NavDropdown.Item>
+
+                  <NavDropdown.Item
+                    onClick={() => {
+                      this.setState({
+                        showmodal: true,
+                        category: "Land",
+                        adtype: "rent",
+                      });
+                    }}
+                  >
+                    Land
+                  </NavDropdown.Item>
                 </NavDropdown>
-                {/* Lands */}
-                <NavDropdown
-                  title="Land"
-                  id="basic-nav-dropdown"
-                  className={this.state.navlinkclass}
-                >
-                  <NavDropdown.Item href="#action/3.1">Houses</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Bare Land
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
-                    Beachfront Land
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Cultivated / Agriculture
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Land with House
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Tea Estate
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Rubber Estate
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Coconut Estate
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Paddy Land
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Cinnamon Estate
-                  </NavDropdown.Item>
-                </NavDropdown>
+
                 {authenticated & !isAdmin ? (
                   <React.Fragment>
                     <Link
@@ -192,12 +306,14 @@ class MainMenu extends Component {
             </div>
           </Navbar>
         </Container>
+        {this.render_LocationModal()}
       </React.Fragment>
     );
   }
 }
 
 MainMenu.propTypes = {
+  ClearAllSearch: PropTypes.func.isRequired,
   logOutUser: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
@@ -206,10 +322,12 @@ MainMenu.propTypes = {
 const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
   isAdmin: state.user.credentials.isAdmin,
+  search: state.search,
 });
 
 const mapActionsToProps = {
   logOutUser,
+  ClearAllSearch,
 };
 
 export default connect(

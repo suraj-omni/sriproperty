@@ -327,4 +327,18 @@ module.exports = {
       label: "Price: Lowest to Highest",
     },
   ],
+  search_adType: [
+    {
+      value: "All",
+      label: "All Ad Types",
+    },
+    {
+      value: "sell",
+      label: "For Sale",
+    },
+    {
+      value: "rent",
+      label: "For Rent",
+    },
+  ],
 };

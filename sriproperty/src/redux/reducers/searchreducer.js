@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   allsearchedadverts: [],
+  allshowingadverts: [],
   showingadverts: [],
   districtslist: [],
   advertlocationtotal: [],
@@ -18,6 +19,7 @@ const initialState = {
   paramDistrict: "",
   paramCity: "",
   paramCategory: [],
+  paramAdType: "",
 };
 
 export default function (state = initialState, action) {
@@ -32,6 +34,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         allsearchedadverts: action.allsearchedadverts,
+        allshowingadverts: action.allshowingadverts,
         showingadverts: action.showingadverts,
         searchedadvertscount: action.searchedadvertscount,
         after: action.after,
@@ -52,6 +55,9 @@ export default function (state = initialState, action) {
         more: false,
         paramDistrict: action.paramDistrict,
         paramCategory: action.paramCategory,
+        allsearchedadverts: action.allsearchedadverts,
+        showingadverts: action.showingadverts,
+        more: action.more,
       };
     case SET_SEARCH_PARAMS:
       return {
@@ -62,9 +68,23 @@ export default function (state = initialState, action) {
     case "SORT_SEARCHED_DATA":
       return {
         ...state,
-        allsearchedadverts: action.allsearchedadverts,
+        allshowingadverts: action.allshowingadverts,
         showingadverts: action.showingadverts,
+        after: action.after,
+        more: true,
       };
+    case "FILTER_BY_CITY":
+      return {
+        ...state,
+        allshowingadverts: action.allshowingadverts,
+        showingadverts: action.showingadverts,
+        searchedadvertscount: action.searchedadvertscount,
+        after: action.after,
+        more: action.more,
+        paramDistrict: action.paramDistrict,
+        paramCategory: action.paramCategory,
+      };
+
     case CLEAR_SEARCH_PARAMS:
       return {
         initialState,

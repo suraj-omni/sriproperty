@@ -46,7 +46,7 @@ export const SearchResultsGrid = (props) => {
 
   useEffect(() => {
     setAdverts(props.search.showingadverts);
-    console.log(props.search.showingadverts);
+    console.log("props.search.showingadverts", props.search.showingadverts);
   }, [props.search.showingadverts]);
 
   let advertcards = (
