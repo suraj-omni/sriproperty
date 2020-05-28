@@ -19,6 +19,8 @@ const {
   advertPaymentStatusUpdate,
   getAdvertLocationTotal,
   SearchAdverts,
+  getFeaturedProperties,
+  getLatestProperties,
 } = require("./handlers/adverts");
 
 const {
@@ -36,6 +38,10 @@ const app = require("express")();
 
 //Get all adverts
 app.get("/adverts", getAllAdverts);
+
+app.get("/getFeaturedAdverts", getFeaturedProperties);
+
+app.get("/getLatestAdverts", getLatestProperties);
 
 app.get("/advertlocationtotal", getAdvertLocationTotal);
 

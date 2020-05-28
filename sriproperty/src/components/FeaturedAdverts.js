@@ -1,0 +1,54 @@
+import React, { useState, useEffect } from "react";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import SearchResultDisplayBox from "./SearchResultDisplayBox";
+
+export const FeaturedAdverts = (props) => {
+  const [featuredadverts, setFeaturedAdverts] = useState([]);
+  const { loadingfeatured } = props.UI;
+
+  useEffect(() => {
+    setFeaturedAdverts(props.search.featuredadverts);
+    console.log("props.search.featuredadverts", props.search.featuredadverts);
+  }, [props.search.featuredadverts]);
+
+  let advertcards = (
+    <div className="d-flex flex-row mx-auto my-2">
+      Sorry! there is nothing to show.
+    </div>
+  );
+
+  if (featuredadverts && featuredadverts.length > 0) {
+    advertcards = featuredadverts.map((advert) => (
+      <Col xs={12} md={6} lg={4} className="my-2">
+        <SearchResultDisplayBox advert={advert}></SearchResultDisplayBox>
+      </Col>
+    ));
+  }
+
+  return (
+    <React.Fragment>
+      {!loadingfeatured && advertcards && (
+        <Row className="mx-auto">{advertcards}</Row>
+      )}
+      {loadingfeatured && <li>Loading...</li>}
+    </React.Fragment>
+  );
+};
+
+FeaturedAdverts.propTypes = {
+  UI: PropTypes.object.isRequired,
+  search: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  UI: state.UI,
+  search: state.search,
+});
+
+export default connect(mapStateToProps)(FeaturedAdverts);

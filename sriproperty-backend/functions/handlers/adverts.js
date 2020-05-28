@@ -270,6 +270,51 @@ exports.SearchAdverts = (request, response) => {
     });
 };
 
+// Top 12 Properties
+
+exports.getFeaturedProperties = (request, response) => {
+  db.collection("adverts")
+    .where("advertStatus", "==", "LIVE")
+    .where("boostadvert", "==", true)
+    .orderBy("modifiedAt", "desc")
+    .limit(6)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return response.status(200).json([]);
+      } else {
+        let adverts = this.fillAdvert(snapshot);
+        return response.status(200).json(adverts);
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
+//Latest Properties
+
+exports.getLatestProperties = (request, response) => {
+  db.collection("adverts")
+    .where("advertStatus", "==", "LIVE")
+    .orderBy("modifiedAt", "desc")
+    .limit(6)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return response.status(200).json([]);
+      } else {
+        let adverts = this.fillAdvert(snapshot);
+        return response.status(200).json(adverts);
+      }
+    })
+    .catch((err) => {
+      response.status(500).json({ error: "something went wrong." });
+      console.error(err);
+    });
+};
+
 // add advert
 
 exports.addAdvert = (request, response) => {
@@ -294,7 +339,7 @@ exports.addAdvert = (request, response) => {
     reviewedBy: "",
     baths: request.body.baths ? request.body.baths : 0,
     beds: request.body.beds ? request.body.beds : 0,
-    boostadvert: "",
+    boostadvert: false,
     boostuntil: "",
     category: request.body.category,
     city: request.body.city,

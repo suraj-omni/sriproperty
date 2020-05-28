@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import config from "../util/config";
+import Select from "react-select";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 
 import SearchResultDisplayBox from "./SearchResultDisplayBox";
 
@@ -29,6 +31,11 @@ export const SearchResultsGrid = (props) => {
   );
   const [element, setElement] = React.useState(null);
 
+  const sortByOptions = config.search_SortyByOptions;
+  const [selectedSortByOption, setSelectedSortByOption] = useState(
+    config.search_SortyByOptions[0]
+  );
+
   React.useEffect(() => {
     const currentElement = element;
     const currentObserver = observer.current;
@@ -46,7 +53,7 @@ export const SearchResultsGrid = (props) => {
 
   useEffect(() => {
     setAdverts(props.search.showingadverts);
-    console.log("props.search.showingadverts", props.search.showingadverts);
+    //console.log("props.search.showingadverts", props.search.showingadverts);
   }, [props.search.showingadverts]);
 
   let advertcards = (
@@ -65,7 +72,33 @@ export const SearchResultsGrid = (props) => {
 
   return (
     <React.Fragment>
-      {!loading && advertcards && <Row className="mx-auto">{advertcards}</Row>}
+      {!loading && advertcards && (
+        <React.Fragment>
+          <Row className="mx-auto p-2 d-flex flex-row justify-content-end">
+            <Col className="my-auto  text-right p-1" xs={4}>
+              Sort results by :
+            </Col>
+            <Col className="p-1 align-middle" xs={8} md={5} lg={3}>
+              <Select
+                name="locationdropdown"
+                options={sortByOptions}
+                isSearchable="true"
+                classNamePrefix="searchloc"
+                className="dropdownwidthsearchbox_searchbox"
+                value={selectedSortByOption}
+                onChange={(e) => {
+                  setSelectedSortByOption({
+                    value: e.value,
+                    label: e.label,
+                  });
+                  props.handleSort(e.value);
+                }}
+              />
+            </Col>
+          </Row>
+          <Row className="mx-auto py-2">{advertcards}</Row>
+        </React.Fragment>
+      )}
       {loading && <li>Loading...</li>}
 
       {!loading && more && <div ref={setElement}></div>}

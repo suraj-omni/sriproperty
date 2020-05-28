@@ -7,6 +7,12 @@ import {
   SET_SEARCH_PARAMS,
   SET_SEARCH_NORECORDS,
   CLEAR_SEARCH_PARAMS,
+  GET_LATEST_ADVERTS,
+  GET_FEATURED_ADVERTS,
+  LOADING_LATEST_ADVERTS,
+  FINISED_LOADING_LATEST_ADVERTS,
+  LOADING_FEATURED_ADVERTS,
+  FINISED_LOADING_FEATURED_ADVERTS,
 } from "../types";
 
 import moment from "moment/moment";
@@ -348,4 +354,45 @@ export const loadNextSearchAdverts = (
   dispatch({ type: FINISHED_LOADING_UI });
   console.log("getAllPosts count :-", postcount);
   return posts;
+};
+
+export const getFeaturedProperties = () => (dispatch) => {
+  dispatch({ type: LOADING_FEATURED_ADVERTS });
+  axios
+    .get("/getFeaturedAdverts")
+    .then((res) => {
+      let adverts = [...res.data];
+      console.log("getFeaturedProperties", adverts);
+      dispatch({
+        type: GET_FEATURED_ADVERTS,
+        featuredadverts: adverts,
+      });
+      dispatch({ type: FINISED_LOADING_FEATURED_ADVERTS });
+      return adverts;
+    })
+    .catch((err) => {
+      console.log("getFeaturedProperties", err);
+      return null;
+    });
+};
+
+//Get Latest Adverts
+
+export const getLatestProperties = () => (dispatch) => {
+  dispatch({ type: LOADING_FEATURED_ADVERTS });
+  axios
+    .get("/getLatestAdverts")
+    .then((res) => {
+      let adverts = [...res.data];
+      dispatch({
+        type: GET_LATEST_ADVERTS,
+        latestadverts: adverts,
+      });
+      dispatch({ type: FINISED_LOADING_LATEST_ADVERTS });
+      return adverts;
+    })
+    .catch((err) => {
+      console.log("getLatestProperties", err);
+      return null;
+    });
 };

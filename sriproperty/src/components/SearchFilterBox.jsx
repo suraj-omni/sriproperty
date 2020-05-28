@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { searchAdverts } from "../redux/actions/searchActions";
 
 import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
 import config from "../util/config";
@@ -94,127 +95,104 @@ export const SearchFilterBox = (props) => {
       </React.Fragment>
     );
   return (
-    <React.Fragment>
-      <Col
-        xs={12}
-        md={6}
-        lg={2}
-        className="mx-md-auto p-2 border border-primary"
-      >
-        <Select
-          id="districtdropdown"
-          name="districtdropdown"
-          options={districtslist}
-          isSearchable="true"
-          classNamePrefix="searchloc"
-          className="dropdownwidthsearchbox_searchbox"
-          value={selecteddistrict}
-          onChange={(e) => {
-            //Set cities and also add all cities select with empty cities.
-            setCities([...emptycities, ...getCitiesbasedonDistrict(e.value)]);
+    <Row xs={12} className="rowtop mx-auto border rounded pb-3">
+      <Col lg={3} md={12} className="">
+        <div className="d-flex flex-column ">
+          <div className="p-1">District</div>
+          <div className="p-1">
+            <Select
+              id="districtdropdown"
+              name="districtdropdown"
+              options={districtslist}
+              isSearchable="true"
+              classNamePrefix="searchloc"
+              className="dropdownwidthsearchbox_searchbox"
+              value={selecteddistrict}
+              onChange={(e) => {
+                //Set cities and also add all cities select with empty cities.
+                setCities([
+                  ...emptycities,
+                  ...getCitiesbasedonDistrict(e.value),
+                ]);
 
-            setSelecteddistrict({
-              value: e.value,
-              label: e.value,
-            });
+                setSelecteddistrict({
+                  value: e.value,
+                  label: e.value,
+                });
 
-            setSelectedcity({
-              value: "All",
-              label: "All Cities",
-            });
-          }}
-        />
+                setSelectedcity({
+                  value: "All",
+                  label: "All Cities",
+                });
+              }}
+            />
+          </div>
+        </div>
       </Col>
-      <Col
-        xs={12}
-        md={6}
-        lg={2}
-        className="mx-md-auto p-2 border border-primary"
-      >
-        <Select
-          name="citiesdropdown"
-          options={cities}
-          isSearchable="true"
-          classNamePrefix="searchloc"
-          className="dropdownwidthsearchbox_searchbox"
-          value={selectedcity}
-          onChange={(e) => {
-            setSelectedcity({
-              value: e.value,
-              label: e.label,
-            });
-          }}
-        />
+      <Col lg={2} md={12} className=" ">
+        <div className="d-flex flex-column ">
+          <div className="p-1">City</div>
+          <div className="p-1">
+            <Select
+              name="citiesdropdown"
+              options={cities}
+              isSearchable="true"
+              classNamePrefix="searchloc"
+              className="dropdownwidthsearchbox_searchbox"
+              value={selectedcity}
+              onChange={(e) => {
+                setSelectedcity({
+                  value: e.value,
+                  label: e.label,
+                });
+              }}
+            />
+          </div>
+        </div>
       </Col>
-      <Col
-        xs={12}
-        md={6}
-        lg={2}
-        className="mx-md-auto p-2 border border-primary"
-      >
-        <Select
-          name="locationdropdown"
-          options={categories}
-          isSearchable="true"
-          classNamePrefix="searchloc"
-          className="dropdownwidthsearchbox_searchbox"
-          value={selectedcategory}
-          onChange={(e) => {
-            setSelectedcategory({
-              value: e.value,
-              label: e.label,
-            });
-          }}
-        />
+      <Col lg={2} md={12} className="">
+        <div className="d-flex flex-column ">
+          <div className="p-1">Category</div>
+          <div className="p-1">
+            <Select
+              name="category"
+              options={categories}
+              isSearchable="true"
+              classNamePrefix="searchloc"
+              className="dropdownwidthsearchbox_searchbox"
+              value={selectedcategory}
+              onChange={(e) => {
+                setSelectedcategory({
+                  value: e.value,
+                  label: e.label,
+                });
+              }}
+            />
+          </div>
+        </div>
       </Col>
-      <Col
-        xs={12}
-        md={6}
-        lg={2}
-        className="mx-md-auto p-2 border border-primary"
-      >
-        <Select
-          name="adType"
-          options={adType}
-          isSearchable="true"
-          classNamePrefix="searchloc"
-          className="dropdownwidthsearchbox_searchbox"
-          value={selectedadType}
-          onChange={(e) => {
-            setSelectedadType({
-              value: e.value,
-              label: e.label,
-            });
-          }}
-        />
+      <Col lg={2} md={12} className="">
+        <div className="d-flex flex-column">
+          <div className="p-1">Ad Type</div>
+          <div className="p-1">
+            <Select
+              name="adType"
+              options={adType}
+              isSearchable="true"
+              classNamePrefix="searchloc"
+              className="dropdownwidthsearchbox_searchbox"
+              value={selectedadType}
+              onChange={(e) => {
+                setSelectedadType({
+                  value: e.value,
+                  label: e.label,
+                });
+              }}
+            />
+          </div>
+        </div>
       </Col>
-      <Col
-        xs={12}
-        md={6}
-        lg={2}
-        className="mx-md-auto p-2 border border-primary"
-      >
-        <Select
-          name="locationdropdown"
-          options={sortByOptions}
-          isSearchable="true"
-          classNamePrefix="searchloc"
-          className="dropdownwidthsearchbox_searchbox"
-          value={selectedSortByOption}
-          onChange={(e) => {
-            setSelectedSortByOption({
-              value: e.value,
-              label: e.label,
-            });
-            props.handleSort(e.value);
-          }}
-        />
-      </Col>
-      <Col
-        xs={12}
-        lg={2}
-        className="text-lg-left text-center border p-2 border-primary"
-      >
+      <Col lg={3} md={12} className="mt-lg-4  text-xs-center p-2 text-lg-left">
         <Button
           variant="primary"
           size="sm"
@@ -231,7 +209,7 @@ export const SearchFilterBox = (props) => {
           Search Properties
         </Button>
       </Col>
-    </React.Fragment>
+    </Row>
   );
 };
 

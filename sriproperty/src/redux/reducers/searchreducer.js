@@ -5,9 +5,13 @@ import {
   SET_SEARCH_PARAMS,
   SET_SEARCH_NORECORDS,
   CLEAR_SEARCH_PARAMS,
+  GET_LATEST_ADVERTS,
+  GET_FEATURED_ADVERTS,
 } from "../types";
 
 const initialState = {
+  featuredadverts: [],
+  latestadverts: [],
   allsearchedadverts: [],
   allshowingadverts: [],
   showingadverts: [],
@@ -84,7 +88,16 @@ export default function (state = initialState, action) {
         paramDistrict: action.paramDistrict,
         paramCategory: action.paramCategory,
       };
-
+    case GET_FEATURED_ADVERTS:
+      return {
+        ...state,
+        featuredadverts: action.featuredadverts,
+      };
+    case GET_LATEST_ADVERTS:
+      return {
+        ...state,
+        latestadverts: action.latestadverts,
+      };
     case CLEAR_SEARCH_PARAMS:
       return {
         initialState,

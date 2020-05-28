@@ -146,7 +146,7 @@ export class SearchAdvert extends Component {
     const { loading } = this.props.UI;
     return (
       <React.Fragment>
-        <Row className="advertisingrow d-flex border border-primary text-center mx-auto px-4 my-2">
+        <Row className="advertisingrow d-flex text-center mx-auto px-4 my-2">
           <marquee>
             <Image
               src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/banner-aws-1024x350.png?alt=media&token=5e76cf7a-90c3-4a02-b224-2797fa5fc34c"
@@ -155,21 +155,22 @@ export class SearchAdvert extends Component {
             />
           </marquee>
         </Row>
-        <Row className="d-flex flex-md-row flex-column justify-content-center align-items-center border border-primary mx-auto">
+        <Row className="d-flex  mx-auto p-2">
           <SearchFilterBox
             props={this.props}
             handleSearch={this.handleSearch}
             handleSort={this.handleSort}
           ></SearchFilterBox>
         </Row>
-        <Row className="border border-primary d-flex p-md-3 p-xs-0 mx-auto my-2">
-          <Col xs={12} md={9} className="border border-primary">
+        <Row className=" d-flex p-md-3 p-xs-0 mx-auto my-2 ">
+          <Col xs={12} md={9} className="border rounded searchresultswrapper">
             <SearchResultsGrid
               props={this.props}
               loadMore={this.loadMore}
+              handleSort={this.handleSort}
             ></SearchResultsGrid>
           </Col>
-          <Col xs={0} md={3} className="border border-primary p-2">
+          <Col xs={0} md={3} className="p-2">
             <Card>
               <Card.Img
                 variant="top"

@@ -31,10 +31,16 @@ import {
   DELETE_IMAGE_COMPLETED3,
   DELETE_IMAGE_COMPLETED4,
   DELETE_IMAGE_COMPLETED5,
+  LOADING_LATEST_ADVERTS,
+  FINISED_LOADING_LATEST_ADVERTS,
+  LOADING_FEATURED_ADVERTS,
+  FINISED_LOADING_FEATURED_ADVERTS,
 } from "../types";
 
 const initialState = {
   loading: false,
+  loadinglatest: false,
+  loadingfeatured: false,
   inprogress1: false,
   inprogress2: false,
   inprogress3: false,
@@ -108,6 +114,26 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
+      };
+    case LOADING_LATEST_ADVERTS:
+      return {
+        ...state,
+        loadinglatest: true,
+      };
+    case FINISED_LOADING_LATEST_ADVERTS:
+      return {
+        ...state,
+        loadinglatest: false,
+      };
+    case LOADING_FEATURED_ADVERTS:
+      return {
+        ...state,
+        loadingfeatured: true,
+      };
+    case FINISED_LOADING_FEATURED_ADVERTS:
+      return {
+        ...state,
+        loadingfeatured: false,
       };
     case LOADING_UPDATEUSER_UI:
       return {

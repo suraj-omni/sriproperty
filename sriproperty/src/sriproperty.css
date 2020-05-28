@@ -47,9 +47,9 @@ body {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #1f1300;
+  color: #2f4858;
   text-align: left;
-  background-color: #fcddc5;
+  background-color: #b9e3c6;
   margin-bottom: 60px;
 }
 
@@ -567,14 +567,10 @@ ul li {
 /* search ad results box */
 
 .card-image {
-  width: 90%;
-  max-width: 300px !important;
-  height: 90%;
-  max-height: 225px;
-}
-
-.search-box-cardtitle {
-  min-height: 45px !important;
+  width: 100%;
+  max-width: 20rem !important;
+  height: 100%;
+  max-height: 16rem;
 }
 
 .ad-view-box-price-font {
@@ -614,12 +610,13 @@ ul li {
   background-clip: border-box;
   border: 1px solid #cbf3f0;
   border-radius: 0.25rem;
+  padding: 0.25rem 0;
 }
 
 .card-header-searchbox {
-  padding: 1rem 0.25rem !important;
+  padding: 0 !important;
   margin-bottom: 0;
-  background-color: #cbf3f0 !important;
+  background-color: #fafaff !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -653,6 +650,15 @@ ul li {
 
 .main_menu_district_modal {
   z-index: 12000;
+}
+
+.rowtop {
+  width: 100% !important;
+  background-color: #b9e3c6 !important;
+}
+
+.searchresultswrapper {
+  background-color: #b9e3c6 !important;
 }
 
 /* search ad filter box */

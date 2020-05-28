@@ -991,3 +991,5 @@ export const deleteAdImage = (deleteadvert) => (dispatch) => {
       }); */
     });
 };
+
+//Get Featured Ads
