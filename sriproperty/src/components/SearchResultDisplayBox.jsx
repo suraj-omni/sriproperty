@@ -51,7 +51,7 @@ const SearchResultDisplayBox = ({ advert }) => {
       <Card.Header className="card-header-searchbox">
         <ListGroupItem
           disabled
-          className="ad-view-main-type-font sreachresultbox_item1 py-1 px-2"
+          className="ad-view-main-type-font sreachresultbox_item1  px-2"
         >
           <div className="d-flex ad-view-main-type-font">
             <div className="flex-fill text-left mx-auto">
@@ -85,7 +85,7 @@ const SearchResultDisplayBox = ({ advert }) => {
                   <div className="flex-fill text-left mx-auto">{category}</div>
                   <div className="flex-fill text-right">
                     <FontAwesomeIcon
-                      style={{ color: "#588b8b" }}
+                      className="ad-view-icon"
                       icon={faBed}
                       size="1.5x"
                     />
@@ -94,7 +94,7 @@ const SearchResultDisplayBox = ({ advert }) => {
 
                   <div className="flex-fill text-right">
                     <FontAwesomeIcon
-                      style={{ color: "#588b8b" }}
+                      className="ad-view-icon"
                       icon={faBath}
                       size="1.5x"
                     />
@@ -138,7 +138,7 @@ const SearchResultDisplayBox = ({ advert }) => {
           )}
         </ListGroup>
       </Card.Header>
-      <Card.Body className="p-0">
+      <Card.Body className="card-body-searchbox">
         <Card.Title className="text-center align-middle pt-2 mx-auto">
           <h6>
             <Link className="card-a" to={`/ad/${advertId}`}>{`${title}`}</Link>
@@ -150,7 +150,7 @@ const SearchResultDisplayBox = ({ advert }) => {
             className="searchbox-list-item searchbox-location-item p-1"
           >
             <FontAwesomeIcon
-              style={{ color: "#588b8b" }}
+              className="ad-view-icon"
               icon={faMapMarkerAlt}
               size="1.5x"
             />
@@ -164,27 +164,11 @@ const SearchResultDisplayBox = ({ advert }) => {
             </div>
           </ListGroupItem>
         </ListGroup>
-        <Card.Text className="ad-view-box-desc-font p-2  card-desc">
+        <Card.Text className="ad-view-box-desc-font p-2">
           {`${description.substring(0, 150)}  `}
           <Link to={`/ad/${advertId}`}>(view more...)</Link>
         </Card.Text>
       </Card.Body>
-      {/*   <Card.Footer className="p-1 card-footer-searchbox">
-        <ListGroupItem
-          disabled
-          className="ad-view-main-type-font sreachresultbox_item1 p-1"
-        >
-          <div className="d-flex ad-view-main-type-font">
-            <div className="flex-fill text-left mx-auto">
-              <span>{`For ${adverttypealt} by ${name}`}</span>
-            </div>
-
-            <div className="flex-fill text-right">
-              <span>{`${lastmodifiedAt.from(curtime)}`}</span>
-            </div>
-          </div>
-        </ListGroupItem>
-      </Card.Footer> */}
     </Card>
   );
 };

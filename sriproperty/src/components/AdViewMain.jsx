@@ -101,8 +101,11 @@ class AdViewMain extends Component {
             <Col>Row for Back</Col>
           </Row>
           <Row className={`${defpadding}`}>
-            <Container className="px-2 pt-3 text-center ad-view-main-container">
-              <Row id="titlerow" className={`${defpadding} border-bottom`}>
+            <Container className="text-center ad-view-main-container">
+              <Row
+                id="titlerow"
+                className={`p-2 d-flex flex-row ad-view-main-titlerow`}
+              >
                 <Col className="h4">{title}</Col>
               </Row>
               {/* location */}

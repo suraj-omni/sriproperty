@@ -163,7 +163,7 @@ export class SearchAdvert extends Component {
           ></SearchFilterBox>
         </Row>
         <Row className=" d-flex p-md-3 p-xs-0 mx-auto my-2 ">
-          <Col xs={12} md={9} className="border rounded searchresultswrapper">
+          <Col xs={12} md={9} className="searchresultswrapper">
             <SearchResultsGrid
               props={this.props}
               loadMore={this.loadMore}

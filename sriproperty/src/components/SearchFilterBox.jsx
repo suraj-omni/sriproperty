@@ -95,8 +95,8 @@ export const SearchFilterBox = (props) => {
       </React.Fragment>
     );
   return (
-    <Row xs={12} className="rowtop mx-auto border rounded pb-3">
-      <Col lg={3} md={12} className="">
+    <Row xs={12} className="filterbox-toprow mx-auto  pb-3">
+      <Col lg={2} md={12} className="">
         <div className="d-flex flex-column ">
           <div className="p-1">District</div>
           <div className="p-1">
@@ -192,7 +192,7 @@ export const SearchFilterBox = (props) => {
           </div>
         </div>
       </Col>
-      <Col lg={3} md={12} className="mt-lg-4  text-xs-center p-2 text-lg-left">
+      <Col lg={4} md={12} className="mt-lg-4  text-xs-center p-2 text-lg-left">
         <Button
           variant="primary"
           size="sm"

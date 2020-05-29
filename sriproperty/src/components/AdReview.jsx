@@ -257,41 +257,8 @@ export class AdReview extends Component {
               <Col xs={12} className={`${colClass}`}>
                 <h4>{title}</h4>
               </Col>
-              {/*   <Col>
-                {` advertStatus ${advertStatus} === ADVERT_STATUS_INREVIEW ${ADVERT_STATUS_INREVIEW} ${
-                  advertStatus === ADVERT_STATUS_INREVIEW
-                } &&
-        paymentStatus ${paymentStatus} === PAYMENT_STATUS_PAID ${PAYMENT_STATUS_PAID} ${
-                  paymentStatus === PAYMENT_STATUS_PAID
-                } &&
-        this.props.advertpayment ${this.props.advertpayment} ${
-                  this.props.advertpayment
-                } && 
-        this.props.advertpayment.advertpaymentid ${
-          this.props.advertpayment.advertpaymentid !== undefined
-        } ${this.props.advertpayment.advertpaymentid}
-        ${
-          (advertStatus === ADVERT_STATUS_INREVIEW &&
-            paymentStatus === PAYMENT_STATUS_PAID &&
-            this.props.advertpayment &&
-            this.props.advertpayment.advertpaymentid) ||
-          (paymentStatus === PAYMENT_STATUS_FREE &&
-            advertStatus === ADVERT_STATUS_INREVIEW)
-        } next argivement ${
-                  paymentStatus === PAYMENT_STATUS_FREE &&
-                  advertStatus === ADVERT_STATUS_INREVIEW
-                }`}
-              </Col>
-              <Col>Hiiiiiiiiiiiiiiiiiii</Col> */}
             </Row>
-            {/* <Row>
-              <Col>
-                {advertStatus === ADVERT_STATUS_INREVIEW &&
-                  paymentStatus === PAYMENT_STATUS_PAID &&
-                  this.props.advertpayment &&
-                  this.props.advertpayment.advertpaymentid !== undefined}
-              </Col>
-            </Row> */}
+
             <Row className={`${rowClass}`}>
               <Col xs={12} md={2} className={`${colClass} text-md-right`}>
                 Customer Name :

@@ -66,45 +66,52 @@ class Home extends Component {
             selectedcategory={this.state.selectedcategory}
           ></SliderSearchBox>
         </div>
-        <Container>
-          <Row className="mx-auto">
-            <Col>
-              <h4>Featured Properties</h4>
-            </Col>
+        <Container className="mb-4">
+          <Row className="mx-auto homepagecontainerwrapper border rounded mt-4 py-3">
+            <Row className="mx-auto">
+              <Col>
+                <h3>Featured Properties</h3>
+              </Col>
+            </Row>
+
+            <Row className="mx-auto">
+              <Col>
+                <FeaturedAdverts props={this.props}></FeaturedAdverts>
+              </Col>
+            </Row>
           </Row>
-          <Row className="mx-auto">
-            <Col>
-              <FeaturedAdverts props={this.props}></FeaturedAdverts>
-            </Col>
+          <Row className="mx-auto homepagecontainerwrapper border rounded mt-4 py-3">
+            <Row className="mx-auto">
+              <Col>
+                <h3>Latest Properties</h3>
+              </Col>
+            </Row>
+            <Row className="mx-auto">
+              <Col>
+                <LatestAdverts props={this.props}></LatestAdverts>
+              </Col>
+            </Row>
           </Row>
-          <Row className="mx-auto">
-            <Col>
-              <h4>Latest Properties</h4>
-            </Col>
-          </Row>
-          <Row className="mx-auto">
-            <Col>
-              <LatestAdverts props={this.props}></LatestAdverts>
-            </Col>
-          </Row>
-          <Row className="mx-auto">
-            <Col>
-              <h4>About sriproperty.lk</h4>
-            </Col>
-          </Row>
-          <Row className="mx-auto">
-            <Col>
-              <p>
-                sriproperty.lk is a property and apartment listing website /
-                real estate website. We have set our objective to become the
-                most popular place for Sri Lankans to buy, rent and sell their
-                properties. The site features an of properties spanning across
-                houses, apartments, annexes, and lands for both rent and sale in
-                all across the island. The sriproperty.lk website is open to
-                anyone to submit their property for sale, property for rent,
-                land sales or any similar service ads in Sri Lanka.
-              </p>
-            </Col>
+          <Row className="mx-auto homepagecontainerwrapper border rounded my-4 py-3">
+            <Row className="ml-2 text-left">
+              <Col>
+                <h4>About sriproperty.lk</h4>
+              </Col>
+            </Row>
+            <Row className="mx-2 about-sriproperty-font">
+              <Col>
+                <p>
+                  sriproperty.lk is a property and apartment listing website /
+                  real estate website. We have set our objective to become the
+                  most popular place for Sri Lankans to buy, rent and sell their
+                  properties. The site features an of properties spanning across
+                  houses, apartments, annexes, and lands for both rent and sale
+                  in all across the island. The sriproperty.lk website is open
+                  to anyone to submit their property for sale, property for
+                  rent, land sales or any similar service ads in Sri Lanka.
+                </p>
+              </Col>
+            </Row>
           </Row>
         </Container>
       </React.Fragment>
