@@ -6,10 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSquareAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faBed } from "@fortawesome/free-solid-svg-icons";
+import { faBath } from "@fortawesome/free-solid-svg-icons";
 import { currencyFormat, altPhoneNumber, getimageUrllist } from "../util/util";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Button from "react-bootstrap/Button";
 import ImageSlider from "./ImageSlider";
+import moment from "moment/moment";
 
 class AdViewMain extends Component {
   constructor(props) {
@@ -55,6 +58,7 @@ class AdViewMain extends Component {
       userImageUrl,
       email,
       phonenumber1,
+      modifiedAt,
     } = this.props.advert;
     const images = getimageUrllist(this.props.advert);
     const negotiable = rentalopricenegotiable ? "Negotiable" : "";
@@ -70,7 +74,9 @@ class AdViewMain extends Component {
     const isRoomorAnnexe = category === "Room or Annex" ? true : false;
     const isCommercialProperty =
       category === "Commercial Property" ? true : false;
-
+    const adverttypealt = adverttype === "sell" ? "Sale" : "Rent";
+    const lastmodifiedAt = moment(modifiedAt);
+    var curtime = moment(new Date());
     //end of checkings based on category
 
     if (loading)
@@ -85,8 +91,8 @@ class AdViewMain extends Component {
       );
     return (
       <React.Fragment>
-        <Container>
-          <Row className={`${defpadding}`}>
+        <Container className="">
+          <Row className={`${defpadding} `}>
             <Col>
               <Breadcrumb>
                 <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
@@ -97,144 +103,277 @@ class AdViewMain extends Component {
               </Breadcrumb>
             </Col>
           </Row>
-          <Row className={`${defpadding}`}>
+          <Row className={`${defpadding} `}>
             <Col>Row for Back</Col>
           </Row>
-          <Row className={`${defpadding}`}>
-            <Container className="text-center ad-view-main-container">
+          <Row className={`${defpadding} `}>
+            <Container className="text-center ad-view-main-container ">
               <Row
                 id="titlerow"
-                className={`p-2 d-flex flex-row ad-view-main-titlerow`}
+                className={`p-2 d-flex flex-row ad-view-main-titlerow `}
               >
-                <Col className="h4">{title}</Col>
+                <Col className="h4 ">{title}</Col>
               </Row>
-              {/* location */}
-              <Row className={`${defpadding}`}>
-                <Col className="ad-view-loc-font">
-                  <FontAwesomeIcon
-                    style={{ color: "#588b8b" }}
-                    icon={faMapMarkerAlt}
-                    size="1.5x"
-                  />{" "}
-                  {`  ${district}, ${city}`}
+              {/* section 2 */}
+              <Row className="d-flex flex-column ad-view-main-section2 py-2 ">
+                {/* location */}
+                <Row className={`${defpadding}`}>
+                  <Col className="ad-view-loc-font">
+                    <FontAwesomeIcon
+                      className="ad-view-icon"
+                      icon={faMapMarkerAlt}
+                      size="1.5x"
+                    />{" "}
+                    {`  ${district}, ${city}`}
+                  </Col>
+                </Row>
+                {address !== "" && (
+                  <React.Fragment>
+                    <Row className={`${defpadding} mx-auto `}>
+                      <Col className="ad-view-main-type-font">{`${address}`}</Col>
+                    </Row>
+                  </React.Fragment>
+                )}
+
+                {/* end of location */}
+                <Row className={`${defpadding} mx-auto `}>
+                  <Col>
+                    <div className="m-auto ad-view-main-price-font">
+                      {" "}
+                      {`Rs.${price} / ${rentalopriceunit}`}{" "}
+                      <span className="ad-view-main-price_nego-font">{`${negotiable}`}</span>
+                    </div>
+                  </Col>
+                </Row>
+              </Row>
+              {/* section 2 */}
+              {/* images */}
+              <Row className="ad-view-main-imagesection p-2 ">
+                <Col className="text-left">{`${category} For ${adverttypealt} by ${name}`}</Col>
+                <Col className="text-right">{`${lastmodifiedAt.from(
+                  curtime
+                )}`}</Col>
+              </Row>
+              <Row className="ad-view-main-imagesection pb-3 bottom-border ">
+                <Col className="">
+                  {image1Url !== "" && <ImageSlider images={images} />}
                 </Col>
               </Row>
-              <Row className={`${defpadding}`}>
-                <Col className="ad-view-main-type-font">{`${address}`}</Col>
-              </Row>
-              {/* end of location */}
-              <Row className={`${defpadding}`}>
-                <Col>
-                  <div className="m-auto ad-view-main-price-font">
-                    {" "}
-                    {`Rs.${price} / ${rentalopriceunit}`}{" "}
-                    <span className="ad-view-main-price_nego-font">{`${negotiable}`}</span>
-                  </div>
-                </Col>
-              </Row>
-              <Row className={`${defpadding} border-bottom`}>
-                <Col className="ad-view-main-type-font">{`For ${type} by ${name}`}</Col>
-              </Row>
 
-              <Row className={`${defpadding}`}>
-                <Col>{image1Url !== "" && <ImageSlider images={images} />}</Col>
-              </Row>
-              <Row className={`${defpadding}`}>
-                <Col>Ad Category :- </Col>
-                <Col>{`${category}`}</Col>
-              </Row>
+              {/* images */}
 
-              {/* property type */}
-              {(isRoomorAnnexe ||
-                isCommercialProperty ||
-                isHolidayShortRental) && (
+              {/* baths and beds */}
+
+              {isHouse && (
                 <React.Fragment>
-                  <Row className={`${defpadding}`}>
-                    <Col>Property Type :- </Col>
-                    <Col>{`${propertytype}`}</Col>
+                  <Row
+                    className={`px-2 pt-2  pb-md-2 pb-xs-0 ad-view-elementdetails`}
+                  >
+                    <Col md={3} xs={6} className="text-right">
+                      Bed Rooms :
+                    </Col>
+                    <Col md={2} xs={6} className="text-left pr-0">
+                      {beds}
+                    </Col>
+
+                    <Col md={3} xs={6} className="text-right">
+                      Bath Rooms :{" "}
+                    </Col>
+                    <Col md={3} xs={6} className="text-left pr-0">
+                      {baths}
+                    </Col>
+                  </Row>
+                  <Row
+                    className={`px-2 pb-2 pt-xs-0 pt-md-2 bottom-border ad-view-elementdetails`}
+                  >
+                    <Col md={3} xs={6} className="text-right">
+                      Floor Area :
+                    </Col>
+                    <Col
+                      md={2}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${size} sq.ft`}</Col>
+                    <Col md={3} xs={6} className="text-right">
+                      Area of Land :
+                    </Col>
+                    <Col
+                      md={3}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${landsize} ${landsizeunit}`}</Col>
                   </Row>
                 </React.Fragment>
               )}
-              {/* end of property type */}
 
-              {/* baths and beds */}
-              {(isHouse ||
-                isApartment ||
-                isHolidayShortRental ||
-                isRoomorAnnexe) && (
+              {isLand && (
                 <React.Fragment>
-                  <Row className={`${defpadding}`}>
-                    <Col>Bed Rooms :- </Col>
-                    <Col>{beds}</Col>
+                  <Row className={`px-2 pt-2  pb-2 ad-view-elementdetails`}>
+                    <Col md={3} xs={6} className="text-right">
+                      Area of Land :
+                    </Col>
+                    <Col
+                      md={2}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${landsize} ${landsizeunit}`}</Col>
+                    <Col md={3} xs={6} className="text-right">
+                      Type of Land :
+                    </Col>
+                    <Col
+                      md={3}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${landtypes.slice(0, -1)}`}</Col>
                   </Row>
-                  <Row className={`${defpadding}`}>
-                    <Col>Bath Rooms :- </Col>
-                    <Col>{baths}</Col>
+                </React.Fragment>
+              )}
+
+              {isApartment && (
+                <React.Fragment>
+                  <Row className={`px-2 pt-2  pb-2 ad-view-elementdetails`}>
+                    <Col lg={3} md={4} xs={7} className="text-right">
+                      Bed Rooms :
+                    </Col>
+                    <Col lg={1} md={2} xs={5} className="text-left pr-0">
+                      {beds}
+                    </Col>
+                    <Col lg={2} md={4} xs={7} className="text-right">
+                      Bath Rooms :
+                    </Col>
+                    <Col lg={1} md={2} xs={5} className="text-left pr-0">
+                      {baths}
+                    </Col>
+                    <Col lg={3} md={7} xs={7} className="text-right">
+                      Floor Area (sq.ft) :
+                    </Col>
+                    <Col
+                      lg={2}
+                      md={5}
+                      xs={5}
+                      className="text-left pr-0"
+                    >{`${size}`}</Col>
+                  </Row>
+                </React.Fragment>
+              )}
+
+              {isRoomorAnnexe && (
+                <React.Fragment>
+                  <Row className={`px-2 pt-2  pb-2 ad-view-elementdetails`}>
+                    <Col md={3} xs={6} className="text-right">
+                      Bed Rooms :
+                    </Col>
+                    <Col md={1} xs={6} className="text-left pr-0">
+                      {beds}
+                    </Col>
+                    <Col md={3} xs={6} className="text-right">
+                      Bath Rooms :{" "}
+                    </Col>
+                    <Col md={1} xs={6} className="text-left pr-0">
+                      {baths}
+                    </Col>
+                    <Col md={2} xs={6} className="text-right">
+                      Property Type :
+                    </Col>
+                    <Col
+                      md={2}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${propertytype}`}</Col>
+                  </Row>
+                </React.Fragment>
+              )}
+
+              {isHolidayShortRental && (
+                <React.Fragment>
+                  <Row className={`px-2 pt-2  pb-2 ad-view-elementdetails`}>
+                    <Col lg={2} md={4} xs={6} className="text-right">
+                      Bed Rooms :
+                    </Col>
+                    <Col lg={1} md={2} xs={6} className="text-left pr-0">
+                      {beds}
+                    </Col>
+                    <Col lg={2} md={4} xs={6} className="text-right">
+                      Bath Rooms :
+                    </Col>
+                    <Col lg={1} md={2} xs={6} className="text-left pr-0">
+                      {baths}
+                    </Col>
+                    <Col lg={3} md={6} xs={6} className="text-right">
+                      Property Type :
+                    </Col>
+                    <Col
+                      lg={3}
+                      md={6}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${propertytype}`}</Col>
                   </Row>
                 </React.Fragment>
               )}
               {/* end of baths and beds */}
 
               {/* floor size */}
-              {(isHouse || isApartment || isCommercialProperty) && (
+              {isCommercialProperty && (
                 <React.Fragment>
-                  <Row className={`${defpadding}`}>
-                    <Col>Floor Area :- </Col>
-                    <Col>{size}</Col>
+                  <Row className={`px-2 pt-2  pb-2 ad-view-elementdetails`}>
+                    <Col md={3} xs={6} className="text-right">
+                      Floor Area :
+                    </Col>
+                    <Col
+                      md={2}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${size} sq.ft`}</Col>
+                    <Col md={4} xs={6} className="text-right">
+                      Property Type :
+                    </Col>
+                    <Col
+                      md={3}
+                      xs={6}
+                      className="text-left pr-0"
+                    >{`${propertytype}`}</Col>
                   </Row>
                 </React.Fragment>
               )}
               {/* end of floor size */}
 
-              {/* area of land */}
-              {(isHouse || isLand) && (
-                <React.Fragment>
-                  <Row className={`${defpadding}`}>
-                    <Col>Area of Land</Col>
-                    <Col>{`${landsize} ${landsizeunit}`}</Col>
-                  </Row>
-                </React.Fragment>
-              )}
-              {/* end of area of land */}
-              {/* type of land */}
-              {isLand && (
-                <React.Fragment>
-                  <Row className={`${defpadding}`}>
-                    <Col>Type of Land</Col>
-                    <Col>{`${landtypes}`}</Col>
-                  </Row>
-                </React.Fragment>
-              )}
-              {/* end of type of land */}
-
-              <Row className={`${defpadding} border-bottom`}></Row>
-              <Row className={`${defpadding}`}>
-                <Col>
+              <Row
+                className={`${defpadding} d-flex flex-row section-bg bottom-border `}
+              >
+                {/* <Row className={`${defpadding} mx-auto`}> */}
+                <Col xs={12} className={`${defpadding} mx-auto`}>
                   <h6>Property Description</h6>
                 </Col>
+                {/* </Row>
+                <Row
+                  className={`${defpadding} mx-auto text-center ad-view-desc-font `}
+                > */}
+                <Col
+                  xs={12}
+                  className={`${defpadding} mx-auto text-center ad-view-desc-font `}
+                >
+                  <p>{description}</p>
+                </Col>
+                {/* </Row> */}
               </Row>
-              <Row
-                className={`${defpadding} text-left ad-view-desc-font border-bottom`}
-              >
-                <Col>{description}</Col>
-              </Row>
-              <Row className={`${defpadding}`}>
+              <Row className={`${defpadding} `}>
                 <Col>
                   <h6>Advertiser Contact Information</h6>
                 </Col>
               </Row>
-              <Row className={`${defpadding} border-bottom`}>
+              <Row className={`${defpadding} bottom-border `}>
                 <Col>
                   <div id="contactcard" className="card">
                     <div className="row no-gutters">
-                      <div className="col-md-4 p-1 my-auto">
+                      <div className="col-md-5 p-1 my-auto">
                         <img
                           src={userImageUrl}
                           className="card-img ad-view-advertiser-image"
                           alt={name}
                         />
                       </div>
-                      <div className="col-md-8">
+                      <div className="col-md-7">
                         <div className="card-body">
                           <h5 className="card-title"></h5>
                           <p className="card-text">Name :- {name}</p>
@@ -248,7 +387,7 @@ class AdViewMain extends Component {
                             </span>
                             <span>E-mail :- {email}</span>
                           </p>
-                          <p className="card-text my-auto my-2">
+                          <p className="card-text my-auto">
                             <div>
                               <span className="mx-1">
                                 <FontAwesomeIcon
@@ -277,6 +416,7 @@ class AdViewMain extends Component {
                               <React.Fragment>
                                 <div className="my-2">
                                   <Button
+                                    id="viewadshow"
                                     variant="warning"
                                     size="sm"
                                     disabled={this.state.showphone}
@@ -294,7 +434,7 @@ class AdViewMain extends Component {
                   </div>
                 </Col>
               </Row>
-              <Row className={`${defpadding}`}>
+              <Row className={`${defpadding} section-bg `}>
                 <Col>
                   <h6>Important Notice !!!</h6>
                   <p className="ad-view-notice-font">

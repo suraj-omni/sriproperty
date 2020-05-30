@@ -464,19 +464,38 @@ ul li {
 
 /* ad view main */
 
+.section-bg {
+  background-color: #fcd7ac !important;
+}
+
 #contactcard {
   margin: 5px;
   padding: 5px;
-  background-color: #b9e3c6 !important;
-  border: 1px solid #70a288 !important;
+  background-color: #fff8f0 !important;
+  border: 1px solid #f8a444 !important;
 }
 .ad-view-main-container {
-  background-color: #fff8f0 !important ;
+  background-color: #fffcfa !important ;
   border: 1px solid #f8a444 !important;
 }
 
 .ad-view-main-titlerow {
   background-color: #fcd7ac !important ;
+}
+
+.ad-view-main-section2 {
+  background-color: #fffcfa !important ;
+  border-bottom: 1px solid #f8a444 !important;
+}
+
+.ad-view-main-imagesection {
+  background-color: #fcd7ac !important ;
+  font-size: 0.7rem;
+  color: #6b2737;
+}
+
+.bottom-border {
+  border-bottom: 1px solid #f8a444 !important;
 }
 
 .ad-view-main-type-font {
@@ -598,6 +617,14 @@ ul li {
   font-family: "Open Sans", sans-serif;
 }
 
+.ad-view-elementdetails {
+  font-size: 0.7rem !important;
+}
+
+#viewadshow {
+  background-color: #9dd9d2;
+  border: 1px solid #f79421;
+}
 .sreachresultbox_item1 {
   background-color: transparent !important;
   border: none;
@@ -923,6 +950,21 @@ ul li {
   }
 
   /* search box */
+
+  /* ad view contact section */
+  #contactcard {
+    margin: 5px;
+    padding: 5px;
+    background-color: #fff8f0 !important;
+    border: 1px solid #f8a444 !important;
+    font-size: 0.675rem;
+  }
+
+  #viewadshow {
+    background-color: #9dd9d2;
+    border: 1px solid #f79421;
+    font-size: 0.675rem;
+  }
 }
 
 /* TABLET LANDSCAPE / DESKTOP */
