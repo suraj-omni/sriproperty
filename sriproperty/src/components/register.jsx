@@ -61,7 +61,7 @@ class Register extends Component {
 
     return (
       <React.Fragment>
-        <Container className="register-font p-1">
+        <Container className="register-font p-1 login-register-container generic-border">
           <Row className="p-2" lg={10}>
             <Col>
               <h4>Sign up with Sri Property</h4>
@@ -100,7 +100,7 @@ class Register extends Component {
                         />
                       </Col>
                       <Col className="d-flex align-items-center text-left">
-                        Registration and posting 1 ad is completely free.
+                        Registration and posting 2 ad's are completely free.
                       </Col>
                     </Row>
                     <Row className="p-1">

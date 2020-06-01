@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { searchAdverts } from "../redux/actions/searchActions";
+import Loader from "./Loader";
 
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -84,16 +85,7 @@ export const SearchFilterBox = (props) => {
     }
   }, [props.search.paramCategory]);
 
-  if (loading)
-    return (
-      <React.Fragment>
-        <div className="mx-auto">
-          {" "}
-          <div className="mx-auto loader"></div>{" "}
-          <div className="mx-auto loadder-text">Loading Data...</div>
-        </div>
-      </React.Fragment>
-    );
+  if (loading) return <Loader></Loader>;
   return (
     <Row xs={12} className="filterbox-toprow mx-auto  pb-3">
       <Col lg={2} md={12} className="">

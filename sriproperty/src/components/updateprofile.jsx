@@ -79,18 +79,18 @@ class updateprofile extends Component {
 
     return (
       <React.Fragment>
-        <Container className="register-font p-1">
+        <Container className="register-font">
           <Tabs id="controlled-tab-example" onSelect={this.setTabkey}>
             <Tab eventKey="home" title="My Account Details">
-              <TabContainer>
-                <Row className="mx-auto my-1 p-1">
+              <TabContainer className="pb-3  mb-2">
+                <Row className="generic-border userprofile-background mx-auto p-0">
                   <Col>
                     {/* user details */}
                     <Row className="align-center m-3">
                       <Col className="h4">My Account Details</Col>
                     </Row>
                     {/* profile picture */}
-                    <Row className="userprofilesectionwarapper my-2 mx-auto border border-secondary">
+                    <Row className="userprofilesectionwarapper userprofile-container  my-2 mx-auto generic-border">
                       <Col>
                         <Row className={this.state.rowpadding}>
                           <Col className="text-center font-weight-bold">
@@ -146,14 +146,14 @@ class updateprofile extends Component {
                       </Col>
                     </Row>
                     {/* end of profile picture */}
-                    <Row className="userprofilesectionwarapper my-2 mx-auto border border-secondary">
+                    <Row className="userprofilesectionwarapper userprofile-container  my-2 mx-auto generic-border">
                       <Col className="text-center">
                         <EditProfile />
                       </Col>
                     </Row>
                     {/* end of user details */}
                     {/* change password */}
-                    <Row className="userprofilesectionwarapper my-2 mx-auto border border-secondary">
+                    <Row className="userprofilesectionwarapper userprofile-container  my-2 mx-auto generic-border">
                       <Col>
                         <Row className={this.state.rowpadding}>
                           <Col xs={12} className="text-center font-weight-bold">
@@ -206,9 +206,7 @@ class updateprofile extends Component {
                     <Row
                       className="userprofilesectionwarapper
                       my-2
-                      mx-auto
-                      border
-                      border-secondary"
+                      mx-auto generic-border userprofile-container"
                     >
                       <Col>
                         <Row className={this.state.rowpadding}>

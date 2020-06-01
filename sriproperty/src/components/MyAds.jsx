@@ -16,6 +16,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Button from "react-bootstrap/Button";
 import TabContainer from "react-bootstrap/TabContainer";
+import Loader from "./Loader";
+
 const MyAdsTable = lazy(() => import("./MyAdsTable"));
 
 export class MyAds extends Component {
@@ -70,17 +72,13 @@ export class MyAds extends Component {
             </Tab>
             <Tab eventKey="myads" title="My Ads">
               <TabContainer>
-                <Table>
-                  <Row className="align-center m-3">
-                    <Col className="h4">My Ads </Col>
+                <Table className="login-register-container generic-border">
+                  <Row className="align-center mx-3 mt-3 mb-1">
+                    <Col className="h4">My Ad's </Col>
                   </Row>
-                  <Row className="align-center m-3">
+                  <Row className="align-center mx-3 my-2">
                     <Col>
-                      <Suspense
-                        fallback={
-                          <div className="loader mx-auto">Loading ...</div>
-                        }
-                      >
+                      <Suspense fallback={<Loader></Loader>}>
                         <MyAdsTable
                           props={this.props}
                           adverts={adverts}

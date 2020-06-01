@@ -133,13 +133,22 @@ body {
   text-align: left;
 }
 
+.userprofile-container {
+  max-width: 720px;
+}
+
 .userpfofilealignright {
   text-align: right;
+}
+
+.userprofile-background {
+  background-color: #fff8f0;
 }
 
 .userprofilesectionwarapper {
   padding: 1rem;
   border: 1px solid #f9ba71 #272361;
+  background-color: #fcd7ac;
 }
 
 .profileiamge {
@@ -155,6 +164,44 @@ body {
   background-color: transparent !important;
   color: #6db65b !important;
   border: none !important;
+}
+
+.myads-table-header {
+  background-color: #fcd7ac;
+  border: 1px solid #f8a444 !important;
+}
+
+.myads-noofrecords {
+  background-color: #fcd7ac;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #f8a444;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #f8a444;
+}
+
+table {
+  display: table;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  border-spacing: 0px;
+  border-color: #f8a444;
+}
+
+.table-bordered {
+  border: 1px solid #f8a444;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #f8a444;
 }
 
 .overlay-a {
@@ -208,12 +255,13 @@ body {
 }
 
 .loader {
-  border: 6px solid #1c110a;
-  border-top: 6px solid #fae8eb;
+  border: 6px solid #f8a444;
+  border-top: 6px solid #eaefb1;
   border-radius: 50%;
   width: 30px;
   height: 30px;
   animation: spin 2s linear infinite;
+  color: #7b7b84;
 }
 
 .loadder-text {
@@ -288,6 +336,11 @@ body {
   width: 50vw;
 }
 
+.generic-border {
+  border: 1px solid #f8a444 !important;
+  border-radius: 0.25rem;
+}
+
 /* main menu */
 #logoutadmin {
   height: 1.8rem;
@@ -303,6 +356,10 @@ body {
 .loginerrorlabels {
   color: red;
   margin: 10px auto 0 auto;
+}
+
+.login-register-container {
+  background-color: #fff8f0;
 }
 
 /* end of login */
@@ -477,6 +534,7 @@ ul li {
 .ad-view-main-container {
   background-color: #fffcfa !important ;
   border: 1px solid #f8a444 !important;
+  border-radius: 0.25rem;
 }
 
 .ad-view-main-titlerow {

@@ -54,7 +54,7 @@ class Login extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <Container className="register-font p-1">
+        <Container className="register-font p-1 login-register-container generic-border">
           <Row className="p-2" lg={10}>
             <Col>
               <h4>Login to Sri Property</h4>
@@ -94,7 +94,7 @@ class Login extends Component {
                         />
                       </Col>
                       <Col className="d-flex align-items-center text-left">
-                        Registration and posting 1 ad is completely free.
+                        Registration and posting 2 ad's are completely free.
                       </Col>
                     </Row>
                     <Row className="p-1">

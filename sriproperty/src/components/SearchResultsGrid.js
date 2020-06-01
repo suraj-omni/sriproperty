@@ -7,6 +7,7 @@ import Select from "react-select";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Loader from "./Loader";
 
 import SearchResultDisplayBox from "./SearchResultDisplayBox";
 
@@ -99,7 +100,7 @@ export const SearchResultsGrid = (props) => {
           <Row className="mx-auto py-2">{advertcards}</Row>
         </React.Fragment>
       )}
-      {loading && <li>Loading...</li>}
+      {loading && <Loader></Loader>}
 
       {!loading && more && <div ref={setElement}></div>}
     </React.Fragment>

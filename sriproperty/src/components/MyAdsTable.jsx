@@ -44,9 +44,11 @@ export class MyAdsTable extends Component {
     if (count === 0) return <div>There are no ads to Show</div>;
     return (
       <React.Fragment>
-        <div>{`Showing Total of ${count} Ad's`}</div>
-        <Table responsive size="sm" striped bordered hover>
-          <thead>
+        <div className="mx-auto p-2 mt-1 mb-3 generic-border myads-noofrecords">
+          <strong> {`Showing Total of ${count} Ad's`}</strong>
+        </div>
+        <Table responsive size="sm">
+          <thead className="myads-table-header">
             <tr className="text-center">
               <th>Ref #</th>
               <th>Type</th>
