@@ -1148,7 +1148,7 @@ class AdvertDetailsMaster extends Component {
       <React.Fragment>
         <div
           id="addetailscontactus"
-          className=" addetailscontactus-background1 py-3 shadow"
+          className=" addetailscontactus-background1 py-3 generic-border"
         >
           <div>
             {" "}

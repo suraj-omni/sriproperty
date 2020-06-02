@@ -250,7 +250,7 @@ class AddAdvertImageUpload extends Component {
 
     return (
       <React.Fragment>
-        <Container>
+        <Container className="adcontainer-background adtype-wrapper  generic-border">
           <Table>
             <Row className={`${this.state.colpadding}`}>
               <Col className={`${this.state.colpadding} h5 text-center`}>
@@ -312,7 +312,7 @@ class AddAdvertImageUpload extends Component {
               <Col className={`${this.state.colpadding}`}>
                 <div
                   id="advertinfo"
-                  className="d-flex flex-wrap  bg-highlight align-items-center"
+                  className="d-flex flex-wrap  generic-border align-items-center"
                 >
                   <div id="infotitle" className="p-1 flex-grow-1 text-left">
                     {`${title}`}

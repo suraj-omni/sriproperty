@@ -98,7 +98,7 @@ class AddAdvertDetails extends AdvertDetailsMaster {
 
     return (
       <React.Fragment>
-        <Container>
+        <Container className="adcontainer-background adtype-wrapper  generic-border">
           <Table>
             {this.headerRowComponent()}
             <Row>

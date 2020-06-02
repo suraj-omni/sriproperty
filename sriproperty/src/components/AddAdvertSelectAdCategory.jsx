@@ -52,7 +52,7 @@ class AddAdvertSelectAdCategory extends Component {
     const isRent = adverttype === "rent" ? true : false;
     return (
       <React.Fragment>
-        <Container>
+        <Container className="adcontainer-background adtype-wrapper  generic-border">
           <Table>
             <Row>
               <Col className={`${this.state.colpadding} h5 text-center`}>

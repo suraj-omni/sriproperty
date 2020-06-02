@@ -382,6 +382,22 @@ table {
 
 /* post ad */
 
+.adcontainer-background {
+  background-color: #fff8f0;
+}
+
+.adtype-wrapper {
+  padding: 1rem;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1.25rem;
+  background-color: #fff;
+  border: 1px solid #f8a444;
+}
+
 .advertedit_admincomments {
   background-color: #dc2367;
   border-color: #d81159;
@@ -416,8 +432,7 @@ table {
 }
 
 #advertinfo {
-  background-color: #fac397 !important;
-  box-shadow: 0 0.5rem 0.5rem #e4ad81 !important;
+  background-color: #fcd7ac !important;
   height: auto;
   min-height: 50px;
   padding: 0 10px;
@@ -498,7 +513,7 @@ ul li {
 }
 
 .addetailscontactus-background1 {
-  background-color: #fac397 !important;
+  background-color: #fcd7ac !important;
   color: #373737 !important;
 }
 

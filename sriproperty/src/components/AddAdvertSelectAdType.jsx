@@ -62,7 +62,7 @@ class AddAdvertSelectAdType extends Component {
   render() {
     return (
       <React.Fragment>
-        <Container>
+        <Container className="adcontainer-background adtype-wrapper  generic-border">
           <Table className="">
             <Row className="">
               <Col className={`${this.state.colpadding} h4 text-center`}>
