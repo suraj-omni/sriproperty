@@ -35,6 +35,8 @@ import {
   FINISED_LOADING_LATEST_ADVERTS,
   LOADING_FEATURED_ADVERTS,
   FINISED_LOADING_FEATURED_ADVERTS,
+  FINISHED_LOADING_RESET_EMAIL_UI,
+  LOADING_RESET_EMAIL_UI,
 } from "../types";
 
 const initialState = {
@@ -108,12 +110,21 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
-        loadingresetemail: true,
       };
     case FINISHED_LOADING_UI:
       return {
         ...state,
         loading: false,
+      };
+    case LOADING_RESET_EMAIL_UI:
+      return {
+        ...state,
+        loadingresetemail: true,
+      };
+    case FINISHED_LOADING_RESET_EMAIL_UI:
+      return {
+        ...state,
+        loadingresetemail: false,
       };
     case LOADING_LATEST_ADVERTS:
       return {

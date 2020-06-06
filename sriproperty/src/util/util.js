@@ -38,8 +38,11 @@ export const getimageUrllist = (advert) => {
     ...advert,
   };
 
+  /* const emptyImageUrl =
+    "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media"; */
+
   const emptyImageUrl =
-    "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media";
+    "https://firebasestorage.googleapis.com/v0/b/sriproperty-b397e.appspot.com/o/no-image-icon.png?alt=media&token=4780d1a3-6f2c-4710-9020-608defa1ab8a";
 
   image1Url === ""
     ? images.push({ original: emptyImageUrl, thumbnail: emptyImageUrl })

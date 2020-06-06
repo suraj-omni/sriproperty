@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import SearchResultDisplayBox from "./SearchResultDisplayBox";
+import Loader from "./Loader";
 
 export const LatestAdverts = (props) => {
   const [latestadverts, setLatestAdverts] = useState([]);
@@ -18,9 +19,9 @@ export const LatestAdverts = (props) => {
   }, [props.search.latestadverts]);
 
   let advertcards = (
-    <div className="d-flex flex-row mx-auto my-2">
-      Sorry! there is nothing to show.
-    </div>
+    <Row className="mx-auto my-2">
+      <Col>Sorry! there is nothing to show.</Col>
+    </Row>
   );
 
   if (latestadverts && latestadverts.length > 0) {
@@ -36,7 +37,10 @@ export const LatestAdverts = (props) => {
       {!loadinglatest && advertcards && (
         <Row className="mx-auto">{advertcards}</Row>
       )}
-      {loadinglatest && <li>Loading...</li>}
+
+      {loadinglatest && (
+        <Loader displaytext="Loading Latest Properties ..."></Loader>
+      )}
     </React.Fragment>
   );
 };

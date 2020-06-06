@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
@@ -11,9 +13,9 @@ import Tabs from "react-bootstrap/Tabs";
 import TabContainer from "react-bootstrap/TabContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit } from "@fortawesome/free-solid-svg-icons";
+
 import EditProfile from "./editprofile";
 
-import { connect } from "react-redux";
 import {
   logOutUser,
   uploadImage,
@@ -79,7 +81,7 @@ class updateprofile extends Component {
 
     return (
       <React.Fragment>
-        <Container className="register-font">
+        <Container className="register-font my-3">
           <Tabs id="controlled-tab-example" onSelect={this.setTabkey}>
             <Tab eventKey="home" title="My Account Details">
               <TabContainer className="pb-3  mb-2">
@@ -252,7 +254,7 @@ class updateprofile extends Component {
                       </Col>
                     </Row>
                     {/* log out */}
-                    <Row className={this.state.rowpadding}>
+                    <Row className={`${this.state.rowpadding} my-1`}>
                       <Col>
                         <Button
                           variant="primary"

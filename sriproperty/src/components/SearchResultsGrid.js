@@ -100,7 +100,7 @@ export const SearchResultsGrid = (props) => {
           <Row className="mx-auto py-2">{advertcards}</Row>
         </React.Fragment>
       )}
-      {loading && <Loader></Loader>}
+      {loading && <Loader displaytext="Loading Ad's ..."></Loader>}
 
       {!loading && more && <div ref={setElement}></div>}
     </React.Fragment>

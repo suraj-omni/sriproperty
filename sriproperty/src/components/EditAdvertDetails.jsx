@@ -62,68 +62,70 @@ class EditAdvertDetails extends AdvertDetailsMaster {
       );
     }
 
-    return (
-      <Suspense
-        fallback={
+    if (!this.props.UI.loading) {
+      return (
+        <Suspense
+          fallback={
+            <React.Fragment>
+              <div className="mx-auto">
+                {" "}
+                <div className="mx-auto loader"></div>{" "}
+                <div className="mx-auto loadder-text">Loading Data...</div>
+              </div>
+            </React.Fragment>
+          }
+        >
           <React.Fragment>
-            <div className="mx-auto">
-              {" "}
-              <div className="mx-auto loader"></div>{" "}
-              <div className="mx-auto loadder-text">Loading Data...</div>
-            </div>
+            <Container className="adcontainer-background adtype-wrapper my-3 generic-border">
+              <Table>
+                {this.headerRowComponent()}
+                <Row>
+                  <Col className={`text-center`}>
+                    {this.progressIndicator_Edit_Component()}
+                  </Col>
+                </Row>
+                {this.render_AdminComments_Component()}
+                <Row>
+                  <Col>
+                    <Form onSubmit={this.handleFormSubmit}>
+                      <Table>
+                        <Row>
+                          {/* district and city */}
+                          {this.render_District_Edit_Component()}
+                          {this.render_Cities_Edit_Component()}
+                        </Row>
+                        {/* land types */}
+                        {this.renderLandTypesComponent()}
+
+                        {/* baths, beds, property type & size  */}
+                        {this.renderBaths_Beds_Size_PropertyType_Component()}
+
+                        {/* land size & land unit */}
+                        {this.renderLandSize_Unit_Component()}
+                        {/* address , title &  description */}
+                        {this.render_Desc_Title_Address_Component()}
+                        {/* price  */}
+                        {this.render_Price_Component()}
+                        {/* contact details */}
+                        {this.render_ContactDetails_Component()}
+
+                        {/* alert component */}
+                        {this.render_Alert_Component()}
+
+                        {/* save button */}
+                        {this.render_Edit_Save_Component()}
+                      </Table>
+                      {this.render_Popup_EditFinish_Modal()}
+                      {this.render_Popup_Edit_Modal()}
+                    </Form>
+                  </Col>
+                </Row>
+              </Table>
+            </Container>
           </React.Fragment>
-        }
-      >
-        <React.Fragment>
-          <Container className="adcontainer-background adtype-wrapper  generic-border">
-            <Table>
-              {this.headerRowComponent()}
-              <Row>
-                <Col className={`text-center`}>
-                  {this.progressIndicator_Edit_Component()}
-                </Col>
-              </Row>
-              {this.render_AdminComments_Component()}
-              <Row>
-                <Col>
-                  <Form onSubmit={this.handleFormSubmit}>
-                    <Table>
-                      <Row>
-                        {/* district and city */}
-                        {this.render_District_Edit_Component()}
-                        {this.render_Cities_Edit_Component()}
-                      </Row>
-                      {/* land types */}
-                      {this.renderLandTypesComponent()}
-
-                      {/* baths, beds, property type & size  */}
-                      {this.renderBaths_Beds_Size_PropertyType_Component()}
-
-                      {/* land size & land unit */}
-                      {this.renderLandSize_Unit_Component()}
-                      {/* address , title &  description */}
-                      {this.render_Desc_Title_Address_Component()}
-                      {/* price  */}
-                      {this.render_Price_Component()}
-                      {/* contact details */}
-                      {this.render_ContactDetails_Component()}
-
-                      {/* alert component */}
-                      {this.render_Alert_Component()}
-
-                      {/* save button */}
-                      {this.render_Edit_Save_Component()}
-                    </Table>
-                    {this.render_Popup_EditFinish_Modal()}
-                    {this.render_Popup_Edit_Modal()}
-                  </Form>
-                </Col>
-              </Row>
-            </Table>
-          </Container>
-        </React.Fragment>
-      </Suspense>
-    );
+        </Suspense>
+      );
+    }
   }
 }
 

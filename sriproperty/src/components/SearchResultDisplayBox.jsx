@@ -1,5 +1,8 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,8 +84,8 @@ const SearchResultDisplayBox = ({ advert }) => {
             isApartment) && (
             <React.Fragment>
               <ListGroupItem className="sreachresultbox_item1 py-1 px-3">
-                <div className="d-flex ad-view-main-type-font">
-                  <div className="flex-fill text-left mx-auto">{category}</div>
+                <div className="d-flex mx-auto ad-view-main-type-font">
+                  <div className="flex-fill text-left">{category}</div>
                   <div className="flex-fill text-right">
                     <FontAwesomeIcon
                       className="ad-view-icon"

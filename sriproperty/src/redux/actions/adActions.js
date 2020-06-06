@@ -770,10 +770,12 @@ export const getAdvertbyId = (advert) => (dispatch) => {
       let { advert } = { ...res.data };
       dispatch({ type: SET_AD, payload: advert });
       dispatch({ type: FINISHED_LOADING_UI });
+      // console.log("getAdvertbyId", JSON.stringify(advert));
       return advert;
     })
     .catch((err) => {
       console.log("getAdvertbyId", err);
+      return null;
       /* dispatch({
         type: SET_ERRORS,
         payload: err.response.data,

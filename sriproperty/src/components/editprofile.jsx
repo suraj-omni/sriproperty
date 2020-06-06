@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 class EditProfile extends Component {
   constructor(props) {
@@ -62,52 +63,54 @@ class EditProfile extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <Form onSubmit={this.handleSubmit}>
-          <Row className={this.state.rowpadding}>
-            <Col className="text-center m-2">
-              <Form.Control
-                type="text"
-                name="name"
-                id="name"
-                className="text-center"
-                placeholder="Enter full name"
-                value={this.props.user.credentials.name}
-                onChange={this.handleChange}
-              />
-              {errors && errors.name && (
-                <div className="loginerrorlabels">{errors.name}</div>
-              )}
-            </Col>
-          </Row>
-          <Row className={this.state.rowpadding}>
-            <Col className="text-center m-2">
-              <Button
-                variant="primary"
-                type="submit"
-                disabled={loadingupdateuser}
-              >
-                {loadingupdateuser && (
-                  <Spinner
-                    as="span"
-                    animation="grow"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    visible="false"
-                  ></Spinner>
+        <Container className="my-3">
+          <Form onSubmit={this.handleSubmit}>
+            <Row className={this.state.rowpadding}>
+              <Col className="text-center m-2">
+                <Form.Control
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="text-center"
+                  placeholder="Enter full name"
+                  value={this.props.user.credentials.name}
+                  onChange={this.handleChange}
+                />
+                {errors && errors.name && (
+                  <div className="loginerrorlabels">{errors.name}</div>
                 )}
-                Update
-              </Button>
-            </Col>
-            <Col xs={12} className="text-center text-info my-2">
-              {msgs && msgs.messege && msgs.messege.userupdate && (
-                <div className="loginerrorlabels">
-                  {msgs.messege.userupdate}
-                </div>
-              )}
-            </Col>
-          </Row>
-        </Form>
+              </Col>
+            </Row>
+            <Row className={this.state.rowpadding}>
+              <Col className="text-center m-2">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={loadingupdateuser}
+                >
+                  {loadingupdateuser && (
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      visible="false"
+                    ></Spinner>
+                  )}
+                  Update
+                </Button>
+              </Col>
+              <Col xs={12} className="text-center text-info my-2">
+                {msgs && msgs.messege && msgs.messege.userupdate && (
+                  <div className="loginerrorlabels">
+                    {msgs.messege.userupdate}
+                  </div>
+                )}
+              </Col>
+            </Row>
+          </Form>
+        </Container>
       </React.Fragment>
     );
   }

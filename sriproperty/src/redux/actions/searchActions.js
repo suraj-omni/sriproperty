@@ -379,7 +379,7 @@ export const getFeaturedProperties = () => (dispatch) => {
 //Get Latest Adverts
 
 export const getLatestProperties = () => (dispatch) => {
-  dispatch({ type: LOADING_FEATURED_ADVERTS });
+  dispatch({ type: LOADING_LATEST_ADVERTS });
   axios
     .get("/getLatestAdverts")
     .then((res) => {

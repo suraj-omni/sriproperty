@@ -85,7 +85,7 @@ export const SearchFilterBox = (props) => {
     }
   }, [props.search.paramCategory]);
 
-  if (loading) return <Loader></Loader>;
+  if (loading) return <Loader displaytext="Processing search ..."></Loader>;
   return (
     <Row xs={12} className="filterbox-toprow mx-auto  pb-3">
       <Col lg={2} md={12} className="">

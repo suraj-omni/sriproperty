@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import SearchResultDisplayBox from "./SearchResultDisplayBox";
+import Loader from "./Loader";
 
 export const FeaturedAdverts = (props) => {
   const [featuredadverts, setFeaturedAdverts] = useState([]);
@@ -18,9 +19,9 @@ export const FeaturedAdverts = (props) => {
   }, [props.search.featuredadverts]);
 
   let advertcards = (
-    <div className="d-flex flex-row mx-auto my-2">
-      Sorry! there is nothing to show.
-    </div>
+    <Row className="mx-auto my-2">
+      <Col>No Featured Properties.</Col>
+    </Row>
   );
 
   if (featuredadverts && featuredadverts.length > 0) {
@@ -34,9 +35,11 @@ export const FeaturedAdverts = (props) => {
   return (
     <React.Fragment>
       {!loadingfeatured && advertcards && (
-        <Row className="mx-auto">{advertcards}</Row>
+        <div className="row">{advertcards}</div>
       )}
-      {loadingfeatured && <li>Loading...</li>}
+      {loadingfeatured && (
+        <Loader displaytext="Loading Featured Properties ..."></Loader>
+      )}
     </React.Fragment>
   );
 };

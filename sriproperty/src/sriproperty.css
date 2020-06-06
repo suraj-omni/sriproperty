@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  margin-bottom: 5rem;
 }
 
 .App-header {
@@ -14,6 +13,16 @@
   color: #9c9bb7;
 }
 
+.main-menu {
+  font-size: calc(10px + 1.5vmin);
+  color: #9c9bb7;
+}
+
+.maincontainer-col {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .nav-link {
   display: inline;
   padding: 0.5rem 1rem;
@@ -22,9 +31,9 @@
 }
 
 .a {
-  color: #272361 !important;
+  color: #6b2737 !important;
   text-decoration: none !important;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .a:hover {
@@ -49,7 +58,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: #6b2737;
-  text-align: left;
+  text-align: center;
   background-color: #fffcfa;
   margin-bottom: 60px;
 }
@@ -115,6 +124,19 @@ body {
 .list-group-item:hover {
   /* background-color: #dfdfdf !important; */
   background-color: #fac397 !important ;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  pointer-events: auto;
+  background-color: #fef9ee;
+  background-clip: padding-box;
+  border: 1px solid #f8a444;
+  border-radius: 0.3rem;
+  outline: 0;
 }
 
 .modal-header {
@@ -274,6 +296,9 @@ table {
   font-family: "Roboto Condensed" !important;
 }
 
+.feturedproperties {
+  width: 100%;
+}
 .sliderfont {
   font-family: "Roboto Condensed", sans-serif;
 }
@@ -334,6 +359,14 @@ table {
   margin: -55vh 46vw;
   z-index: 10000;
   width: 50vw;
+}
+
+.home-slider-wrapper {
+  background-color: #fff8f02e;
+}
+
+.home-slider-label {
+  color: #fff8f0;
 }
 
 .generic-border {
@@ -580,6 +613,12 @@ ul li {
   color: #6b2737;
 }
 
+.adview-back {
+  color: #6b2737 !important;
+  text-decoration: none;
+  background-color: transparent;
+}
+
 .ad-view-main-price-font {
   font-size: 1rem !important;
   color: #b9a44c !important;
@@ -655,8 +694,20 @@ ul li {
 
 /* main search page */
 
+.advert-logo {
+  max-width: 100px;
+}
+
+.advert-product {
+  max-width: 200px;
+}
+
+.advertheight {
+  max-height: 225px;
+}
+
 .advertisingrow {
-  height: 100px !important;
+  height: 50% !important;
 }
 
 .advertisingrow-img {
@@ -787,6 +838,21 @@ ul li {
   border-radius: 0.25rem;
 }
 
+.homepagecontainerwrapper1 {
+  border: 1px solid black !important;
+  border-radius: 0.25rem;
+}
+
+.homepagecontainerwrapper2 {
+  border: 1px solid blue !important;
+  border-radius: 0.25rem;
+}
+
+.homepagecontainerwrapper3 {
+  border: 1px solid red !important;
+  border-radius: 0.25rem;
+}
+
 .about-sriproperty-font {
   font-size: 0.75rem;
   text-align: justify;
@@ -851,6 +917,105 @@ ul li {
 
 /* footer */
 
+@media only screen and (max-width: 768px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: 3vh 3vw;
+    z-index: 10000;
+    width: 91vw;
+    display: none;
+  }
+
+  #slidersearchdiv_main {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 18000px) {
+  #slidersearchdiv {
+    display: block;
+  }
+
+  #slidersearchdiv_main {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -44vh 48vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -40vh 48vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 1367px) and (max-width: 1599px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -44vh 48vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 1600px) and (max-width: 1899px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -34vh 45vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 1900px) and (max-width: 2600px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -52vh 48vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 2601px) and (max-width: 5000px) {
+  #slidersearchdiv {
+    border: 1px solid #f8a444;
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    margin: -90vh 48vw;
+    z-index: 10000;
+    width: 50vw;
+  }
+}
+
 @media only screen and (max-width: 767px) {
   /* phones */
 
@@ -906,22 +1071,6 @@ ul li {
   }
 
   /* slider  */
-
-  /* search box */
-
-  #slidersearchdiv {
-    width: calc(5px + 50vw);
-    padding: 0.3rem 0.4rem;
-    border: 2px solid #f8a444;
-    border-radius: 20px;
-    padding: 1rem 1.5rem;
-    position: absolute;
-    margin: 3vh 3vw;
-    z-index: 10000;
-    width: 94vw;
-  }
-
-  /* search box */
 
   .register-box-border {
     border-right: none;
@@ -1000,20 +1149,6 @@ ul li {
 
   /* slider  */
 
-  /* search box */
-
-  #slidersearchdiv {
-    width: calc(5px + 50vw);
-    padding: 0.3rem 0.4rem;
-    border: 2px solid #f8a444;
-    border-radius: 20px;
-    padding: 1rem 1.5rem;
-    position: absolute;
-    margin: 3vh 3vw;
-    z-index: 10000;
-    width: 94vw;
-  }
-
   #adviewcol1 {
     display: none !important;
   }
@@ -1044,42 +1179,10 @@ ul li {
 @media all and (min-width: 1024px) and (max-width: 1439px) {
   /* menu */
   /* menu */
-
-  /* search box */
-
-  #slidersearchdiv {
-    width: calc(5px + 50vw);
-    padding: 0.3rem 0.4rem;
-    border: 2px solid #f8a444;
-    border-radius: 20px;
-    padding: 1rem 1.5rem;
-    position: absolute;
-    margin: -55vh 46vw;
-    z-index: 10000;
-    width: 50vw;
-  }
-
-  /* search box */
 }
 
 /* Large desktop */
 @media all and (min-width: 1440px) {
-  /* search box */
-
-  #slidersearchdiv {
-    width: calc(5px + 50vw);
-    padding: 0.3rem 0.4rem;
-    border: 2px solid #f8a444;
-    border-radius: 20px;
-    padding: 2rem 2.5rem;
-    position: absolute;
-    margin: -57vh 46vw;
-    z-index: 10000;
-    width: 50vw;
-  }
-
-  /* search box */
-
   #adviewcol1 {
     display: block !important;
   }

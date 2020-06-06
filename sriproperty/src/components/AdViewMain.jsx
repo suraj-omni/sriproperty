@@ -6,17 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSquareAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faBed } from "@fortawesome/free-solid-svg-icons";
-import { faBath } from "@fortawesome/free-solid-svg-icons";
 import { currencyFormat, altPhoneNumber, getimageUrllist } from "../util/util";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Button from "react-bootstrap/Button";
+import Link from "react-router-dom/Link";
 import ImageSlider from "./ImageSlider";
 import moment from "moment/moment";
+import Loader from "./Loader";
 
 class AdViewMain extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       defpadding: "p-2",
       errors: {},
@@ -30,6 +30,10 @@ class AdViewMain extends Component {
 
   currencyFormat = (num) => {
     return currencyFormat(num);
+  };
+
+  handleBack = () => {
+    this.props.history.goBack();
   };
 
   render() {
@@ -92,7 +96,7 @@ class AdViewMain extends Component {
     return (
       <React.Fragment>
         <Container className="">
-          <Row className={`${defpadding} `}>
+          {/*  <Row className={`${defpadding} `}>
             <Col>
               <Breadcrumb>
                 <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
@@ -102,9 +106,13 @@ class AdViewMain extends Component {
                 <Breadcrumb.Item active>Data</Breadcrumb.Item>
               </Breadcrumb>
             </Col>
-          </Row>
-          <Row className={`${defpadding} `}>
-            <Col>Row for Back</Col>
+          </Row> */}
+          <Row className={`${defpadding} text-center`}>
+            <Col>
+              <Link className="adview-back" onClick={this.handleBack}>
+                Go back
+              </Link>
+            </Col>
           </Row>
           <Row className={`${defpadding} `}>
             <Container className="text-center ad-view-main-container ">

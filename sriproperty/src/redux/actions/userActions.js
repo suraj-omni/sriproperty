@@ -9,12 +9,14 @@ import {
   DISABLE_BTN,
   LOADING_UPDATEUSER_UI,
   LOADING_UPLOAD_USER_IMAGE_UI,
+  FINISHED_LOADING_RESET_EMAIL_UI,
+  LOADING_RESET_EMAIL_UI,
 } from "../types";
 
 import axios from "axios";
 
 //login user
-export const loginUser = (loginuserdata, history) => (dispatch) => {
+export const loginUser = (loginuserdata, state) => (dispatch) => {
   dispatch({ type: LOADING_UI });
 
   axios
@@ -23,7 +25,12 @@ export const loginUser = (loginuserdata, history) => (dispatch) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
-      history.push("/");
+
+      if (state) {
+        window.location = state.from.pathname;
+      } else {
+        window.location.assign("/");
+      }
     })
     .catch((err) => {
       //console.log("user actions err", err.response.data);
@@ -59,7 +66,7 @@ export const editUserDetails = (userDetails) => (dispatch) => {
 };
 
 export const sendResetPasswordEmail = () => (dispatch) => {
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_RESET_EMAIL_UI });
   axios
     .post("/user/sendResetPasswordEmail")
     .then((res) => {
@@ -70,6 +77,8 @@ export const sendResetPasswordEmail = () => (dispatch) => {
       dispatch({
         type: DISABLE_BTN,
       });
+      dispatch({ type: FINISHED_LOADING_RESET_EMAIL_UI });
+
       //console.log("res.data", res.data);
     })
     .catch((err) => console.log("sendResetPasswordEmail", err));

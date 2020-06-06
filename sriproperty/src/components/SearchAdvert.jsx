@@ -7,6 +7,7 @@ import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import SearchFilterBox from "./SearchFilterBox";
 
 import {
@@ -146,47 +147,100 @@ export class SearchAdvert extends Component {
     const { loading } = this.props.UI;
     return (
       <React.Fragment>
-        <Row className="advertisingrow d-flex text-center mx-auto px-4 my-2">
-          <marquee>
-            <Image
-              src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/banner-aws-1024x350.png?alt=media&token=5e76cf7a-90c3-4a02-b224-2797fa5fc34c"
-              thumbnail
-              className="advertisingrow-img"
-            />
-          </marquee>
-        </Row>
-        <Row className="d-flex  mx-auto p-2">
-          <SearchFilterBox
-            props={this.props}
-            handleSearch={this.handleSearch}
-            handleSort={this.handleSort}
-          ></SearchFilterBox>
-        </Row>
-        <Row className=" d-flex p-md-3 p-xs-0 mx-auto my-2 ">
-          <Col xs={12} md={9} className="searchresultswrapper">
-            <SearchResultsGrid
-              props={this.props}
-              loadMore={this.loadMore}
-              handleSort={this.handleSort}
-            ></SearchResultsGrid>
-          </Col>
-          <Col xs={0} md={3} className="p-2">
-            <Card>
-              <Card.Img
-                variant="top"
-                src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/advertise-wih-us.png?alt=media&token=f1d5083b-2df7-46f0-a190-48e708264bae"
-              />
-              <Card.Body>
-                <Card.Title>Advertise with us</Card.Title>
-                <Card.Text>
-                  Contact us and get to know how to publish your advertisements
-                  in this space.<p> marketing@sriproperty.lk</p>
-                </Card.Text>
-                <Button variant="info">Contact us</Button>
-              </Card.Body>
+        <Container id="homemastercontainer" className="p-2 mx-auto">
+          <Row className="advertisingrow d-flex text-center my-2 mx-auto">
+            <Card className="text-white">
+              <a href="https://ebuy.lk/" target="_blank" rel="noopener">
+                <Card.Img
+                  className="advertheight image fluid"
+                  src="https://firebasestorage.googleapis.com/v0/b/sriproperty-b397e.appspot.com/o/ads%2Febuylk.png?alt=media&token=5ba5ce96-91ab-4b5b-8a35-30391a288194"
+                  alt="Card image"
+                />
+              </a>
+              {/* <Card.ImgOverlay>
+                <Card.Footer>
+                  <div className="ml-auto mr-2">
+                    <a
+                      href="https://ebuy.lk/products/sony-wh-1000xm3-wireless-noise-cancelling-stereo-headset"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <Button size="sm" variant="dark">
+                        Shop Now
+                      </Button>
+                    </a>
+                  </div>
+                </Card.Footer>
+              </Card.ImgOverlay> */}
             </Card>
-          </Col>
-        </Row>
+          </Row>
+          <Row className="d-flex my-2 mx-auto">
+            <SearchFilterBox
+              props={this.props}
+              handleSearch={this.handleSearch}
+              handleSort={this.handleSort}
+            ></SearchFilterBox>
+          </Row>
+          <Row className="d-flex mx-auto my-2 searchresultswrapper">
+            <Col xs={12} md={9} className="p-2">
+              <SearchResultsGrid
+                props={this.props}
+                loadMore={this.loadMore}
+                handleSort={this.handleSort}
+              ></SearchResultsGrid>
+            </Col>
+            <Col xs={0} md={3} className="p-2 ">
+              <Card>
+                <Card.Img
+                  variant="top"
+                  src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/advertise-wih-us.png?alt=media&token=f1d5083b-2df7-46f0-a190-48e708264bae"
+                />
+                <Card.Body>
+                  <Card.Title>Advertise with us</Card.Title>
+                  <Card.Text>
+                    Contact us and get to know how to publish your
+                    advertisements in this space.
+                    <p> marketing@sriproperty.lk</p>
+                  </Card.Text>
+                  <Button variant="info">Contact us</Button>
+                </Card.Body>
+              </Card>
+              <p></p>
+              <Card>
+                <Card.Img
+                  className="advert-logo ml-auto mr-2"
+                  variant="top"
+                  src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/ads%2Fg21%20-%20Copy.png?alt=media&token=894f17dc-dee3-47d0-bb3f-4e08e74d750d"
+                />
+                <Card.Img
+                  className="advert-product mx-auto"
+                  variant="top"
+                  src="https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/ads%2Fsony-wh1000xm3-wireless-industry-leading-noise-canceling-over-ear-headphones.png?alt=media&token=388656c2-eaf9-4612-bbd4-40fd6aa0adb1"
+                />
+                <Card.Body>
+                  <Card.Title>
+                    <h6>
+                      Sony WH-1000Xm3 Wireless Noise Cancelling Stereo Headset
+                    </h6>
+                  </Card.Title>
+                  <Card.Text>
+                    <p>
+                      <a
+                        href="https://ebuy.lk/products/sony-wh-1000xm3-wireless-noise-cancelling-stereo-headset"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        <Button size="sm" variant="dark">
+                          Shop Now
+                        </Button>
+                      </a>
+                    </p>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </React.Fragment>
     );
   }

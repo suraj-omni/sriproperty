@@ -35,7 +35,8 @@ class AddAdvertImageUpload extends Component {
       cities: [],
       errors: {},
       noimageUrl:
-        "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media",
+        "https://firebasestorage.googleapis.com/v0/b/sriproperty-b397e.appspot.com/o/no-image-icon.png?alt=media&token=4780d1a3-6f2c-4710-9020-608defa1ab8a",
+      // "https://firebasestorage.googleapis.com/v0/b/sriproperty-8d3b1.appspot.com/o/no-image-icon.png?alt=media",
       selecteddistrict: "",
       showmodal: false,
     };
@@ -250,7 +251,7 @@ class AddAdvertImageUpload extends Component {
 
     return (
       <React.Fragment>
-        <Container className="adcontainer-background adtype-wrapper  generic-border">
+        <Container className="adcontainer-background adtype-wrapper my-3 generic-border">
           <Table>
             <Row className={`${this.state.colpadding}`}>
               <Col className={`${this.state.colpadding} h5 text-center`}>

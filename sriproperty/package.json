@@ -66,5 +66,5 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2"
   },
-  "proxy": "https://us-central1-sriproperty-8d3b1.cloudfunctions.net/api"
+  "proxy": "https://us-central1-sriproperty-b397e.cloudfunctions.net/api"
 }

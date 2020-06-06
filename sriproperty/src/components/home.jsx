@@ -3,6 +3,7 @@ import SliderSearchBox from "./slidersearchbox";
 import HomeSlider from "./slider";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Loader from ".//Loader";
 
 import {
   ClearAllSearch,
@@ -55,9 +56,9 @@ class Home extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <HomeSlider></HomeSlider>
-        <div id="slidersearchdiv" className="slidersearchdivlocation">
+      <React.Fragment className="">
+        <HomeSlider className=""></HomeSlider>
+        <div id="slidersearchdiv" className="home-slider-wrapper">
           <SliderSearchBox
             handleSearch={this.handleSearch}
             handleDistrictChange={this.handleDistrictChange}
@@ -66,33 +67,43 @@ class Home extends Component {
             selectedcategory={this.state.selectedcategory}
           ></SliderSearchBox>
         </div>
-        <Container className="mb-4">
-          <Row className="mx-auto homepagecontainerwrapper border rounded mt-4 py-3">
-            <Row className="mx-auto">
-              <Col>
-                <h3>Featured Properties</h3>
-              </Col>
-            </Row>
+        <Container id="homemastercontainer" className="p-2 mx-auto">
+          <Row
+            id="slidersearchdiv_main"
+            className="homepagecontainerwrapper mx-auto my-4 py-3"
+          >
+            <Col xs={12} className="text-center">
+              <h4>Search Properties</h4>
+            </Col>
+            <Col xs={12} className="">
+              <SliderSearchBox
+                handleSearch={this.handleSearch}
+                handleDistrictChange={this.handleDistrictChange}
+                handleCategoryChange={this.handleCategoryChange}
+                selecteddistrict={this.state.selecteddistrict}
+                selectedcategory={this.state.selectedcategory}
+              ></SliderSearchBox>
+            </Col>
+          </Row>
+          <Row className="mx-auto homepagecontainerwrapper my-4 py-3">
+            <Col xs={12} className="text-center">
+              <h4>Featured Properties</h4>
+            </Col>
 
-            <Row className="mx-auto">
-              <Col>
-                <FeaturedAdverts props={this.props}></FeaturedAdverts>
-              </Col>
-            </Row>
+            <Col xs={12}>
+              <FeaturedAdverts props={this.props}></FeaturedAdverts>
+            </Col>
           </Row>
-          <Row className="mx-auto homepagecontainerwrapper border rounded mt-4 py-3">
-            <Row className="mx-auto">
-              <Col>
-                <h3>Latest Properties</h3>
-              </Col>
-            </Row>
-            <Row className="mx-auto">
-              <Col>
-                <LatestAdverts props={this.props}></LatestAdverts>
-              </Col>
-            </Row>
+          <Row className="mx-auto homepagecontainerwrapper my-4 py-3">
+            <Col xs={12} className="text-center">
+              <h4>Latest Properties</h4>
+            </Col>
+
+            <Col xs={12}>
+              <LatestAdverts props={this.props}></LatestAdverts>
+            </Col>
           </Row>
-          <Row className="mx-auto homepagecontainerwrapper border rounded my-4 py-3">
+          <Row className="mx-auto homepagecontainerwrapper my-4 py-3">
             <Row className="ml-2 text-left">
               <Col>
                 <h4>About sriproperty.lk</h4>

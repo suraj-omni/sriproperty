@@ -92,11 +92,11 @@ class MainMenu extends Component {
     const { authenticated, isAdmin, history } = this.props;
     return (
       <React.Fragment>
-        <Container>
-          <Navbar bg="light" expand="md">
+        <Container className="p-2 mx-auto">
+          <Navbar bg="light" className="main-menu" expand="md">
             <Navbar.Brand href="/">
               <Image
-                src="http://localhost:3000/img/fbprofilepicture.png"
+                src="/img/fbprofilepicture.png"
                 width="100"
                 height="100"
                 roundedCircle
@@ -289,24 +289,24 @@ class MainMenu extends Component {
               </Nav>
             </Navbar.Collapse>
             <div id="mainmenupostadbtn">
-              {authenticated && !isAdmin && (
+              {!isAdmin && (
                 <React.Fragment>
-                  <Button
-                    id="btnpostad"
-                    variant="primary"
-                    size="sm"
-                    type="submit"
-                  >
-                    <Link id="postad" to="/postad" className="text-white">
+                  <Link id="postad" to="/postad" className="text-white">
+                    <Button
+                      id="btnpostad"
+                      variant="primary"
+                      size="sm"
+                      type="submit"
+                    >
                       Post Your Ad
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </React.Fragment>
               )}
             </div>
           </Navbar>
+          {this.render_LocationModal()}
         </Container>
-        {this.render_LocationModal()}
       </React.Fragment>
     );
   }

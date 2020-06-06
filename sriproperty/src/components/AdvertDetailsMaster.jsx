@@ -173,11 +173,11 @@ class AdvertDetailsMaster extends Component {
       }
     } else if (adverttype === "rent") {
       if (category === "Land") {
-        pricelabel = "Rent (Rs) /year";
+        pricelabel = "Rent / year";
       } else if (category === "Holiday and Short Rental") {
-        pricelabel = "Rent (Rs) /night";
+        pricelabel = "Rent / night";
       } else {
-        pricelabel = "Rent (Rs) /month";
+        pricelabel = "Rent / month";
       }
     }
 

@@ -11,23 +11,25 @@ const config = require("../util/config");
 
 class SliderSearchBox extends Component {
   componentDidMount = () => {
-    this.props.getAdvertLocationTotal();
+    //this.props.getAdvertLocationTotal();
   };
 
   render() {
-    const districtslist = this.props.search.districtslist;
+    const districtslist = config.districtsoptionslist;
+    //const districtslist = this.props.search.districtslist;
     const categories = config.categoriesoptionslist;
     return (
       <React.Fragment>
         <Form id="searchform" className="">
           <Form.Row className="text-center">
             <Form.Group as={Col} sm="12" controlId="formGridEmail">
-              <Form.Label className="serachlabels">District</Form.Label>
+              <Form.Label className="">District</Form.Label>
             </Form.Group>
             <Form.Group as={Col} sm="12" controlId="formGridEmail">
               <div>
                 <Select
                   name="locationdropdown"
+                  placeholder="Select District"
                   options={districtslist}
                   isSearchable="true"
                   classNamePrefix="searchloc"
@@ -39,10 +41,11 @@ class SliderSearchBox extends Component {
             </Form.Group>
 
             <Form.Group as={Col} sm="12" controlId="formGridPassword">
-              <Form.Label className="serachlabels">Category</Form.Label>
+              <Form.Label className="">Category</Form.Label>
               <div>
                 <Select
                   name="locationdropdown"
+                  placeholder="Select Category"
                   options={categories}
                   isSearchable="true"
                   classNamePrefix="searchloc"
@@ -54,8 +57,17 @@ class SliderSearchBox extends Component {
             </Form.Group>
           </Form.Row>
           <Form.Row>
-            <Form.Group as={Col} sm="12" controlId="formGridPassword">
-              <Button variant="primary" onClick={this.props.handleSearch}>
+            <Form.Group
+              as={Col}
+              sm="12"
+              className="text-center"
+              controlId="formGridPassword"
+            >
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={this.props.handleSearch}
+              >
                 Search Property
               </Button>
             </Form.Group>

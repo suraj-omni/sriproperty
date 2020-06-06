@@ -58,11 +58,11 @@ class AddAdvertDetails extends AdvertDetailsMaster {
       }
     } else if (adverttype === "rent") {
       if (category === "Land") {
-        pricelabel = "Rent (Rs) /year";
+        pricelabel = "Rent / year";
       } else if (category === "Holiday and Short Rental") {
-        pricelabel = "Rent (Rs) /night";
+        pricelabel = "Rent / night";
       } else {
-        pricelabel = "Rent (Rs) /month";
+        pricelabel = "Rent / month";
       }
     }
 
@@ -98,7 +98,7 @@ class AddAdvertDetails extends AdvertDetailsMaster {
 
     return (
       <React.Fragment>
-        <Container className="adcontainer-background adtype-wrapper  generic-border">
+        <Container className="adcontainer-background adtype-wrapper  my-3 generic-border">
           <Table>
             {this.headerRowComponent()}
             <Row>

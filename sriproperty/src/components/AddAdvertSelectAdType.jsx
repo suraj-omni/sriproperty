@@ -62,7 +62,7 @@ class AddAdvertSelectAdType extends Component {
   render() {
     return (
       <React.Fragment>
-        <Container className="adcontainer-background adtype-wrapper  generic-border">
+        <Container className="adcontainer-background adtype-wrapper my-3 generic-border">
           <Table className="">
             <Row className="">
               <Col className={`${this.state.colpadding} h4 text-center`}>
@@ -83,7 +83,7 @@ class AddAdvertSelectAdType extends Component {
                     >
                       <Image
                         className="select_cat_imagesize"
-                        src="../../img/houseforsale.jpg"
+                        src="../../img/houseforsale.png"
                         rounded
                       />
                     </Col>
@@ -107,7 +107,7 @@ class AddAdvertSelectAdType extends Component {
                     >
                       <Image
                         className="select_cat_imagesize"
-                        src="../../img/forrent.jpg"
+                        src="../../img/forrent.png"
                         rounded
                       />
                     </Col>

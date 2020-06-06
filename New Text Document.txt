@@ -36,6 +36,9 @@ npm i shortid --save
 
 npm uninstall react-datepicker --save
 
+npm install --save cors
+
+
 
 
 

@@ -12,7 +12,7 @@ import { format } from "path";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <App className="App" />
   </BrowserRouter>,
   document.getElementById("root")
 );
