@@ -31,6 +31,10 @@ npm install --save moment react-moment
 
 npm i date-fns-tz
 
+--meta tags
+npm i react-helmet
+
+
 ******************back end
 npm i shortid --save
 

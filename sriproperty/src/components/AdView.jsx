@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getAdvertbyId } from "../redux/actions/adActions";
@@ -7,9 +7,13 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Link from "react-router-dom/Link";
-
-import AdViewMain from "./AdViewMain";
 import Button from "react-bootstrap/Button";
+import Loader from "./Loader";
+
+//import AdViewMain from "./AdViewMain";
+//import AdViewDetail from "./AdViewDetail";
+
+const AdViewMain = lazy(() => import("./AdViewMain"));
 
 class AdView extends Component {
   constructor(props) {
@@ -20,16 +24,21 @@ class AdView extends Component {
   }
 
   componentDidMount = () => {
+    // alert("sdsd");
     const advert = { advertid: this.props.match.params.id };
-    //console.log("componentDidMount", advert);
+    console.log("componentDidMount", advert);
     if (advert.advertid) {
       this.props.getAdvertbyId(advert);
     }
   };
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   render() {
     const { loading } = this.props.UI;
-    const { credentials, history } = this.props;
+    const { history } = this.props;
     const advert = this.props.advert;
     return (
       <React.Fragment>
@@ -95,14 +104,13 @@ class AdView extends Component {
               </Card>
             </Col>
             <Col id="adviewcol2" className="" lg={8} sm={12} md={9}>
+              {/* {!loading && <AdViewMain props={this.props} />} */}
               {!loading && (
-                <AdViewMain
-                  history={history}
-                  loading={loading}
-                  advert={advert}
-                  credentials={credentials}
-                />
+                <Suspense fallback={<Loader></Loader>}>
+                  <AdViewMain props={this.props} history={history} />
+                </Suspense>
               )}
+              {loading && <Loader></Loader>}
             </Col>
             <Col id="adviewcol3" className="" lg={2} md={3} sm={0}>
               <Card>

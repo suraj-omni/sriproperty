@@ -325,14 +325,6 @@ export class AdminAdvertList extends Component {
                             >
                               Search Adverts
                             </Button>
-                            <Button
-                              id="btngenerate"
-                              size="sm"
-                              variant="primary"
-                              onClick={this.generateJSON}
-                            >
-                              Generate
-                            </Button>
                           </Col>
                         </Row>
                       </Table>

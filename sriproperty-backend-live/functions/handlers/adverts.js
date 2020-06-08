@@ -319,6 +319,7 @@ exports.getLatestProperties = (request, response) => {
 
 exports.addAdvert = (request, response) => {
   console.log("addAvert", JSON.stringify(request.body));
+  console.log("request.user.imageUrl", request.user.imageUrl);
   const strdate = new Date();
   const firstDay = new Date(strdate.getFullYear(), strdate.getMonth(), 1);
   const lastDay = new Date(

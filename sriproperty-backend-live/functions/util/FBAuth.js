@@ -34,6 +34,7 @@ module.exports = (req, res, next) => {
       req.user.phonenumber = data.docs[0].data().phonenumber;
       req.user.isAdmin = data.docs[0].data().isAdmin;
       req.user.monthly_free_ads = data.docs[0].data().monthly_free_ads;
+      req.user.imageUrl = data.docs[0].data().imageUrl;
       //console.log("data.docs[0].data()", data.docs[0].data());
       return next();
     })
