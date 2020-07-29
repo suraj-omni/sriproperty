@@ -280,18 +280,27 @@ export class AdReview extends Component {
               </Col>
             </Row>
             <Row className={`${rowClass}`}>
-              <Col xs={12} md={3} className={`${colClass} text-md-right `}>
+              <Col xs={12} md={2} className={`${colClass} text-md-right `}>
                 Customer Ref # :
               </Col>
-              <Col xs={12} md={3} className={`${colClass} text-md-left`}>
+              <Col xs={12} md={2} className={`${colClass} text-md-left`}>
                 <Link target="_blank" to={`/ad/${advertid}`}>
                   {customerRefNo}
                 </Link>
               </Col>
-              <Col xs={12} md={3} className={`${colClass} text-md-right`}>
+
+              <Col xs={12} md={2} className={`${colClass} text-md-right `}>
+                Upload :
+              </Col>
+              <Col xs={12} md={2} className={`${colClass} text-md-left`}>
+                <Link target="_blank" to={`/admin/uploadimage/${advertid}`}>
+                  {advertid}
+                </Link>
+              </Col>
+              <Col xs={12} md={2} className={`${colClass} text-md-right`}>
                 Advert Id :
               </Col>
-              <Col xs={12} md={3} className={`${colClass} text-md-left`}>
+              <Col xs={12} md={2} className={`${colClass} text-md-left`}>
                 {advertid}
               </Col>
             </Row>

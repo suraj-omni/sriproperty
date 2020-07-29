@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import OwlCarousel from "react-owl-carousel2";
+import { Link } from "react-router-dom";
 import "owl.carousel/dist/assets/owl.carousel.css";
 
 class HomeSlider extends Component {
@@ -35,9 +36,9 @@ class HomeSlider extends Component {
             <div className={this.state.slidercity}>Mattegoda</div>
             <div className={this.state.sliderdistrict}>Colombo</div>
             <p className={this.state.sliderprice}>
-              <a href="#">
-                <span className="price-a">sell | LKR 18, 000, 000.00</span>
-              </a>
+              <Link className="price-a" to={`/ad/o4Q864k78ZMf1CcZABFT`}>
+                sell | LKR 19 MN
+              </Link>
             </p>
           </div>
           <div>
@@ -49,9 +50,9 @@ class HomeSlider extends Component {
             <div className={this.state.slidercity}>Rajagiriya</div>
             <div className={this.state.sliderdistrict}>Colombo</div>
             <p className={this.state.sliderprice}>
-              <a href="#">
-                <span className="price-a">rent | LKR 12, 000, 000.00</span>
-              </a>
+              <Link className="price-a" to={`/ad/e6lzJUY0R2WqS3d04t6Q`}>
+                sell | LKR 125.0 MN
+              </Link>
             </p>
           </div>
           <div>
@@ -63,9 +64,9 @@ class HomeSlider extends Component {
             <div className={this.state.slidercity}>Pannipitiya</div>
             <div className={this.state.sliderdistrict}>Colombo</div>
             <p className={this.state.sliderprice}>
-              <a href="#">
-                <span className="price-a">sell | LKR 13, 500, 000.00</span>
-              </a>
+              <Link className="price-a" to={`/ad/Uf1BLI0uoNFQVk5OjYbr`}>
+                sell | LKR 13.5 MN
+              </Link>
             </p>
           </div>
         </OwlCarousel>

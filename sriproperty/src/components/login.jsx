@@ -9,9 +9,13 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
+import { firebase } from "../init-firebase";
+
 //redux stuff
 import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
+
+const analytics = firebase.analytics();
 
 class Login extends Component {
   constructor(props) {
@@ -48,6 +52,7 @@ class Login extends Component {
     const { state } = this.props.location;
 
     this.props.loginUser(loginuserdata, state);
+    analytics.logEvent("login");
   };
 
   render() {

@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Switch, withRouter } from "react-router-dom";
+
 import Register from "./components/register";
 import Home from "./components/home";
 import Login from "./components/login";
@@ -10,12 +11,18 @@ import AddAdvertSelectAdCategory from "./components/AddAdvertSelectAdCategory";
 import AddAdvertDetails from "./components/AddAdvertDetails";
 import EditAdvertDetails from "./components/EditAdvertDetails";
 import AddAdvertImageUpload from "./components/AddAdvertImageUpload";
+import AdminAdvertImageUpload from "./components/AdminAdvertImageUpload";
 import MyAds from "./components/MyAds";
 import AdView from "./components/AdView";
 import AdReview from "./components/AdReview";
 import AdminAdvertList from "./components/AdminAdvertList";
 import SearchAdvert from "./components/SearchAdvert";
 import SPFooter from "./components/spfooter";
+import ContactUsMain from "./components/ContactUsMain";
+import AboutUs from "./components/AboutUs";
+import TandC from "./components/TandC";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+
 import jwtDecode from "jwt-decode";
 import AuthRoute from "./util/authroute";
 import ProtectedRoute from "./components/common/protectedRoute";
@@ -25,9 +32,10 @@ import store from "./redux/store";
 
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logOutUser, getUserData } from "./redux/actions/userActions";
-import Container from "react-bootstrap/Container";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
 const MainMenu = lazy(() => import("./components/mainmenu"));
 
 // uat
@@ -85,6 +93,10 @@ function App() {
               component={AddAdvertSelectAdCategory}
             ></ProtectedRoute>
             <ProtectedRoute
+              path="/admin/uploadimage/:id"
+              component={AdminAdvertImageUpload}
+            ></ProtectedRoute>
+            <ProtectedRoute
               path="/postad/uploadimage"
               component={AddAdvertImageUpload}
             ></ProtectedRoute>
@@ -108,6 +120,10 @@ function App() {
               path="/admin"
               component={AdminAdvertList}
             ></ProtectedRoute>
+            <Route path="/contactus" component={ContactUsMain}></Route>
+            <Route path="/aboutus" component={AboutUs}></Route>
+            <Route path="/termsandconditions" component={TandC}></Route>
+            <Route path="/privacypolicy" component={PrivacyPolicy}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
         </Col>

@@ -789,14 +789,37 @@ export const deleteAdvert = (advertid) => (dispatch) => {
   axios
     .delete(`/advert/${advertid}`)
     .then((res) => {
+      console.log("delete  Advert success");
       dispatch({ type: FINISHED_LOADING_UI });
+      return true;
     })
     .catch((err) => {
       console.log("deleteAdvert", err);
-      dispatch({
+      return false;
+      /* dispatch({
         type: SET_ERRORS,
         payload: err.response.data,
-      });
+      }); */
+    });
+};
+
+//Delete Advert by Admin
+export const deleteAdvertbyAdmin = (advertid) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .delete(`/advertadmindelete/${advertid}`)
+    .then((res) => {
+      console.log("delete  Advert success");
+      dispatch({ type: FINISHED_LOADING_UI });
+      return true;
+    })
+    .catch((err) => {
+      console.log("deleteAdvert", err);
+      return false;
+      /* dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
+      }); */
     });
 };
 

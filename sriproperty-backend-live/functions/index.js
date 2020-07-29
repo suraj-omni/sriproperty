@@ -5,6 +5,7 @@ const {
   addAdvert,
   editAdvert,
   deleteAdvert,
+  deleteAdvertbyAdmin,
   getAdvertbyId,
   uploadAdvertImage,
   deleteAdImage,
@@ -32,7 +33,7 @@ const {
   updateUser,
 } = require("./handlers/users");
 
-const { getLocations, addLocations } = require("./handlers/util");
+const { getLocations, addLocations, getUsers } = require("./handlers/util");
 const FBAuth = require("./util/FBAuth");
 
 const app = require("express")();
@@ -44,6 +45,7 @@ app.use(cors());
 //Get Locations
 app.get("/locations", getLocations);
 app.post("/locations", addLocations);
+app.get("/users", getUsers);
 
 //Get all adverts
 app.get("/adverts", getAllAdverts);
@@ -85,6 +87,9 @@ app.put("/advert/goLive/:advertid", FBAuth, advertGoLive);
 
 app.delete("/advert/:advertid", FBAuth, deleteAdvert);
 
+//Delete Advert via Admin
+app.delete("/advertadmindelete/:advertid", FBAuth, deleteAdvertbyAdmin);
+
 //Add Advert Payment
 app.post("/advertPayment", FBAuth, addAdvertPayment);
 
@@ -118,7 +123,8 @@ app.post("/user/image", FBAuth, uploadImage);
 
 app.post("/user/sendResetPasswordEmail", FBAuth, sendResetPasswordEmail);
 
-//This function will update the document locations with advert total based on add edit or delete. it will increase or decrease by 1 based on action.
+//This function will update the document locations with advert total based on add edit or delete. it will increase or decrease by 1
+// based on action.
 exports.updateAdvertsCounts = functions.firestore
   .document("adverts/{advertid}")
   .onWrite((change, context) => {
@@ -247,6 +253,32 @@ exports.updateAdvertsCounts = functions.firestore
     } else {
       return null;
     }
+  });
+
+exports.updateUserInfortoAdverts = functions.firestore
+  .document("users/{userid}")
+  .onUpdate((change, context) => {
+    const userdata = change.after.exists ? change.after.data() : null;
+
+    const { userid, name, email, imageUrl, phonenumber } = { ...userdata };
+
+    console.log(`${userid} ${name} ${email} ${imageUrl} ${phonenumber}`);
+
+    db.collection("adverts")
+      .where("userid", "==", userid)
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          console.log(`DOC ID : ${doc.id}`);
+
+          db.doc(`/adverts/${doc.id}`).update({
+            [`email`]: email,
+            [`name`]: name,
+            [`userImageUrl`]: imageUrl,
+            [`phonenumber1`]: phonenumber,
+          });
+        });
+      });
   });
 
 exports.api = functions.https.onRequest(app);

@@ -15,6 +15,7 @@ import {
   ADVERT_STATUS_NEEDEDIT,
   ADVERT_STATUS_INREVIEW,
 } from "../redux/types";
+
 export class MyAdsTable extends Component {
   handleEdit = (event, advertid) => {
     console.log(advertid);

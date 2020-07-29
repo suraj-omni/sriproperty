@@ -17,6 +17,10 @@ import { connect } from "react-redux";
 import { ClearAllSearch } from "../redux/actions/searchActions";
 import { logOutUser } from "../redux/actions/userActions";
 
+import { firebase } from "../init-firebase";
+
+const analytics = firebase.analytics();
+
 class MainMenu extends Component {
   state = {
     navlinkclass: "mx-1 nav-link",
@@ -32,6 +36,8 @@ class MainMenu extends Component {
 
   handleLogout = () => {
     this.props.logOutUser(this.props.history);
+
+    analytics.logEvent("logout");
   };
 
   handleModalClose = () => {
@@ -45,6 +51,12 @@ class MainMenu extends Component {
     } else {
       this.setState({ showmodal: false });
       //this.props.ClearAllSearch();
+      analytics.logEvent("mainmenusearch", {
+        district: this.state.district,
+        category: this.state.category,
+        adtype: this.state.adtype,
+      });
+
       this.props.history.push(
         `/search/${this.state.district}/${this.state.category}/${this.state.adtype}`
       );
@@ -286,6 +298,9 @@ class MainMenu extends Component {
                     </Link>
                   </React.Fragment>
                 )}
+                <Link to="/contactus" className={this.state.navlinkclass}>
+                  Contact Us
+                </Link>
               </Nav>
             </Navbar.Collapse>
             <div id="mainmenupostadbtn">

@@ -62,7 +62,7 @@ exports.signup = (request, response) => {
               name: newUser.name,
               phonenumber: newUser.phonenumber,
               phonenumberconfirmed: newUser.phonenumberconfirmed,
-              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noimage}?alt=media`,
+              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noimage}?alt=media&token=8285a6b9-8f41-4b8b-bf7b-49f7b05dd602`,
               isAdmin: false,
               monthly_free_ads: _monthly_free_ads,
             };

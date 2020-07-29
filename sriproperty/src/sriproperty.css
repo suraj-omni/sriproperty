@@ -861,6 +861,56 @@ ul li {
 
 /* home page */
 
+/* contact us */
+
+.contact-us-error {
+  color: #d81159 !important;
+  font-size: 0.7rem !important;
+  font-family: "Open Sans", sans-serif;
+}
+
+.contact-us-icons {
+  color: #f8a444 !important;
+}
+
+.contact-fb-icon {
+  color: #4267b2 !important;
+}
+
+.contact-large-font {
+  color: #f8a444 !important;
+  font-size: 1.1rem !important;
+}
+
+#fbhl {
+  color: #4267b2 !important;
+}
+
+#contactustoast {
+  margin: auto !important;
+  width: 20rem !important;
+  height: auto !important;
+  background-color: #fff8f0 !important;
+  border: 1px solid #f8a444 !important;
+  font-size: 1rem !important;
+  /* box-shadow: 0 0.5rem 1rem #f8a444 !important; */
+}
+
+#contactustoast_header {
+  background-color: #f8a444;
+  color: #fff8f0 !important;
+}
+
+/* contact us */
+
+/* about us */
+.contact-p {
+  font-size: 0.75rem !important;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* about us */
+
 /* footer */
 
 .footer {
@@ -877,6 +927,10 @@ ul li {
   font-family: "Open Sans", sans-serif;
   font-size: 0.7rem;
   font-stretch: extra-expanded;
+}
+
+#omnilink {
+  color: #fdf2e9 !important;
 }
 
 /* modal forms */

@@ -12,6 +12,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { signupuser } from "../redux/actions/userActions";
 
+import { firebase } from "../init-firebase";
+
+const analytics = firebase.analytics();
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +55,7 @@ class Register extends Component {
     };
 
     this.props.signupuser(signupUsereData, this.props.history);
+    analytics.logEvent("signedup");
   };
 
   render() {

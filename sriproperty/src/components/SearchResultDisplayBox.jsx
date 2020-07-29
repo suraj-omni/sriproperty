@@ -11,6 +11,7 @@ import { faBed } from "@fortawesome/free-solid-svg-icons";
 import { faBath } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
+import { nFormatter } from "../util/util";
 
 const SearchResultDisplayBox = ({ advert }) => {
   const {
@@ -48,6 +49,7 @@ const SearchResultDisplayBox = ({ advert }) => {
   const isRoomorAnnexe = category === "Room or Annex" ? true : false;
   const isCommercialProperty =
     category === "Commercial Property" ? true : false;
+  const rentopricedisplay = nFormatter(rentaloprice);
 
   return (
     <Card className="card-searchbox">
@@ -162,7 +164,7 @@ const SearchResultDisplayBox = ({ advert }) => {
           <ListGroupItem disabled className="searchbox-list-item p-1">
             <div className="m-auto ad-view-box-price-font">
               {" "}
-              {`Rs. ${rentaloprice} - ${rentalopriceunit}`}
+              {`Rs. ${rentopricedisplay} - ${rentalopriceunit}`}
               <span className="ad-view-main-price_nego-font">{`  ${negotiable}`}</span>
             </div>
           </ListGroupItem>

@@ -25,7 +25,9 @@ class AddAdvertSelectAdType extends Component {
     const advert = this.props.ad.advert;
 
     //console.log(JSON.stringify(advert));
-    this.cleanAdvertObj(advert);
+    if (advert) {
+      this.cleanAdvertObj(advert);
+    }
 
     //console.log("component Did mount category:", JSON.stringify(advert));
   };

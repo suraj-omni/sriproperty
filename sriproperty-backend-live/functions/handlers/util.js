@@ -7,7 +7,7 @@ exports.getLocations = (req, res) => {
   db.collection("locations")
     .get()
     .then((data) => {
-      let locations = this.fillLocations(data);
+      let locations = this.fillData(data);
       console.log("loocations", locations);
       return res.json(locations);
     })
@@ -17,7 +17,7 @@ exports.getLocations = (req, res) => {
     });
 };
 
-exports.fillLocations = (data) => {
+exports.fillData = (data) => {
   let alllocations = [];
   data.forEach((doc) => {
     alllocations.push([`${doc.id}`, doc.data()]);
@@ -39,4 +39,18 @@ exports.addLocations = (request, response) => {
     db.doc(`/locations/${location[0]}`).set(location[1]);
   });
   return response.status(201).json("Completed");
+};
+
+exports.getUsers = (req, res) => {
+  db.collection("users")
+    .get()
+    .then((data) => {
+      let users = this.fillData(data);
+      console.log("users", users);
+      return res.json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.json(err);
+    });
 };

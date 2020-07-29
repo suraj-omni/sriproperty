@@ -10,12 +10,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSquareAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { currencyFormat, altPhoneNumber, getimageUrllist } from "../util/util";
+import {
+  currencyFormat,
+  altPhoneNumber,
+  getimageUrllist,
+  nFormatter,
+} from "../util/util";
 import Button from "react-bootstrap/Button";
 import Link from "react-router-dom/Link";
 import ImageSlider from "./ImageSlider";
 import moment from "moment/moment";
 import Loader from "./Loader";
+import currencyFormatter from "currency-formatter";
 
 class AdViewMain extends Component {
   constructor(props) {
@@ -33,7 +39,8 @@ class AdViewMain extends Component {
   };
 
   currencyFormat = (num) => {
-    return currencyFormat(num);
+    //return currencyFormat(num);
+    return currencyFormatter.format(num, { code: "LKR" });
   };
 
   handleBack = () => {
@@ -72,7 +79,7 @@ class AdViewMain extends Component {
     const negotiable = rentalopricenegotiable ? "Negotiable" : "";
     const type = adverttype === "sell" ? "Sale" : "Rent";
     const price = this.currencyFormat(rentaloprice);
-
+    const priceshortened = nFormatter(rentaloprice);
     //Checking based on category
     const isLand = category === "Land" ? true : false;
     const isHouse = category === "House" ? true : false;
@@ -145,7 +152,7 @@ class AdViewMain extends Component {
                       <Col>
                         <div className="m-auto ad-view-main-price-font">
                           {" "}
-                          {`Rs.${price} / ${rentalopriceunit}`}{" "}
+                          {`${price} (${priceshortened}) / ${rentalopriceunit}`}
                           <span className="ad-view-main-price_nego-font">{` ${negotiable}`}</span>
                         </div>
                       </Col>

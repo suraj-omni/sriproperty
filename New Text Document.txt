@@ -9,6 +9,7 @@ npm install --save jwt-decode
 npm install --save redux react-redux redux-thunk
 
 npm install --save prop-types
+npm i currency-formatter
 
 back end
  C:\d\Sri property\sriproperty\source\sriproperty-backend\functions> 
@@ -18,6 +19,7 @@ npm install --save busboy
 npm install --save uuid
 
 npm install --save react-fontawesome
+npm i --save @fortawesome/free-brands-svg-icons
 
 npm install react-image --save
 
@@ -33,6 +35,9 @@ npm i date-fns-tz
 
 --meta tags
 npm i react-helmet
+
+
+npm i emailjs
 
 
 ******************back end

@@ -18,6 +18,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
+import { analytics } from "../init-firebase";
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +41,12 @@ class Home extends Component {
       alert("Please select a Location and a Category!!!");
       return null;
     } else {
+      analytics.logEvent("searchboxsearch", {
+        district: this.state.selecteddistrict.value,
+        category: this.state.selectedcategory.value,
+        adtype: "All",
+      });
+
       this.props.ClearAllSearch();
       this.props.history.push(
         `/search/${this.state.selecteddistrict.value}/${this.state.selectedcategory.value}/All`

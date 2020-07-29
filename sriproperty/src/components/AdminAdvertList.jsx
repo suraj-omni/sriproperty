@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -31,7 +32,12 @@ import {
   PAYMENT_STATUS_PAID,
   PAYMENT_STATUS_MEMBERSHIP,
 } from "../redux/types";
-import { getAdminSearchAdverts } from "../redux/actions/adActions";
+
+import {
+  getAdminSearchAdverts,
+  deleteAdvertbyAdmin,
+  resetAdverts,
+} from "../redux/actions/adActions";
 
 const shortid = require("shortid");
 
@@ -122,6 +128,17 @@ export class AdminAdvertList extends Component {
     this.setState({
       toDate: date,
     });
+  };
+
+  handleDelete = (advertid, index) => {
+    const response = window.confirm("Do you really want to Delete the Advert?");
+    if (response === true) {
+      //this.props.handleDelete(advertid, index);
+      let adverts = this.props.adverts;
+      this.props.deleteAdvertbyAdmin(advertid);
+      adverts.splice(index, 1);
+      this.props.resetAdverts(adverts);
+    }
   };
 
   render() {
@@ -355,7 +372,7 @@ export class AdminAdvertList extends Component {
                     <th>Status</th>
                     <th>Online</th>
 
-                    <th>Action</th>
+                    <th colSpan="2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -424,6 +441,32 @@ export class AdminAdvertList extends Component {
                           </React.Fragment>
                         )}
                       </td>
+                      <td className="text-center align-middle">
+                        {(advert.advertStatus === ADVERT_STATUS_NEW ||
+                          advert.advertStatus === ADVERT_STATUS_EXPIRED ||
+                          advert.advertStatus === ADVERT_STATUS_INREVIEW) && (
+                          <React.Fragment>
+                            <Button
+                              className="btn-grid"
+                              disabled={
+                                advert.advertStatus === ADVERT_STATUS_INREVIEW
+                                  ? true
+                                  : false
+                              }
+                              onClick={() =>
+                                this.handleDelete(advert.advertId, index)
+                              }
+                            >
+                              <FontAwesomeIcon
+                                style={{ color: "#D81159" }}
+                                icon={faTrash}
+                                size="1x"
+                                title="click here to delete the ad."
+                              />
+                            </Button>
+                          </React.Fragment>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -438,6 +481,8 @@ export class AdminAdvertList extends Component {
 
 AdminAdvertList.propTypes = {
   getAdminSearchAdverts: PropTypes.func.isRequired,
+  resetAdverts: PropTypes.func.isRequired,
+  deleteAdvertbyAdmin: PropTypes.func.isRequired,
   credentials: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
   adverts: PropTypes.object.isRequired,
@@ -453,6 +498,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   getAdminSearchAdverts,
+  deleteAdvertbyAdmin,
+  resetAdverts,
 };
 
 function SearchToggle({ children, eventKey }) {

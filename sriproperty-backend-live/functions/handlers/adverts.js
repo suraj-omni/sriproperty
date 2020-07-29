@@ -758,7 +758,8 @@ exports.deleteAdvert = (request, response) => {
   const document = db.doc(`/adverts/${advertid}`);
   const bucket = admin.storage().bucket();
 
-  //console.log("advertid", advertid);
+  console.log("delete eAdvert advertid", advertid);
+
   let paymentStatus = "";
   document
     .get()
@@ -779,12 +780,86 @@ exports.deleteAdvert = (request, response) => {
           //console.log("imageUrl", imageUrl);
           if (imageUrl !== "") {
             const imagename = imageUrl.slice(76, -10);
-            // console.log("imagename", imagename);
+            const imagenamesplit = imagename.split("?");
+            /* console.log(
+              "imagename",
+              imagename,
+              imagenamesplit,
+              imagenamesplit[0]
+            ); */
             bucket
-              .file(imagename)
+              .file(imagenamesplit[0])
               .delete()
               .then(() => {
-                console.log(imagename + " deleted");
+                console.log(imagenamesplit[0] + " deleted");
+              })
+              .catch((err) => {
+                console.log("error deleting file", err);
+              });
+          }
+        }
+
+        return document.delete();
+      }
+    })
+    .then(() => {
+      if (paymentStatus === types.PAYMENT_STATUS_FREE) {
+        //console.log("paymentStatus === types.PAYMENT_STATUS_FREE");
+        this.setFreeAdWhenDeleting(
+          request.user.uid,
+          request.user.monthly_free_ads
+        );
+      }
+      return response.status(200).json({ message: `Successfully Deleted !!!` });
+    })
+    .catch((err) => {
+      console.log("error deleting", err);
+      return response.status(500).json({ error: err.code });
+    });
+};
+
+exports.deleteAdvertbyAdmin = (request, response) => {
+  let advertid = request.params.advertid;
+  const document = db.doc(`/adverts/${advertid}`);
+  const bucket = admin.storage().bucket();
+
+  console.log("delete eAdvert advertid", advertid);
+
+  let paymentStatus = "";
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return response
+          .status(404)
+          .json({ error: "No Such Advert to Delete !!!" });
+      } else if (!request.user.isAdmin) {
+        return response.status(403).json({ error: "Unauthorized Action !!!" });
+      } else {
+        paymentStatus = doc.data()["paymentStatus"];
+        //console.log("paymentStatus", paymentStatus);
+
+        for (i = 1; i < 6; i++) {
+          //delete each image here.
+          const imageUrl = doc.data()[`image${i}Url`];
+          //console.log("imageUrl", imageUrl);
+          if (imageUrl !== "") {
+            const imagename = imageUrl.slice(76, -10);
+            const imagenamesplit = imagename.split("?");
+            /* console.log(
+              "imagename",
+              imagename,
+              imagenamesplit,
+              imagenamesplit[0]
+            ); */
+            bucket
+              .file(imagenamesplit[0])
+              .delete()
+              .then(() => {
+                console.log(imagenamesplit[0] + " deleted");
+              })
+              .catch((err) => {
+                console.log("error deleting file", err);
               });
           }
         }
@@ -834,6 +909,7 @@ exports.uploadAdvertImage = (request, response) => {
     if (mimetype !== "image/jpeg" && mimetype != "image/png") {
       return response.status(400).json({ error: "Wrong file type" });
     }
+
     //console.log("fieldname", fieldname);
     //console.log("filename", filename);
     //console.log("mimetype", mimetype);
@@ -909,17 +985,20 @@ exports.deleteAdImage = (request, response) => {
   console.log("advertimageno", advertimageno);
 
   const imagename = imageUrl.slice(76, -10);
+  const imagenamesplit = imagename.split("?");
   const bucket = admin.storage().bucket();
 
+  console.log("image name", imagenamesplit[0]);
+
   return bucket
-    .file(imagename)
+    .file(imagenamesplit[0])
     .delete()
     .then(() => {
+      console.log(`deleted ${imagenamesplit[0]}`);
+
       return db
         .doc(`/adverts/${advertid}`)
         .update({ [`image${advertimageno}Url`]: "" });
-
-      //console.log(`deleted ${imagename}`);
     })
     .then(() => {
       db.doc(`/adverts/${advertid}`)
